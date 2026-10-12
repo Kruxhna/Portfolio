@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #0f1115;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-code: #71717a;
+    --accent-emerald: #10b981;
+    --accent-cyan: #38bdf8;
+    --accent-indigo: #6366f1;
+    --card-bg: #111115;
+    --card-border: #27272a;
+  }
+
+  body {
+    background-color: #0f1115;
+    color: #fafafa;
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+/* Subtle dot-grid background overlay */
+.bg-grid-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-grid-lines {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Subtle film grain texture */
+.film-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* Custom Minimalist Dark Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f1115;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Glassmorphism and Card Aesthetics */
+.card-surface {
+  background-color: rgba(17, 17, 21, 0.85);
+  border: 1px solid rgba(39, 39, 42, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-surface:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.06);
+}
+
+.card-surface-emerald:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.08);
+}
+
+/* ─── Hero entrance animations ──────────────────────────────────────────────
+   Egorz.com style: staggered fade + rise with an easeOutExpo spring curve.
+   All elements start invisible (opacity 0) and animate to their final state.
+   prefers-reduced-motion instantly shows everything without motion.
+─────────────────────────────────────────────────────────────────────────── */
+
+/* Fade + lift: navbar, eyebrow, headline, alias */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Wordmark climbs from further below — dramatic reveal */
+@keyframes heroWordmark {
+  from {
+    opacity: 0;
+    transform: translateY(52px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3D K: opacity + gentle scale-up */
+@keyframes heroK {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Divider line: expand from left edge */
+@keyframes heroDivider {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+/* Base class — shared timing function (easeOutExpo spring) */
+.hero-animate {
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-fade-up  { animation-name: heroFadeUp;   animation-duration: 0.9s; }
+.hero-wordmark { animation-name: heroWordmark;  animation-duration: 1.0s; }
+.hero-k        { animation-name: heroK;         animation-duration: 1.1s; }
+.hero-divider  { animation-name: heroDivider;   animation-duration: 1.0s; }
+
+/* Respect prefers-reduced-motion: instantly show, no movement */
+@media (prefers-reduced-motion: reduce) {
+  .hero-animate {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
