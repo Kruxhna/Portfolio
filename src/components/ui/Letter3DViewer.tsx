@@ -3,34 +3,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 interface Letter3DViewerProps {
   accentColor?: string;
 }
 
+// Frame-rate-independent exponential damp
+function damp(current: number, target: number, speed: number, dt: number): number {
+  return current + (target - current) * (1 - Math.exp(-speed * dt));
+}
+
 export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps) {
-  // The outer wrapper div — used for pill position tracking & layout
   const wrapperRef = useRef<HTMLDivElement>(null);
-  // The canvas mount target
-  const canvasRef = useRef<HTMLDivElement>(null);
-  // Badge element
-  const pillRef = useRef<HTMLDivElement>(null);
+  const canvasRef  = useRef<HTMLDivElement>(null);
+  const pillRef    = useRef<HTMLDivElement>(null);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState(false);
+  const [isLoading, setIsLoading]   = useState(true);
+  const [loadError, setLoadError]   = useState(false);
+  const [pillVisible, setPillVisible] = useState(false);
 
-  const modelRef = useRef<THREE.Group | null>(null);
   const materialRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
-  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
-  const pillPosRef = useRef({ x: 0.5, y: 0.5 }); // normalised 0-1 within wrapper
-  const pillTargetRef = useRef({ x: 0.5, y: 0.5 });
-  const initialRotation = useRef({ x: 0, y: 0.28, z: 0 });
-  const isInteractingRef = useRef(false);
 
-  // Update material color when prop changes
+  // Update accent color on prop change
   useEffect(() => {
     if (materialRef.current) {
       materialRef.current.color.set(accentColor);
@@ -40,23 +35,22 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
-    const canvas = canvasRef.current;
+    const canvas  = canvasRef.current;
     if (!wrapper || !canvas) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // ── 1. Scene ────────────────────────────────────────────────────────────
+    // ── 1. Scene ─────────────────────────────────────────────────────────────
     const scene = new THREE.Scene();
 
-    let W = canvas.clientWidth || 480;
+    let W = canvas.clientWidth  || 480;
     let H = canvas.clientHeight || 560;
 
-    // ── 2. Camera — wide-ish FOV so K fills the frame with ~8% padding ─────
-    //    FOV 42° + camera at Z=2.8 gives the right framing for a unit-sized model
+    // ── 2. Camera ────────────────────────────────────────────────────────────
     const camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
     camera.position.set(0, 0, 2.8);
 
-    // ── 3. Renderer ─────────────────────────────────────────────────────────
+    // ── 3. Renderer — DPR capped at 2 ────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -68,7 +62,7 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
     renderer.toneMappingExposure = 1.1;
     canvas.appendChild(renderer.domElement);
 
-    // ── 4. Lighting & Environment ────────────────────────────────────────────
+    // ── 4. Lighting & Environment ─────────────────────────────────────────────
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader();
     const roomEnv = new RoomEnvironment();
@@ -76,83 +70,63 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
-    // Soft key light from top-left (main highlight)
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
     keyLight.position.set(-3, 4, 3);
     scene.add(keyLight);
 
-    // Soft fill from bottom-right
     const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
     fillLight.position.set(3, -1, 2);
     scene.add(fillLight);
 
-    // ── 5. OrbitControls ─────────────────────────────────────────────────────
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.06;
-    controls.enableZoom = false;
-    controls.enablePan = false;
-    controls.maxPolarAngle = Math.PI / 1.5;
-    controls.minPolarAngle = Math.PI / 3;
-    controlsRef.current = controls;
-    controls.addEventListener("start", () => { isInteractingRef.current = true; });
-    controls.addEventListener("end", () => { isInteractingRef.current = false; });
-
-    // ── 6. Material: matte-satin, no clearcoat, no noisy normals ─────────────
-    const matteKMaterial = new THREE.MeshPhysicalMaterial({
+    // ── 5. Material: smooth satin — no clearcoat, no noise/normal crinkles ───
+    const mat = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(accentColor),
-      roughness: 0.38,
-      metalness: 0,
+      roughness: 0.28,      // smooth-satin: slightly lower than before
+      metalness: 0.05,
       transmission: 0,
       transparent: false,
       opacity: 1.0,
       clearcoat: 0,
+      // No normalMap → no wrinkles
     });
-    materialRef.current = matteKMaterial;
+    materialRef.current = mat;
 
-    // ── 7. Load Model ────────────────────────────────────────────────────────
+    // ── 6. Model ──────────────────────────────────────────────────────────────
+    let model: THREE.Group | null = null;
+    const initialRot = { x: 0, y: 0.28, z: 0 };
+
     const loader = new GLTFLoader();
     loader.load(
       "/k.glb",
       (gltf) => {
         const root = gltf.scene;
-
         root.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
             const mesh = child as THREE.Mesh;
             if (mesh.geometry) {
-              // Smooth normals
               mesh.geometry.deleteAttribute("normal");
               mesh.geometry.computeVertexNormals();
             }
-            mesh.material = matteKMaterial;
+            mesh.material = mat;
           }
         });
 
-        // Center & scale to fill 84% of the frustum at camera Z
-        const box = new THREE.Box3().setFromObject(root);
+        // Center & scale so model fills 84% of frustum height
+        const box    = new THREE.Box3().setFromObject(root);
         const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
+        const size   = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-
-        // Compute the frustum half-height at z=0 and scale so model = 84% of it
-        const halfH = Math.tan(THREE.MathUtils.degToRad(42 / 2)) * 2.8;
-        const targetFit = halfH * 2 * 0.84; // 84% → ~8% padding each side
-        const scaleFactor = targetFit / (maxDim || 1);
+        const halfH  = Math.tan(THREE.MathUtils.degToRad(42 / 2)) * 2.8;
+        const targetFit = halfH * 2 * 0.84;
+        const scale = targetFit / (maxDim || 1);
 
         root.position.sub(center);
-        root.scale.setScalar(scaleFactor);
-        root.rotation.set(0, 0.28, 0);
-        initialRotation.current = { x: 0, y: 0.28, z: 0 };
+        root.scale.setScalar(scale);
+        root.rotation.set(initialRot.x, initialRot.y, initialRot.z);
 
         scene.add(root);
-        modelRef.current = root;
+        model = root;
         setIsLoading(false);
-
-        // Initialise pill to wrapper centre
-        pillPosRef.current = { x: 0.5, y: 0.5 };
-        pillTargetRef.current = { x: 0.5, y: 0.5 };
-        applyPillTransform();
       },
       undefined,
       (err) => {
@@ -162,102 +136,232 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
       }
     );
 
-    // ── 8. Badge helper ───────────────────────────────────────────────────────
-    function applyPillTransform() {
-      const pill = pillRef.current;
-      const w = wrapperRef.current;
-      if (!pill || !w) return;
-      const wW = w.clientWidth;
-      const wH = w.clientHeight;
-      const px = pillPosRef.current.x * wW;
-      const py = pillPosRef.current.y * wH;
-      pill.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%)`;
-    }
+    // ── 7. Interaction state ──────────────────────────────────────────────────
+    // All values here are "targets" or "current animated values"
+    const rot = { x: initialRot.x, y: initialRot.y }; // current animated rotation
+    const rotTarget = { x: initialRot.x, y: initialRot.y }; // target from cursor/drag
+    const vel = { x: 0, y: 0 }; // angular velocity from drag inertia
 
-    // ── 9. Pointer tracking ──────────────────────────────────────────────────
-    // Badge follows cursor within 80px proximity around the WRAPPER
-    const handleMouseMove = (e: MouseEvent) => {
+    let isDragging = false;
+    let dragStartX = 0, dragStartY = 0;
+    let lastDragX = 0, lastDragY = 0;
+    let isSpinning = false;            // click spin impulse active
+    let spinProgress = 0;              // 0→1 over ~1.1s
+
+    // cursor follow target (when not dragging)
+    const cursorTarget = { x: 0, y: 0 };
+
+    // pill position (normalised 0-1 within wrapper)
+    const pillPos    = { x: 0.5, y: 0.5 };
+    const pillTarget = { x: 0.5, y: 0.5 };
+    let cursorOverK = false;
+
+    const applyPillTransform = () => {
+      const pill = pillRef.current;
+      if (!pill || !wrapper) return;
+      const px = pillPos.x * wrapper.clientWidth;
+      const py = pillPos.y * wrapper.clientHeight;
+      pill.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%)`;
+    };
+
+    // ── 8. Pointer events ─────────────────────────────────────────────────────
+    const onMouseMove = (e: MouseEvent) => {
       const rect = wrapper.getBoundingClientRect();
       const margin = 80;
-      const isClose =
-        e.clientX >= rect.left - margin &&
-        e.clientX <= rect.right + margin &&
-        e.clientY >= rect.top - margin &&
-        e.clientY <= rect.bottom + margin;
+      cursorOverK =
+        e.clientX >= rect.left - margin && e.clientX <= rect.right  + margin &&
+        e.clientY >= rect.top  - margin && e.clientY <= rect.bottom + margin;
 
-      if (isClose) {
-        // Badge target: cursor position relative to wrapper, normalised
+      if (cursorOverK) {
         const localX = (e.clientX - rect.left) / rect.width;
-        const localY = (e.clientY - rect.top) / rect.height;
-        pillTargetRef.current = {
-          x: Math.max(0.05, Math.min(0.95, localX)),
-          y: Math.max(0.05, Math.min(0.95, localY + 0.04)),
-        };
+        const localY = (e.clientY - rect.top)  / rect.height;
+        pillTarget.x = Math.max(0.05, Math.min(0.95, localX));
+        pillTarget.y = Math.max(0.05, Math.min(0.95, localY + 0.04));
 
-        // 3D rotation target: normalised [-1,1]
-        const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-        mouseRef.current.targetX = Math.max(-0.25, Math.min(0.25, nx * 0.25));
-        mouseRef.current.targetY = Math.max(-0.25, Math.min(0.25, ny * 0.25));
+        // cursor follow target: normalised [-1,1]
+        if (!isDragging) {
+          const nx = localX * 2 - 1;
+          const ny = -(localY * 2 - 1);
+          cursorTarget.x = Math.max(-0.25, Math.min(0.25, ny * 0.25)); // rotation.x
+          cursorTarget.y = Math.max(-0.25, Math.min(0.25, nx * 0.25)); // rotation.y
+        }
       } else {
-        // Reset pill to wrapper centre
-        pillTargetRef.current = { x: 0.5, y: 0.5 };
-        mouseRef.current.targetX = 0;
-        mouseRef.current.targetY = 0;
+        pillTarget.x = 0.5;
+        pillTarget.y = 0.5;
+        if (!isDragging) {
+          cursorTarget.x = 0;
+          cursorTarget.y = 0;
+        }
+      }
+      setPillVisible(cursorOverK);
+
+      // Drag tracking
+      if (isDragging) {
+        const dx = e.clientX - lastDragX;
+        const dy = e.clientY - lastDragY;
+        vel.y = dx * 0.004;
+        vel.x = dy * 0.004;
+        rotTarget.y += dx * 0.004;
+        rotTarget.x = Math.max(-0.5, Math.min(0.5, rotTarget.x + dy * 0.004));
+        lastDragX = e.clientX;
+        lastDragY = e.clientY;
       }
     };
 
-    const handleMouseLeave = () => {
-      pillTargetRef.current = { x: 0.5, y: 0.5 };
-      mouseRef.current.targetX = 0;
-      mouseRef.current.targetY = 0;
+    const onMouseDown = (e: MouseEvent) => {
+      isDragging = true;
+      dragStartX = lastDragX = e.clientX;
+      dragStartY = lastDragY = e.clientY;
+      vel.x = 0;
+      vel.y = 0;
+      canvas.style.cursor = "grabbing";
     };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    document.addEventListener("mouseleave", handleMouseLeave);
+    const onMouseUp = (e: MouseEvent) => {
+      if (!isDragging) return;
+      isDragging = false;
+      canvas.style.cursor = "grab";
 
-    // ── 10. Render loop ──────────────────────────────────────────────────────
+      // Check if it was a click (minimal drag distance)
+      const dx = Math.abs(e.clientX - dragStartX);
+      const dy = Math.abs(e.clientY - dragStartY);
+      if (dx < 6 && dy < 6 && !isSpinning) {
+        // Click impulse: one smooth full turn on Y
+        isSpinning = true;
+        spinProgress = 0;
+        vel.x = 0;
+        vel.y = 0;
+      }
+      // else inertia continues via vel decay in RAF loop
+    };
+
+    const onMouseLeave = () => {
+      cursorTarget.x = 0;
+      cursorTarget.y = 0;
+      pillTarget.x = 0.5;
+      pillTarget.y = 0.5;
+      setPillVisible(false);
+    };
+
+    // Touch support for drag
+    let lastTouchX = 0, lastTouchY = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      const t = e.touches[0];
+      isDragging = true;
+      dragStartX = lastTouchX = t.clientX;
+      dragStartY = lastTouchY = t.clientY;
+      vel.x = 0; vel.y = 0;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!isDragging) return;
+      const t = e.touches[0];
+      const dx = t.clientX - lastTouchX;
+      const dy = t.clientY - lastTouchY;
+      vel.y = dx * 0.004;
+      vel.x = dy * 0.004;
+      rotTarget.y += dx * 0.004;
+      rotTarget.x = Math.max(-0.5, Math.min(0.5, rotTarget.x + dy * 0.004));
+      lastTouchX = t.clientX;
+      lastTouchY = t.clientY;
+    };
+    const onTouchEnd = () => { isDragging = false; };
+
+    canvas.addEventListener("mousedown", onMouseDown);
+    canvas.addEventListener("mouseup", onMouseUp);
+    canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+    canvas.addEventListener("touchmove", onTouchMove, { passive: true });
+    canvas.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("mouseleave", onMouseLeave);
+
+    // ── 9. IntersectionObserver: pause rendering offscreen ────────────────────
+    let isVisible = true;
+    const io = new IntersectionObserver(
+      ([entry]) => { isVisible = entry.isIntersecting; },
+      { threshold: 0.01 }
+    );
+    io.observe(wrapper);
+
+    // ── 10. RAF loop ─────────────────────────────────────────────────────────
     let rafId: number;
     const clock = new THREE.Clock();
+    let lastDt = 0;
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
 
-      // Lerp mouse
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.06;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.06;
-
-      // Lerp badge (normalised, lag factor 0.12)
-      pillPosRef.current.x += (pillTargetRef.current.x - pillPosRef.current.x) * 0.12;
-      pillPosRef.current.y += (pillTargetRef.current.y - pillPosRef.current.y) * 0.12;
-      applyPillTransform();
-
-      // Animate model
-      if (modelRef.current && !isInteractingRef.current) {
-        if (!prefersReducedMotion) {
-          const floatY = Math.sin(t * ((Math.PI * 2) / 7)) * 0.038;
-          const driftY = Math.sin(t * ((Math.PI * 2) / 8.5)) * 0.022;
-          modelRef.current.rotation.y = initialRotation.current.y + mouseRef.current.x + driftY;
-          modelRef.current.rotation.x = initialRotation.current.x - mouseRef.current.y;
-          modelRef.current.position.y = floatY;
-        } else {
-          modelRef.current.rotation.set(0, 0.28, 0);
-          modelRef.current.position.set(0, 0, 0);
-        }
+      if (document.hidden || !isVisible) {
+        clock.getDelta(); // consume delta to avoid dt spike on resume
+        return;
       }
 
-      controls.update();
+      const rawDt = clock.getDelta();
+      const dt = Math.min(rawDt, 0.05);
+      const t  = clock.elapsedTime;
+
+      if (model && !prefersReducedMotion) {
+        // ── Idle float ────────────────────────────────────────────────────
+        // Two independent sines so it never looks looped
+        const floatY    = Math.sin(t * (Math.PI * 2 / 7))   * 0.038;
+        const driftRotY = Math.sin(t * (Math.PI * 2 / 11.3)) * 0.022;
+
+        if (!isDragging) {
+          if (isSpinning) {
+            // Click spin impulse: ease-out cubic over ~1.1s
+            spinProgress = Math.min(1, spinProgress + dt / 1.1);
+            const eased = 1 - Math.pow(1 - spinProgress, 3);
+            rotTarget.y = initialRot.y + eased * Math.PI * 2;
+            if (spinProgress >= 1) {
+              isSpinning = false;
+              spinProgress = 0;
+              rotTarget.y = initialRot.y;
+            }
+          } else {
+            // Inertia decay after drag release
+            vel.x *= Math.exp(-3 * dt);
+            vel.y *= Math.exp(-3 * dt);
+            rotTarget.x += vel.x;
+            rotTarget.y += vel.y;
+
+            // Spring back toward neutral over ~1.2s when velocity is tiny
+            const speed = Math.sqrt(vel.x ** 2 + vel.y ** 2);
+            if (speed < 0.001) {
+              rotTarget.x = damp(rotTarget.x, initialRot.x + cursorTarget.x, 2, dt);
+              rotTarget.y = damp(rotTarget.y, initialRot.y + cursorTarget.y + driftRotY, 2, dt);
+            }
+          }
+        }
+
+        // Smooth current rotation toward target (speed 5)
+        rot.x = damp(rot.x, rotTarget.x, 5, dt);
+        rot.y = damp(rot.y, rotTarget.y, 5, dt);
+
+        model.rotation.x = rot.x;
+        model.rotation.y = rot.y;
+        model.position.y = floatY;
+
+      } else if (model) {
+        // reduced motion: hold neutral
+        model.rotation.set(initialRot.x, initialRot.y, initialRot.z);
+        model.position.set(0, 0, 0);
+      }
+
+      // ── Pill badge lerp (speed 8, slightly lagged) ────────────────────
+      pillPos.x = damp(pillPos.x, pillTarget.x, 8, dt);
+      pillPos.y = damp(pillPos.y, pillTarget.y, 8, dt);
+      applyPillTransform();
+
       renderer.render(scene, camera);
+      lastDt = dt;
     };
     animate();
 
-    // ── 11. Resize observer ──────────────────────────────────────────────────
+    // ── 11. Resize observer ───────────────────────────────────────────────────
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width: nW, height: nH } = entry.contentRect;
         if (nW > 0 && nH > 0) {
-          W = nW; H = nH;
           camera.aspect = nW / nH;
           camera.updateProjectionMatrix();
           renderer.setSize(nW, nH);
@@ -266,13 +370,19 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
     });
     ro.observe(canvas);
 
-    // ── 12. Cleanup ──────────────────────────────────────────────────────────
+    // ── 12. Cleanup ───────────────────────────────────────────────────────────
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseleave", handleMouseLeave);
+      canvas.removeEventListener("mousedown", onMouseDown);
+      canvas.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("mouseleave", onMouseLeave);
       ro.disconnect();
+      io.disconnect();
       cancelAnimationFrame(rafId);
-      controls.dispose();
       renderer.dispose();
       pmremGenerator.dispose();
       roomEnv.dispose();
@@ -283,11 +393,6 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
   }, []);
 
   return (
-    /*
-      Outer wrapper: full width of the right zone column, tall enough
-      to show the K without clipping. overflow: visible so the model
-      can bleed past the canvas edges naturally.
-    */
     <div
       ref={wrapperRef}
       className="relative w-full select-none"
@@ -314,7 +419,7 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
         </div>
       )}
 
-      {/* Three.js canvas mount — fills the wrapper */}
+      {/* Three.js canvas mount */}
       <div
         ref={canvasRef}
         className="w-full h-full cursor-grab active:cursor-grabbing outline-none"
@@ -322,18 +427,17 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
       />
 
       {/*
-        Pill badge — sits at absolute top:0 left:0, then translated by
-        the JS lerp to follow the cursor.  -translate-x/y-1/2 centres it
-        on the hot-point via CSS transform (applied in applyPillTransform).
+        Pill badge — absolute top:0 left:0, then translate3d'd by JS lerp.
+        Fades in/scales when cursor is over the K; fades out otherwise.
       */}
       <div
         ref={pillRef}
         className="absolute top-0 left-0 pointer-events-none z-20 select-none will-change-transform"
         style={{
-          opacity: isLoading ? 0 : 1,
-          transition: "opacity 0.3s",
-          // Initial centred placement until JS takes over
+          opacity: pillVisible && !isLoading ? 1 : 0,
           transform: "translate3d(50%, 50%, 0) translate(-50%, -50%)",
+          transition: "opacity 0.2s ease, scale 0.2s ease",
+          scale: pillVisible && !isLoading ? "1" : "0.9",
         }}
       >
         <div

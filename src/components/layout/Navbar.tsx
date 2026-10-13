@@ -101,7 +101,7 @@ export function Navbar({
         <div className="hidden md:flex items-center gap-6 lg:gap-8 font-mono text-[11px] uppercase tracking-widest text-[#71717a]">
           <Link
             href="#projects"
-            className={`transition-colors hover:text-white ${
+            className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "projects" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
@@ -109,7 +109,7 @@ export function Navbar({
           </Link>
           <Link
             href="#about"
-            className={`transition-colors hover:text-white ${
+            className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "about" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
@@ -117,7 +117,7 @@ export function Navbar({
           </Link>
           <Link
             href="#arsenal"
-            className={`transition-colors hover:text-white ${
+            className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "arsenal" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
@@ -125,7 +125,7 @@ export function Navbar({
           </Link>
           <Link
             href="#stats"
-            className={`transition-colors hover:text-white ${
+            className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "stats" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
@@ -133,7 +133,7 @@ export function Navbar({
           </Link>
           <Link
             href="#contact"
-            className={`transition-colors hover:text-white ${
+            className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "contact" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
@@ -144,7 +144,7 @@ export function Navbar({
         {/* Right: Live Time, Motion, Theme & Command Palette (Video Style) */}
         <div className="flex items-center gap-4 lg:gap-6 font-mono text-[11px] text-[#71717a]">
           {/* Live Indian Standard Time */}
-          <span className="hidden sm:inline text-[#71717a]">
+          <span className="hidden sm:inline text-[#71717a]" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "0.04em" }}>
             IN {timeString || "22:15:00"}
           </span>
 
