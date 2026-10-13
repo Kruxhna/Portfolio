@@ -75,12 +75,9 @@ export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const wordmarkRef = useRef<HTMLHeadingElement>(null);
   const letterSpanRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const cursorRingRef = useRef<HTMLDivElement>(null);
 
   // cursor state (only updated in mouse events → used as targets in RAF)
-  const cursorRef = useRef({ x: 0, y: 0, overWordmark: false });
-  // animated cursor ring position
-  const ringPosRef = useRef({ x: -200, y: -200 }); // start offscreen
+  const cursorRef = useRef({ x: 0, y: 0 });
   // per-letter variable font axes [wght, wdth]
   const letterAxesRef = useRef<{ wght: number; wdth: number }[]>(
     WORDMARK.map(() => ({ wght: 900, wdth: 125 }))
@@ -124,22 +121,8 @@ export function HeroSection() {
     const handleMouseMove = (e: MouseEvent) => {
       cursorRef.current.x = e.clientX;
       cursorRef.current.y = e.clientY;
-
-      // Check if cursor is over wordmark zone
-      const wm = wordmarkRef.current;
-      if (wm) {
-        const r = wm.getBoundingClientRect();
-        const pad = 24;
-        cursorRef.current.overWordmark =
-          e.clientX >= r.left - pad && e.clientX <= r.right + pad &&
-          e.clientY >= r.top - pad && e.clientY <= r.bottom + pad;
-      }
-    };
-    const handleMouseLeave = () => {
-      cursorRef.current.overWordmark = false;
     };
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("mouseleave", handleMouseLeave);
 
     // ── The shared RAF loop ───────────────────────────────────────────────
     const tick = (now: number) => {
@@ -153,20 +136,6 @@ export function HeroSection() {
 
       const dt = Math.min((now - (lastTimeRef.current || now)) / 1000, 0.05);
       lastTimeRef.current = now;
-
-      // ── Cursor ring ─────────────────────────────────────────────────────
-      const ring = cursorRingRef.current;
-      if (ring) {
-        ringPosRef.current.x = damp(ringPosRef.current.x, cursorRef.current.x, 12, dt);
-        ringPosRef.current.y = damp(ringPosRef.current.y, cursorRef.current.y, 12, dt);
-        ring.style.transform = `translate(${ringPosRef.current.x - 50}px, ${ringPosRef.current.y - 50}px)`;
-        // Grow ring over wordmark
-        if (cursorRef.current.overWordmark) {
-          ring.classList.add("over-wordmark");
-        } else {
-          ring.classList.remove("over-wordmark");
-        }
-      }
 
       // ── Variable font wordmark letters ─────────────────────────────────
       const radius = getRadius();
@@ -207,16 +176,12 @@ export function HeroSection() {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
       io.disconnect();
     };
   }, []);
 
   return (
     <>
-      {/* ── Custom cursor ring (fixed, outside section) ─────────────────── */}
-      <div id="cursor-ring" ref={cursorRingRef} aria-hidden="true" />
-
       <section
         ref={sectionRef}
         id="about"
@@ -270,17 +235,17 @@ export function HeroSection() {
               >
                 I{" "}
                 <span className="font-mono font-normal" style={{ color: ACCENT_COLOR }}>
-                  script
+                  profile
                 </span>
                 ,{" "}
                 <span className="font-mono font-normal" style={{ color: ACCENT_COLOR }}>
-                  automate
+                  optimize
                 </span>{" "}
                 and{" "}
                 <span className="font-mono font-normal" style={{ color: ACCENT_COLOR }}>
-                  build
+                  scale
                 </span>{" "}
-                tools that fix the{" "}
+                engines that turn{" "}
                 <span
                   className="font-mono font-normal headline-accent-underline"
                   style={{
@@ -288,13 +253,14 @@ export function HeroSection() {
                     textDecorationColor: ACCENT_COLOR,
                   }}
                 >
-                  small annoyances
+                  heavy math
                 </span>{" "}
-                everyone else just puts up with.
+                into millisecond latency.
               </h2>
 
               {/* Alias — delay 0.38s */}
               <div
+                data-cursor="magnetic"
                 className="hero-animate hero-fade-up mt-1 inline-flex items-center gap-2 font-mono cursor-pointer group transition-opacity hover:opacity-70 select-none"
                 style={{
                   marginLeft: "clamp(200px, 18vw, 320px)",
@@ -348,6 +314,7 @@ export function HeroSection() {
             */}
             <h1
               ref={wordmarkRef}
+              data-cursor="invert"
               aria-label="krushna"
               className="hero-animate font-sans font-black whitespace-nowrap overflow-visible leading-none text-[#eeeef2]"
               style={{

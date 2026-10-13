@@ -66,6 +66,7 @@ export function Footer() {
               <button
                 onClick={scrollToTop}
                 title="Scroll to top"
+                data-cursor="magnetic"
                 className="group relative flex h-9 w-9 items-center justify-center rounded-xl border border-[#27272A] bg-[#141418] font-mono text-sm font-bold text-[#FAFAFA] transition-all hover:border-[#38BDF8]/60 hover:shadow-lg hover:shadow-[#38BDF8]/20"
               >
                 <span>K</span>
@@ -98,19 +99,19 @@ export function Footer() {
               Navigation
             </span>
             <div className="flex flex-col gap-2 text-xs text-[#A1A1AA]">
-              <Link href="#about" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#about" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
                 01. About
               </Link>
-              <Link href="#stats" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#stats" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
                 02. DSA / Stats
               </Link>
-              <Link href="#projects" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#projects" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
                 03. AI Projects
               </Link>
-              <Link href="#arsenal" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#arsenal" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
                 04. Arsenal
               </Link>
-              <Link href="#contact" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#contact" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
                 05. Contact
               </Link>
             </div>
@@ -125,6 +126,7 @@ export function Footer() {
             {/* "Copy Email" Action Button */}
             <button
               onClick={handleCopyEmail}
+              data-cursor="magnetic"
               className="group flex items-center justify-between rounded-xl border border-[#27272A] bg-[#141418] px-3.5 py-2.5 text-xs font-mono text-[#A1A1AA] transition-all hover:border-[#10B981]/50 hover:bg-[#18181b] hover:text-[#FAFAFA]"
             >
               <span className="truncate">{PERSONAL_INFO.email}</span>
@@ -149,6 +151,7 @@ export function Footer() {
                 href="https://www.linkedin.com/in/krushna-nole/"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-cursor="magnetic"
                 className="flex items-center justify-center gap-1.5 rounded-xl border border-[#27272A] bg-[#141418] py-2 text-[#A1A1AA] transition-all hover:border-[#0A66C2]/60 hover:text-[#FAFAFA] hover:bg-[#18181b]"
                 title="LinkedIn Profile"
               >
@@ -160,6 +163,7 @@ export function Footer() {
                 href="https://github.com/Kruxhna"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-cursor="magnetic"
                 className="flex items-center justify-center gap-1.5 rounded-xl border border-[#27272A] bg-[#141418] py-2 text-[#A1A1AA] transition-all hover:border-[#38BDF8]/60 hover:text-[#FAFAFA] hover:bg-[#18181b]"
                 title="GitHub Profile"
               >
@@ -171,6 +175,7 @@ export function Footer() {
                 href="https://codolio.com/profile/Kruxhna/problemSolving"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-cursor="magnetic"
                 className="flex items-center justify-center gap-1.5 rounded-xl border border-[#27272A] bg-[#141418] py-2 text-[#A1A1AA] transition-all hover:border-[#F59E0B]/60 hover:text-[#FAFAFA] hover:bg-[#18181b]"
                 title="Codolio DSA Profile"
               >
@@ -202,6 +207,7 @@ export function Footer() {
             {/* Back to Top */}
             <button
               onClick={scrollToTop}
+              data-cursor="magnetic"
               className="flex items-center gap-1 rounded-lg border border-[#27272A] bg-[#141418] px-2.5 py-1 text-[11px] text-[#71717A] hover:border-[#38BDF8]/40 hover:text-[#FAFAFA] transition-colors"
               title="Back to top"
             >

@@ -1,273 +1,386 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  ArrowUpRight,
-  Code2,
-  Cpu,
-  Binary,
-  Layers,
-  Sparkles,
-  Award,
-  Terminal,
-  Activity,
-  CheckCircle2,
-} from "lucide-react";
-import { DSA_STATS } from "@/data/portfolioData";
-import { SpotlightCard } from "@/components/ui/SpotlightCard";
-import { CodolioIcon } from "@/components/ui/Icons";
+import React, { useEffect, useRef, useState } from "react";
+import { DSA_DATA, formatRelativeTime } from "@/data/dsaData";
+
+// Ease-out cubic for smooth count-up
+function easeOutCubic(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
+}
 
 export function DSAShowcaseSection() {
-  const [activeTopic, setActiveTopic] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [hasEntered, setHasEntered] = useState(false);
+  const [counts, setCounts] = useState<{ [key: string]: number }>({});
+  const [isReducedMotion, setIsReducedMotion] = useState(false);
+
+  // Check prefers-reduced-motion
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setIsReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // IntersectionObserver for entrance animation and count-up trigger
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    // If reduced motion is requested, show final state immediately
+    if (isReducedMotion) {
+      setHasEntered(true);
+      const initial: { [key: string]: number } = {};
+      DSA_DATA.stats.forEach((s) => {
+        initial[s.id] = s.value;
+      });
+      setCounts(initial);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasEntered(true);
+          observer.disconnect();
+
+          // 900ms count-up with easeOutCubic
+          const startTime = performance.now();
+          const duration = 900;
+
+          const animateCounts = (now: number) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(1, elapsed / duration);
+            const eased = easeOutCubic(progress);
+
+            const next: { [key: string]: number } = {};
+            DSA_DATA.stats.forEach((s) => {
+              next[s.id] = Math.round(s.value * eased);
+            });
+            setCounts(next);
+
+            if (progress < 1) {
+              requestAnimationFrame(animateCounts);
+            } else {
+              // Ensure exact final numbers
+              const finalCounts: { [key: string]: number } = {};
+              DSA_DATA.stats.forEach((s) => {
+                finalCounts[s.id] = s.value;
+              });
+              setCounts(finalCounts);
+            }
+          };
+
+          requestAnimationFrame(animateCounts);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [isReducedMotion]);
+
+  // Motion entrance styles helper (80ms stagger, 16px rise)
+  const getEntranceStyle = (index: number): React.CSSProperties => {
+    if (isReducedMotion) {
+      return { opacity: 1, transform: "none" };
+    }
+    return {
+      opacity: hasEntered ? 1 : 0,
+      transform: hasEntered ? "translateY(0)" : "translateY(16px)",
+      transition: `opacity 650ms cubic-bezier(0.22, 1, 0.36, 1) ${index * 80}ms, transform 650ms cubic-bezier(0.22, 1, 0.36, 1) ${index * 80}ms`,
+    };
+  };
 
   return (
-    <section id="stats" className="relative py-20 sm:py-28">
-      {/* 1. SECTION HEADER */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#38BDF8]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8] animate-pulse" />
-          <span>02 // ALGORITHMIC RIGOR</span>
-        </div>
-
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight text-[#FAFAFA] sm:text-4xl">
-              Problem Solving &amp; DSA
-            </h2>
-            <p className="mt-1 max-w-xl text-sm sm:text-base text-[#A1A1AA]">
-              Data structures, computational complexity, and competitive programming verified on Codolio.
-            </p>
-          </div>
-
-          {/* Direct Codolio Live Profile Badge */}
-          <a
-            href={DSA_STATS.codolioProfile}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 rounded-xl border border-[#38BDF8]/40 bg-[#38BDF8]/10 px-4 py-2.5 font-mono text-xs font-semibold text-[#FAFAFA] backdrop-blur-md transition-all duration-200 hover:border-[#38BDF8] hover:bg-[#38BDF8]/20 hover:shadow-lg hover:shadow-[#38BDF8]/10"
+    <section
+      ref={sectionRef}
+      id="dsa"
+      aria-labelledby="dsa-title"
+      className="relative w-full bg-[var(--bg)] scroll-mt-24 select-none"
+      style={{
+        paddingTop: "clamp(64px, 10vw, 128px)",
+        paddingBottom: "clamp(64px, 10vw, 128px)",
+        paddingLeft: "2.5vw",
+        paddingRight: "2.5vw",
+      }}
+    >
+      <div className="mx-auto w-full max-w-[1440px]">
+        {/* 12-Column Asymmetric Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+          {/* ================================================================= */}
+          {/* LEFT COLUMN: IDENTITY BLOCK (Cols 1-4, Sticky)                     */}
+          {/* ================================================================= */}
+          <div
+            className="lg:col-span-4 lg:sticky lg:top-[104px] flex flex-col items-start select-text"
+            style={getEntranceStyle(0)}
           >
-            <CodolioIcon className="h-4 w-4 text-[#38BDF8]" />
-            <span>View Codolio Live Profile</span>
-            <ArrowUpRight className="h-3.5 w-3.5 text-[#38BDF8] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
-        </div>
-      </div>
-
-      {/* 2. BENTO-GRID CYBER-ENGINEERING DASHBOARD */}
-      <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {/* CARD 1: MASTER STATS CARD (Span 7) */}
-        <SpotlightCard className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between border-[#27272A] bg-[#111115]/90">
-          <div>
-            {/* Top Telemetry Header */}
-            <div className="flex items-center justify-between border-b border-[#27272A] pb-4">
-              <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-[#27272A] bg-[#18181b] text-[#38BDF8]">
-                  <Code2 className="h-4 w-4" />
-                </div>
-                <span className="font-mono text-xs uppercase tracking-wider text-[#71717A]">
-                  Codolio Aggregated Tracker
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 font-mono text-[11px] text-emerald-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
-                <span>45-DAY STREAK</span>
-              </div>
-            </div>
-
-            {/* Master Counter */}
-            <div className="mt-6 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
-              <div>
-                <span className="font-mono text-5xl sm:text-6xl font-extrabold tracking-tight text-[#FAFAFA]">
-                  {DSA_STATS.totalSolved}
-                </span>
-                <span className="ml-2 font-mono text-sm text-[#71717A]">Problems Solved</span>
-              </div>
-
-              <span className="font-mono text-xs text-[#38BDF8] bg-[#38BDF8]/10 border border-[#38BDF8]/20 rounded-full px-3 py-1 self-start sm:self-auto">
-                Verified Multi-Platform
-              </span>
-            </div>
-
-            {/* Segmented Combined Progress Bar */}
-            <div className="mt-6 flex h-3 w-full overflow-hidden rounded-full bg-[#18181b] p-0.5 border border-[#27272A]">
-              <div
-                style={{ width: `${DSA_STATS.breakdown[0].percentage}%` }}
-                className="h-full rounded-l-full bg-emerald-500 transition-all duration-500"
-                title={`Easy: ${DSA_STATS.breakdown[0].count}`}
-              />
-              <div
-                style={{ width: `${DSA_STATS.breakdown[1].percentage}%` }}
-                className="h-full bg-amber-500 transition-all duration-500"
-                title={`Medium: ${DSA_STATS.breakdown[1].count}`}
-              />
-              <div
-                style={{ width: `${DSA_STATS.breakdown[2].percentage}%` }}
-                className="h-full rounded-r-full bg-rose-500 transition-all duration-500"
-                title={`Hard: ${DSA_STATS.breakdown[2].count}`}
-              />
-            </div>
-
-            {/* Difficulty Breakdown Bars & Metrics */}
-            <div className="mt-6 grid grid-cols-3 gap-3">
-              {DSA_STATS.breakdown.map((b) => (
-                <div
-                  key={b.level}
-                  className="rounded-xl border border-[#27272A] bg-[#09090b]/80 p-3.5"
-                >
-                  <div className="flex items-center justify-between text-[11px] font-mono text-[#71717A]">
-                    <span>{b.level.toUpperCase()}</span>
-                    <span className={b.textCol}>{b.percentage}%</span>
-                  </div>
-                  <div className={`mt-1 font-mono text-xl sm:text-2xl font-bold ${b.textCol}`}>
-                    {b.count}
-                  </div>
-                  {/* Miniature individual progress fill */}
-                  <div className="mt-2.5 h-1 w-full rounded-full bg-[#18181b]">
-                    <div
-                      style={{ width: `${b.percentage * 2}%` }}
-                      className={`h-full rounded-full ${b.barBg}`}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Subtext info */}
-          <div className="mt-6 pt-4 border-t border-[#27272A]/70 flex items-center justify-between font-mono text-[11px] text-[#71717A]">
-            <span>LeetCode • GfG • CodeChef Synced</span>
-            <span className="text-[#FAFAFA]">Zero TLE Mindset</span>
-          </div>
-        </SpotlightCard>
-
-        {/* CARD 2: TOPIC DISTRIBUTION TAGS (Span 5) */}
-        <SpotlightCard className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between border-[#27272A] bg-[#111115]/90">
-          <div>
-            <div className="flex items-center gap-2 border-b border-[#27272A] pb-4">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-[#27272A] bg-[#18181b] text-emerald-400">
-                <Binary className="h-4 w-4" />
-              </div>
-              <span className="font-mono text-xs uppercase tracking-wider text-[#71717A]">
-                Topic Distribution
-              </span>
-            </div>
-
-            <p className="mt-4 text-xs text-[#A1A1AA] leading-relaxed">
-              Core mathematical abstractions and data structures frequently implemented from scratch:
+            {/* 1. Eyebrow */}
+            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--muted)] mb-3">
+              {DSA_DATA.eyebrow}
             </p>
 
-            {/* Interactive Topic Pills */}
-            <div className="mt-5 flex flex-wrap gap-2">
-              {DSA_STATS.topics.map((t) => (
-                <button
-                  key={t.name}
-                  onClick={() =>
-                    setActiveTopic(activeTopic === t.name ? null : t.name)
-                  }
-                  className={`group flex items-center gap-2 rounded-xl border px-3 py-2 font-mono text-xs transition-all duration-200 text-left ${
-                    activeTopic === t.name
-                      ? "border-[#38BDF8] bg-[#38BDF8]/15 text-white shadow-md shadow-[#38BDF8]/10"
-                      : "border-[#27272A] bg-[#09090b]/90 text-[#A1A1AA] hover:border-[#38BDF8]/40 hover:text-white hover:bg-[#18181b]"
-                  }`}
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" />
-                  <span className="font-medium text-[#FAFAFA]">{t.name}</span>
-                  <span className="text-[10px] text-[#71717A] group-hover:text-emerald-400 transition-colors">
-                    [{t.count}]
-                  </span>
-                </button>
-              ))}
-            </div>
+            {/* 2. Title: algorithmic rigor */}
+            <h2
+              id="dsa-title"
+              className="text-[#fafafa] font-normal leading-[0.95] tracking-tighter"
+              style={{
+                fontFamily: "var(--font-roboto-flex), var(--font-inter), sans-serif",
+                fontVariationSettings: '"wght" 850, "wdth" 120',
+                fontSize: "clamp(40px, 5vw, 88px)",
+              }}
+            >
+              {DSA_DATA.title}
+            </h2>
 
-            {/* Selected Topic Details Callout */}
-            {activeTopic && (
-              <div className="mt-4 rounded-xl border border-[#38BDF8]/30 bg-[#09090b] p-3 text-xs font-mono text-[#A1A1AA] animate-in fade-in">
-                <span className="text-[#38BDF8] font-bold">{activeTopic}: </span>
-                {
-                  DSA_STATS.topics.find((t) => t.name === activeTopic)?.complexity
-                }
-              </div>
-            )}
-          </div>
+            {/* 3. Statement */}
+            <p className="mt-6 text-[16px] sm:text-[17px] text-[var(--muted)] leading-[1.6] max-w-[36ch]">
+              {DSA_DATA.statement}
+            </p>
 
-          <div className="mt-6 pt-4 border-t border-[#27272A]/70 text-[11px] font-mono text-[#71717A]">
-            <span>Click any topic pill to inspect algorithmic paradigm</span>
-          </div>
-        </SpotlightCard>
+            {/* 4. Tag line */}
+            <p className="mt-6 font-mono text-[11px] text-[var(--muted)] tracking-[0.08em] lowercase">
+              {DSA_DATA.tagline}
+            </p>
 
-        {/* CARD 3: MULTI-PLATFORM BADGE STRIP (Span 6) */}
-        <SpotlightCard className="lg:col-span-6 p-6 sm:p-7 border-[#27272A] bg-[#111115]/90">
-          <div className="flex items-center justify-between border-b border-[#27272A] pb-4">
-            <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-[#27272A] bg-[#18181b] text-amber-400">
-                <Award className="h-4 w-4" />
-              </div>
-              <span className="font-mono text-xs uppercase tracking-wider text-[#71717A]">
-                Multi-Platform Synced Hub
-              </span>
-            </div>
-            <span className="font-mono text-[11px] text-[#71717A]">Codolio Aggregated</span>
-          </div>
-
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {DSA_STATS.platforms.map((p) => (
-              <div
-                key={p.name}
-                className="rounded-xl border border-[#27272A] bg-[#09090b]/80 p-4 transition-all hover:border-[#38BDF8]/40 hover:bg-[#18181b]/60"
+            {/* 5. Plain text link + sync metadata */}
+            <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px]">
+              <a
+                href={DSA_DATA.profileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link-underline text-[#fafafa] hover:text-white transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3ecf8e] focus-visible:outline-offset-[3px] inline-flex items-center gap-1"
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[#FAFAFA]">
-                    {p.name}
-                  </span>
-                  <span
-                    className="h-2 w-2 rounded-full"
-                    style={{ backgroundColor: p.badgeColor }}
-                  />
-                </div>
-                <div className="mt-2 font-mono text-base font-extrabold text-[#FAFAFA]">
-                  {p.solved}
-                </div>
-                <div className="mt-0.5 font-mono text-[10px] text-[#10B981]">
-                  {p.metric}
-                </div>
-                <div className="mt-2 text-[10px] font-mono text-[#71717A]">
-                  {p.handle}
-                </div>
-              </div>
-            ))}
-          </div>
-        </SpotlightCard>
-
-        {/* CARD 4: ENGINEERING PHILOSOPHY CALLOUT (Span 6) */}
-        <SpotlightCard className="lg:col-span-6 p-6 sm:p-7 border-[#27272A] bg-[#111115]/90 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center gap-2 border-b border-[#27272A] pb-4">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-[#27272A] bg-[#18181b] text-[#6366F1]">
-                <Cpu className="h-4 w-4" />
-              </div>
-              <span className="font-mono text-xs uppercase tracking-wider text-[#71717A]">
-                Algorithmic Philosophy
+                {DSA_DATA.profileLinkText}
+              </a>
+              <span className="text-[var(--line)]" aria-hidden="true">
+                /
               </span>
-            </div>
-
-            <div className="mt-5 rounded-xl border border-[#27272A] bg-[#09090b] p-4.5 font-mono text-xs sm:text-[13px] leading-relaxed text-[#FAFAFA]">
-              <span className="text-[#38BDF8] font-bold">&quot;</span>
-              {DSA_STATS.philosophy}
-              <span className="text-[#38BDF8] font-bold">&quot;</span>
+              <span className="text-[var(--muted)]">{DSA_DATA.lastSyncedDate}</span>
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center gap-2 pt-3 border-t border-[#27272A]/70 text-[11px] font-mono text-[#71717A]">
-            <span className="flex items-center gap-1 text-emerald-400">
-              <CheckCircle2 className="h-3 w-3" /> O(N) Space Bounds
-            </span>
-            <span>•</span>
-            <span className="text-[#38BDF8]">Vectorized Operations</span>
-            <span>•</span>
-            <span className="text-[#FAFAFA]">Cache Locality</span>
+          {/* ================================================================= */}
+          {/* RIGHT COLUMN: STACKED BLOCKS (Cols 6-12)                           */}
+          {/* ================================================================= */}
+          <div className="lg:col-span-7 lg:col-start-6 flex flex-col select-text">
+            {/* ── BLOCK A: STATS ───────────────────────────────────────────── */}
+            <div
+              className="border-t border-[var(--line)] pt-8 pb-12"
+              style={getEntranceStyle(1)}
+            >
+              <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-4">
+                {DSA_DATA.stats.map((stat) => (
+                  <div key={stat.id} className="flex flex-col">
+                    <dd
+                      className="text-[#fafafa] tracking-tight leading-none tabular-nums font-normal"
+                      style={{
+                        fontFamily:
+                          "var(--font-roboto-flex), var(--font-inter), sans-serif",
+                        fontVariationSettings: '"wght" 800, "wdth" 110',
+                        fontSize: "clamp(34px, 4vw, 56px)",
+                        fontVariantNumeric: "tabular-nums",
+                      }}
+                    >
+                      {/* Fixed min-width prevents layout shift during count-up */}
+                      <span className="inline-block tabular-nums">
+                        {counts[stat.id] !== undefined
+                          ? counts[stat.id]
+                          : stat.value}
+                        {stat.suffix || ""}
+                      </span>
+                    </dd>
+                    <dt className="mt-2.5 font-mono text-[12px] text-[var(--muted)] lowercase tracking-normal">
+                      {stat.label}
+                    </dt>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            {/* ── BLOCK B: PLATFORMS ───────────────────────────────────────── */}
+            <div
+              className="border-t border-[var(--line)] pt-12 pb-12"
+              style={getEntranceStyle(2)}
+            >
+              <ul className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[var(--line)]">
+                {DSA_DATA.platforms.map((platform, idx) => (
+                  <li
+                    key={platform.id}
+                    className={`flex flex-col justify-between ${
+                      idx === 0
+                        ? "md:pr-6 pb-6 md:pb-0"
+                        : idx === 1
+                        ? "md:px-6 py-6 md:py-0"
+                        : "md:pl-6 pt-6 md:pt-0"
+                    }`}
+                  >
+                    <div>
+                      {/* Name + Status Indicator */}
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[13px] text-[#fafafa] font-normal lowercase">
+                          {platform.name}
+                        </span>
+                        <div className="flex items-center gap-1.5 font-mono text-[11px] lowercase">
+                          <span
+                            className="h-1.5 w-1.5 rounded-full"
+                            style={{
+                              backgroundColor: platform.isActive
+                                ? "var(--accent)"
+                                : "var(--muted)",
+                            }}
+                          />
+                          <span
+                            style={{
+                              color: platform.isActive
+                                ? "var(--accent)"
+                                : "var(--muted)",
+                            }}
+                          >
+                            {platform.isActive ? "active" : "synced"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Metrics */}
+                      <div className="mt-3 font-mono text-[12px] text-[var(--muted)] lowercase leading-relaxed">
+                        <div>{platform.solved}</div>
+                        <div className="mt-0.5">{platform.metric}</div>
+                        <div className="mt-0.5">{platform.handle}</div>
+                      </div>
+                    </div>
+
+                    {/* Action link */}
+                    <div className="mt-5 pt-3">
+                      <a
+                        href={platform.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="nav-link-underline font-mono text-[11px] text-[#fafafa] hover:text-white transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3ecf8e] focus-visible:outline-offset-[3px] inline-flex items-center gap-1"
+                      >
+                        profile ↗
+                      </a>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* ── BLOCK C: PARADIGMS MASTERED ──────────────────────────────── */}
+            <div
+              className="border-t border-[var(--line)] pt-12 pb-12"
+              style={getEntranceStyle(3)}
+            >
+              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">
+                PARADIGMS MASTERED
+              </p>
+
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {DSA_DATA.paradigms.map((p) => (
+                  <li
+                    key={p.name}
+                    data-cursor="link"
+                    className="border border-[var(--line)] rounded-[4px] px-3 py-1.5 font-mono text-[12px] text-[var(--muted)] transition-colors duration-150 hover:border-[#fafafa] hover:text-[#fafafa] cursor-default"
+                  >
+                    {p.name} [{p.count}]
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* ── BLOCK D: RECENT SUBMISSIONS (LEDGER) ──────────────────────── */}
+            <div
+              className="border-t border-[var(--line)] pt-12 pb-6"
+              style={getEntranceStyle(4)}
+            >
+              {/* Header row */}
+              <div className="flex items-center justify-between mb-5">
+                <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">
+                  RECENT SUBMISSIONS
+                </p>
+                <a
+                  href={DSA_DATA.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nav-link-underline font-mono text-[11px] lowercase text-[var(--muted)] hover:text-[#fafafa] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3ecf8e] focus-visible:outline-offset-[3px]"
+                >
+                  view all ↗
+                </a>
+              </div>
+
+              {/* Ledger Table */}
+              <div className="w-full overflow-x-auto">
+                <table className="w-full border-collapse text-left font-mono text-[12px]">
+                  <thead className="sr-only">
+                    <tr>
+                      <th scope="col">Problem</th>
+                      <th scope="col">Difficulty</th>
+                      <th scope="col">Platform</th>
+                      <th scope="col">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[var(--line)]">
+                    {DSA_DATA.submissions.map((sub) => {
+                      // Difficulty opacity differentiation: easy 60%, med 80%, hard 100%
+                      const diffOpacity =
+                        sub.difficulty === "easy"
+                          ? "opacity-60"
+                          : sub.difficulty === "med"
+                          ? "opacity-80"
+                          : "opacity-100 font-medium";
+
+                      return (
+                        <tr
+                          key={sub.id}
+                          className="transition-colors duration-150 hover:bg-white/[0.03] group"
+                        >
+                          {/* Problem name */}
+                          <td className="py-3.5 pr-4 text-[#fafafa] font-normal">
+                            <a
+                              href={sub.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="nav-link-underline hover:text-white transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3ecf8e] focus-visible:outline-offset-[3px]"
+                            >
+                              {sub.problem}
+                            </a>
+                            {/* Mobile subtitle with platform & time */}
+                            <div className="sm:hidden mt-1 text-[11px] text-[var(--muted)] flex items-center gap-2">
+                              <span className={diffOpacity}>{sub.difficulty}</span>
+                              <span>·</span>
+                              <span>{sub.platform}</span>
+                              <span>·</span>
+                              <span className="tabular-nums">
+                                {formatRelativeTime(sub.timestamp)}
+                              </span>
+                            </div>
+                          </td>
+
+                          {/* Difficulty (Hidden on very narrow mobile, visible sm+) */}
+                          <td className="hidden sm:table-cell py-3.5 px-4 text-[#fafafa]">
+                            <span className={diffOpacity}>{sub.difficulty}</span>
+                          </td>
+
+                          {/* Platform (Hidden on mobile, visible sm+) */}
+                          <td className="hidden sm:table-cell py-3.5 px-4 text-[var(--muted)]">
+                            {sub.platform}
+                          </td>
+
+                          {/* Relative Time (Hidden on mobile, visible sm+) */}
+                          <td className="hidden sm:table-cell py-3.5 pl-4 text-right text-[var(--muted)] tabular-nums">
+                            {formatRelativeTime(sub.timestamp)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </SpotlightCard>
+        </div>
       </div>
     </section>
   );

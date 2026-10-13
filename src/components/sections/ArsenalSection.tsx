@@ -152,6 +152,7 @@ export function ArsenalSection() {
           <div className="flex flex-wrap gap-1.5 rounded-xl border border-[#27272A] bg-[#111115]/60 p-1 backdrop-blur-sm">
             <button
               onClick={() => setSelectedPillar("all")}
+              data-cursor="link"
               className={`rounded-lg px-3 py-1 font-mono text-xs transition-colors ${
                 selectedPillar === "all"
                   ? "bg-[#18181b] text-[#FAFAFA] border border-[#27272A]"
@@ -164,6 +165,7 @@ export function ArsenalSection() {
               <button
                 key={p.id}
                 onClick={() => setSelectedPillar(p.id)}
+                data-cursor="link"
                 className={`rounded-lg px-3 py-1 font-mono text-xs transition-colors ${
                   selectedPillar === p.id
                     ? "bg-[#18181b] text-[#FAFAFA] border border-[#27272A]"
@@ -216,6 +218,7 @@ export function ArsenalSection() {
                     return (
                       <div
                         key={item.name}
+                        data-cursor="link"
                         className="group/chip flex items-center justify-between gap-2 rounded-xl border border-[#27272A] bg-[#09090b]/80 px-3 py-2.5 transition-all duration-200 hover:border-[#38BDF8]/40 hover:bg-[#18181b]/90 hover:shadow-md hover:shadow-black/60"
                       >
                         <div className="flex items-center gap-2 min-w-0">

@@ -66,6 +66,7 @@ export function ProjectsSection() {
               <button
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
+                data-cursor="link"
                 className={`rounded-lg px-3 py-1 text-xs font-mono transition-colors ${
                   activeFilter === cat
                     ? "bg-[#18181b] text-[#FAFAFA] border border-[#27272A] shadow-sm"
@@ -102,7 +103,12 @@ export function ProjectsSection() {
                 </div>
 
                 {/* THUMBNAIL / INTERACTIVE VISUAL */}
-                <div className="mb-5 cursor-pointer" onClick={() => setSelectedProject(project)}>
+                <div
+                  className="mb-5 cursor-pointer"
+                  onClick={() => setSelectedProject(project)}
+                  data-cursor="view"
+                  data-cursor-label="view ↗"
+                >
                   <ProjectVisual type={project.visualType} />
                 </div>
 
@@ -112,6 +118,7 @@ export function ProjectsSection() {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-cursor="magnetic"
                     className="group/link flex items-center gap-1.5 text-xl sm:text-2xl font-bold tracking-tight text-[#FAFAFA] transition-colors hover:text-[#38BDF8]"
                   >
                     <span>{project.title}</span>
@@ -159,6 +166,7 @@ export function ProjectsSection() {
                   {project.stack.map((tech) => (
                     <span
                       key={tech}
+                      data-cursor="link"
                       className="rounded-md border border-[#27272A] bg-[#18181b] px-2 py-0.5 font-mono text-[10px] text-[#A1A1AA] transition-colors hover:border-[#38BDF8]/30 hover:text-white"
                     >
                       {tech}
@@ -170,6 +178,7 @@ export function ProjectsSection() {
                 <div className="flex items-center justify-between gap-2 pt-1">
                   <button
                     onClick={() => setSelectedProject(project)}
+                    data-cursor="magnetic"
                     className="inline-flex items-center gap-1.5 font-mono text-xs font-medium text-[#38BDF8] transition-colors hover:text-white hover:underline"
                   >
                     <span>Blueprint &amp; Architecture</span>
@@ -179,6 +188,7 @@ export function ProjectsSection() {
                   <div className="flex items-center gap-2">
                     <a
                       href={project.demoUrl || "#lab"}
+                      data-cursor="magnetic"
                       className="inline-flex items-center gap-1 rounded-lg border border-[#27272A] bg-[#18181b] px-3 py-1.5 font-mono text-xs text-[#A1A1AA] transition-all hover:border-[#38BDF8]/40 hover:text-white"
                     >
                       <span>Live Demo</span>
@@ -189,6 +199,7 @@ export function ProjectsSection() {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      data-cursor="magnetic"
                       className="inline-flex items-center gap-1.5 rounded-lg border border-[#27272A] bg-[#18181b] px-3 py-1.5 font-mono text-xs font-semibold text-[#FAFAFA] transition-all hover:border-[#38BDF8]/50 hover:bg-[#18181b]/80"
                     >
                       <GithubIcon className="h-3.5 w-3.5" />

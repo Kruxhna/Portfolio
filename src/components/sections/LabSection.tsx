@@ -162,6 +162,8 @@ export function LabSection() {
   // Neural Simulator State (Preserved for full forensic demo)
   const [simRunning, setSimRunning] = useState(false);
   const [simStep, setSimStep] = useState<number>(0);
+  const [activeFrame, setActiveFrame] = useState<number>(12);
+  const [tuningThreshold, setTuningThreshold] = useState<number>(0.85);
   const [simResult, setSimResult] = useState<{
     score: number;
     label: string;
@@ -305,11 +307,12 @@ export function LabSection() {
     if (simRunning) return;
     setSimRunning(true);
     setSimStep(1);
+    setActiveFrame(4);
     setSimResult(null);
 
-    const t1 = setTimeout(() => setSimStep(2), 700);
-    const t2 = setTimeout(() => setSimStep(3), 1400);
-    const t3 = setTimeout(() => setSimStep(4), 2100);
+    const t1 = setTimeout(() => { setSimStep(2); setActiveFrame(8); }, 700);
+    const t2 = setTimeout(() => { setSimStep(3); setActiveFrame(12); }, 1400);
+    const t3 = setTimeout(() => { setSimStep(4); setActiveFrame(16); }, 2100);
     const t4 = setTimeout(() => {
       setSimStep(5);
       setSimResult({
@@ -356,6 +359,7 @@ export function LabSection() {
           <div className="flex gap-1.5 rounded-xl border border-[#27272A] bg-[#111115]/80 p-1 backdrop-blur-md">
             <button
               onClick={() => setActiveMainTab("terminal")}
+              data-cursor="magnetic"
               className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all ${
                 activeMainTab === "terminal"
                   ? "bg-[#18181b] text-[#10B981] border border-[#10B981]/30 shadow-sm"
@@ -363,10 +367,11 @@ export function LabSection() {
               }`}
             >
               <TerminalIcon className="h-3.5 w-3.5" />
-              <span>Interactive CLI & GitHub</span>
+              <span>Interactive CLI &amp; GitHub</span>
             </button>
             <button
               onClick={() => setActiveMainTab("neural")}
+              data-cursor="magnetic"
               className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all ${
                 activeMainTab === "neural"
                   ? "bg-[#18181b] text-[#38BDF8] border border-[#38BDF8]/30 shadow-sm"
@@ -477,6 +482,7 @@ export function LabSection() {
                         e.stopPropagation();
                         handleCommand(chip);
                       }}
+                      data-cursor="link"
                       className={`rounded-md border px-2 py-0.5 text-[11px] transition-all ${
                         chip === "help"
                           ? "border-[#38BDF8]/40 bg-[#38BDF8]/10 text-[#38BDF8] hover:bg-[#38BDF8]/20"
@@ -672,6 +678,7 @@ export function LabSection() {
                     ref={terminalInputRef}
                     type="text"
                     value={inputVal}
+                    data-cursor="text"
                     onChange={(e) => setInputVal(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="type 'help', 'skills', 'contact', 'clear'..."
@@ -682,6 +689,7 @@ export function LabSection() {
                   />
                   <button
                     type="submit"
+                    data-cursor="magnetic"
                     className="flex items-center gap-1.5 rounded-lg border border-[#27272A] bg-[#18181b] px-3 py-1.5 text-xs font-semibold text-[#A1A1AA] hover:border-[#10B981]/50 hover:bg-[#10B981]/10 hover:text-[#10B981] transition-all"
                   >
                     <span>Run</span>
@@ -962,6 +970,7 @@ export function LabSection() {
               <button
                 onClick={runSimulation}
                 disabled={simRunning}
+                data-cursor="magnetic"
                 className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold transition-all ${
                   simRunning
                     ? "bg-[#27272A] text-[#71717A] cursor-not-allowed"
@@ -1073,6 +1082,109 @@ export function LabSection() {
                 </p>
                 <div className="mt-3 rounded bg-[#18181b] p-1.5 font-mono text-[11px] text-[#71717A]">
                   Output: [0.0 to 1.0]
+                </div>
+              </div>
+            </div>
+
+            {/* 16-Frame Temporal Video Progress Line (Scrubber) */}
+            <div className="mt-8 rounded-xl border border-[#27272A] bg-[#0c0c0e] p-4 font-mono text-xs">
+              <div className="flex items-center justify-between text-[11px] text-[#71717A] mb-2.5">
+                <span className="flex items-center gap-1.5 text-[#38BDF8] uppercase tracking-wider font-semibold">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8] animate-pulse" />
+                  Video Sequence Progress Scrubber
+                </span>
+                <span className="text-[#FAFAFA]">
+                  FRAME {activeFrame} / 16 • {((activeFrame / 16) * 100).toFixed(0)}% ({(activeFrame * 62.5).toFixed(0)}ms)
+                </span>
+              </div>
+
+              {/* Video Progress Line Scrubber */}
+              <div
+                data-cursor="scrub"
+                data-cursor-label="← drag →"
+                className="group relative h-6 w-full cursor-ew-resize flex items-center select-none"
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                  setActiveFrame(Math.max(1, Math.min(16, Math.round(pct * 16))));
+                }}
+              >
+                <div className="h-2 w-full rounded-full bg-[#18181b] overflow-hidden border border-[#27272A]">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#38BDF8] via-emerald-400 to-[#38BDF8] transition-all duration-100"
+                    style={{ width: `${(activeFrame / 16) * 100}%` }}
+                  />
+                </div>
+                {/* Visual frame scrubber head */}
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white border-2 border-[#38BDF8] shadow-lg pointer-events-none transition-all duration-75"
+                  style={{ left: `calc(${(activeFrame / 16) * 100}% - 8px)` }}
+                />
+              </div>
+
+              {/* Frame ticks */}
+              <div className="mt-1.5 flex justify-between text-[9px] text-[#52525B]">
+                {Array.from({ length: 16 }, (_, i) => (
+                  <span
+                    key={i}
+                    onClick={() => setActiveFrame(i + 1)}
+                    className={`cursor-pointer hover:text-[#38BDF8] transition-colors ${
+                      activeFrame === i + 1 ? "text-[#38BDF8] font-bold" : ""
+                    }`}
+                  >
+                    f{i + 1}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Dev Tuning Sliders */}
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
+              <div className="rounded-xl border border-[#27272A] bg-[#0c0c0e] p-4">
+                <div className="flex items-center justify-between text-[11px] text-[#71717A] mb-2">
+                  <span className="uppercase text-[#A1A1AA]">Dev Tuning: Decision Threshold</span>
+                  <span className="text-[#38BDF8] font-bold">{(tuningThreshold * 100).toFixed(0)}%</span>
+                </div>
+                <div
+                  data-cursor="scrub"
+                  data-cursor-label="← drag →"
+                  className="group relative h-5 w-full cursor-ew-resize flex items-center select-none"
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const pct = Math.max(0.1, Math.min(0.99, (e.clientX - rect.left) / rect.width));
+                    setTuningThreshold(parseFloat(pct.toFixed(2)));
+                  }}
+                >
+                  <div className="h-1.5 w-full rounded-full bg-[#18181b] overflow-hidden border border-[#27272A]">
+                    <div
+                      className="h-full bg-[#38BDF8]"
+                      style={{ width: `${tuningThreshold * 100}%` }}
+                    />
+                  </div>
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-white border border-[#38BDF8] shadow-md pointer-events-none"
+                    style={{ left: `calc(${tuningThreshold * 100}% - 7px)` }}
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-[#27272A] bg-[#0c0c0e] p-4">
+                <div className="flex items-center justify-between text-[11px] text-[#71717A] mb-2">
+                  <span className="uppercase text-[#A1A1AA]">Dev Tuning: Temporal Pass Window</span>
+                  <span className="text-[#10B981] font-bold">16 frames (250ms)</span>
+                </div>
+                <div
+                  data-cursor="scrub"
+                  data-cursor-label="← drag →"
+                  className="group relative h-5 w-full cursor-ew-resize flex items-center select-none"
+                >
+                  <div className="h-1.5 w-full rounded-full bg-[#18181b] overflow-hidden border border-[#27272A]">
+                    <div className="h-full bg-[#10B981]" style={{ width: "75%" }} />
+                  </div>
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-white border border-[#10B981] shadow-md pointer-events-none"
+                    style={{ left: "calc(75% - 7px)" }}
+                  />
                 </div>
               </div>
             </div>

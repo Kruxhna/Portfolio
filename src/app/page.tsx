@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { CustomCursor } from "@/components/ui/CustomCursor";
 import { BackgroundDecor } from "@/components/layout/BackgroundDecor";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -20,8 +19,6 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#0f1115] text-[#FAFAFA] antialiased selection:bg-[#4fa89b]/25 selection:text-[#4fa89b]">
-      {/* Bespoke Hollow Circle Custom Cursor (egorz.com style) */}
-      <CustomCursor />
 
       {/* Background Decor Layer (Dot Grid, Film Grain, Ambient Glows) */}
       <BackgroundDecor />
@@ -34,9 +31,11 @@ export default function Home() {
         {/* Full-bleed Hero Section covering the full screen ratio */}
         <HeroSection />
 
+        {/* Bento Dashboard Section: DSA / Problem Solving (id="dsa") */}
+        <DSAShowcaseSection />
+
         {/* Expansive Downstream Sections */}
         <div className="mx-auto w-full max-w-[1400px] px-6 sm:px-10 lg:px-16 xl:px-20">
-          <DSAShowcaseSection />
           <ProjectsSection />
           <LabSection />
           <ArsenalSection />

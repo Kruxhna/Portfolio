@@ -110,6 +110,7 @@ export function ContactSection() {
           <div className="mt-6 flex flex-col gap-2">
             <button
               onClick={handleCopyEmail}
+              data-cursor="magnetic"
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 py-2.5 text-xs font-semibold text-[#10B981] transition-all hover:bg-[#10B981] hover:text-black hover:shadow-lg hover:shadow-[#10B981]/20 active:scale-[0.98]"
             >
               {copied ? (
@@ -127,6 +128,7 @@ export function ContactSection() {
 
             <a
               href={`mailto:${PERSONAL_INFO.email}`}
+              data-cursor="magnetic"
               className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-[#27272A] bg-[#141418] py-2 text-[11px] font-mono text-[#71717A] hover:text-[#FAFAFA] hover:border-[#38BDF8]/40 transition-colors"
             >
               <span>Open Mail Client</span>
@@ -162,6 +164,7 @@ export function ContactSection() {
               href="https://www.linkedin.com/in/krushna-nole/"
               target="_blank"
               rel="noopener noreferrer"
+              data-cursor="magnetic"
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#0A66C2]/30 bg-[#0A66C2]/10 py-2.5 text-xs font-semibold text-[#60A5FA] transition-all hover:bg-[#0A66C2] hover:text-white hover:shadow-lg hover:shadow-[#0A66C2]/20 active:scale-[0.98]"
             >
               <LinkedinIcon className="h-4 w-4" />
@@ -198,6 +201,7 @@ export function ContactSection() {
               href="https://github.com/Kruxhna"
               target="_blank"
               rel="noopener noreferrer"
+              data-cursor="magnetic"
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#38BDF8]/30 bg-[#38BDF8]/10 py-2.5 text-xs font-semibold text-[#38BDF8] transition-all hover:bg-[#38BDF8] hover:text-black hover:shadow-lg hover:shadow-[#38BDF8]/20 active:scale-[0.98]"
             >
               <GithubIcon className="h-4 w-4" />
@@ -234,6 +238,7 @@ export function ContactSection() {
               href="https://codolio.com/profile/Kruxhna/problemSolving"
               target="_blank"
               rel="noopener noreferrer"
+              data-cursor="magnetic"
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#F59E0B]/30 bg-[#F59E0B]/10 py-2.5 text-xs font-semibold text-[#FBBF24] transition-all hover:bg-[#F59E0B] hover:text-black hover:shadow-lg hover:shadow-[#F59E0B]/20 active:scale-[0.98]"
             >
               <CodolioIcon className="h-4 w-4" />
@@ -284,6 +289,7 @@ export function ContactSection() {
                 <input
                   type="text"
                   required
+                  data-cursor="text"
                   placeholder="e.g. Dr. Aris Thorne (Research Lead)"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -298,6 +304,7 @@ export function ContactSection() {
                 <input
                   type="email"
                   required
+                  data-cursor="text"
                   placeholder="name@organization.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -312,6 +319,7 @@ export function ContactSection() {
                 <textarea
                   required
                   rows={3}
+                  data-cursor="text"
                   placeholder="Details regarding an AI/ML engineering role, systems research, or collaboration..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -327,6 +335,7 @@ export function ContactSection() {
                 <button
                   type="submit"
                   disabled={isSubmitting || formSent}
+                  data-cursor="magnetic"
                   className="flex items-center gap-2 rounded-xl border border-[#38BDF8]/40 bg-[#38BDF8]/15 px-4 py-2 text-xs font-semibold text-[#FAFAFA] transition-all hover:bg-[#38BDF8]/25 hover:border-[#38BDF8] active:scale-[0.98]"
                 >
                   {formSent ? (

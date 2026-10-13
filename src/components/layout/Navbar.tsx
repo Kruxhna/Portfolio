@@ -38,26 +38,54 @@ export function Navbar({
     return () => clearInterval(interval);
   }, []);
 
-  // Scroll listener for sticky backdrop
+  // Scroll listener for sticky backdrop + IntersectionObserver for accurate scroll-spy
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-
-      const scrollPos = window.scrollY + 160;
-      const sections = ["about", "stats", "projects", "arsenal", "contact"];
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveSection(sections[i]);
-          return;
-        }
-      }
-      setActiveSection("about");
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const sectionIds = ["about", "dsa", "projects", "arsenal", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: "-20% 0px -50% 0px",
+        threshold: 0.1,
+      }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
+
+  // Smooth scroll with navbar offset
+  const handleNavClick = (sectionId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const el = document.getElementById(sectionId);
+    if (el) {
+      const navOffset = 80;
+      const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - navOffset,
+        behavior: "smooth",
+      });
+      window.history.pushState(null, "", `#${sectionId}`);
+    }
+  };
 
   // Smooth scroll to top
   const scrollToTop = (e?: React.MouseEvent) => {
@@ -85,6 +113,7 @@ export function Navbar({
         <div className="flex items-center gap-3">
           <button
             onClick={scrollToTop}
+            data-cursor="magnetic"
             className="flex items-center gap-2.5 group cursor-pointer"
             title="Scroll to top"
           >
@@ -99,46 +128,56 @@ export function Navbar({
 
         {/* Center: Desktop Navigation Links (11-12px mono, uppercase, gray; active item brighter) */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8 font-mono text-[11px] uppercase tracking-widest text-[#71717a]">
-          <Link
+          <a
             href="#projects"
+            data-cursor="magnetic"
+            onClick={(e) => handleNavClick("projects", e)}
             className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "projects" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
             WORK
-          </Link>
-          <Link
+          </a>
+          <a
             href="#about"
+            data-cursor="magnetic"
+            onClick={(e) => handleNavClick("about", e)}
             className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "about" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
             ABOUT
-          </Link>
-          <Link
+          </a>
+          <a
             href="#arsenal"
+            data-cursor="magnetic"
+            onClick={(e) => handleNavClick("arsenal", e)}
             className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "arsenal" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
             TOOLBOX
-          </Link>
-          <Link
-            href="#stats"
+          </a>
+          <a
+            href="#dsa"
+            data-cursor="magnetic"
+            onClick={(e) => handleNavClick("dsa", e)}
             className={`nav-link-underline transition-colors hover:text-white ${
-              activeSection === "stats" ? "text-white font-medium" : "text-[#71717a]"
+              activeSection === "dsa" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
             DSA
-          </Link>
-          <Link
+          </a>
+          <a
             href="#contact"
+            data-cursor="magnetic"
+            onClick={(e) => handleNavClick("contact", e)}
             className={`nav-link-underline transition-colors hover:text-white ${
               activeSection === "contact" ? "text-white font-medium" : "text-[#71717a]"
             }`}
           >
             CONTACT
-          </Link>
+          </a>
         </div>
 
         {/* Right: Live Time, Motion, Theme & Command Palette (Video Style) */}
@@ -183,41 +222,41 @@ export function Navbar({
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-[#27272A] bg-[#09090b]/95 px-6 py-4 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 font-mono text-xs uppercase tracking-wider space-y-3">
-          <Link
+          <a
             href="#projects"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick("projects", e)}
             className="block text-[#A1A1AA] hover:text-white"
           >
             WORK
-          </Link>
-          <Link
+          </a>
+          <a
             href="#about"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick("about", e)}
             className="block text-[#A1A1AA] hover:text-white"
           >
             ABOUT
-          </Link>
-          <Link
+          </a>
+          <a
             href="#arsenal"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick("arsenal", e)}
             className="block text-[#A1A1AA] hover:text-white"
           >
             TOOLBOX
-          </Link>
-          <Link
-            href="#stats"
-            onClick={() => setMobileMenuOpen(false)}
+          </a>
+          <a
+            href="#dsa"
+            onClick={(e) => handleNavClick("dsa", e)}
             className="block text-[#A1A1AA] hover:text-white"
           >
             DSA
-          </Link>
-          <Link
+          </a>
+          <a
             href="#contact"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick("contact", e)}
             className="block text-[#A1A1AA] hover:text-white"
           >
             CONTACT
-          </Link>
+          </a>
         </div>
       )}
     </header>

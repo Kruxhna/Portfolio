@@ -17,11 +17,9 @@ function damp(current: number, target: number, speed: number, dt: number): numbe
 export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef  = useRef<HTMLDivElement>(null);
-  const pillRef    = useRef<HTMLDivElement>(null);
 
   const [isLoading, setIsLoading]   = useState(true);
   const [loadError, setLoadError]   = useState(false);
-  const [pillVisible, setPillVisible] = useState(false);
 
   const materialRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
 
@@ -43,8 +41,8 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
     // ── 1. Scene ─────────────────────────────────────────────────────────────
     const scene = new THREE.Scene();
 
-    let W = canvas.clientWidth  || 480;
-    let H = canvas.clientHeight || 560;
+    const W = canvas.clientWidth  || 480;
+    const H = canvas.clientHeight || 560;
 
     // ── 2. Camera ────────────────────────────────────────────────────────────
     const camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
@@ -151,49 +149,25 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
     // cursor follow target (when not dragging)
     const cursorTarget = { x: 0, y: 0 };
 
-    // pill position (normalised 0-1 within wrapper)
-    const pillPos    = { x: 0.5, y: 0.5 };
-    const pillTarget = { x: 0.5, y: 0.5 };
-    let cursorOverK = false;
-
-    const applyPillTransform = () => {
-      const pill = pillRef.current;
-      if (!pill || !wrapper) return;
-      const px = pillPos.x * wrapper.clientWidth;
-      const py = pillPos.y * wrapper.clientHeight;
-      pill.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%)`;
-    };
-
     // ── 8. Pointer events ─────────────────────────────────────────────────────
     const onMouseMove = (e: MouseEvent) => {
       const rect = wrapper.getBoundingClientRect();
       const margin = 80;
-      cursorOverK =
+      const isOver =
         e.clientX >= rect.left - margin && e.clientX <= rect.right  + margin &&
         e.clientY >= rect.top  - margin && e.clientY <= rect.bottom + margin;
 
-      if (cursorOverK) {
+      if (isOver && !isDragging) {
         const localX = (e.clientX - rect.left) / rect.width;
         const localY = (e.clientY - rect.top)  / rect.height;
-        pillTarget.x = Math.max(0.05, Math.min(0.95, localX));
-        pillTarget.y = Math.max(0.05, Math.min(0.95, localY + 0.04));
-
-        // cursor follow target: normalised [-1,1]
-        if (!isDragging) {
-          const nx = localX * 2 - 1;
-          const ny = -(localY * 2 - 1);
-          cursorTarget.x = Math.max(-0.25, Math.min(0.25, ny * 0.25)); // rotation.x
-          cursorTarget.y = Math.max(-0.25, Math.min(0.25, nx * 0.25)); // rotation.y
-        }
-      } else {
-        pillTarget.x = 0.5;
-        pillTarget.y = 0.5;
-        if (!isDragging) {
-          cursorTarget.x = 0;
-          cursorTarget.y = 0;
-        }
+        const nx = localX * 2 - 1;
+        const ny = -(localY * 2 - 1);
+        cursorTarget.x = Math.max(-0.25, Math.min(0.25, ny * 0.25)); // rotation.x
+        cursorTarget.y = Math.max(-0.25, Math.min(0.25, nx * 0.25)); // rotation.y
+      } else if (!isDragging) {
+        cursorTarget.x = 0;
+        cursorTarget.y = 0;
       }
-      setPillVisible(cursorOverK);
 
       // Drag tracking
       if (isDragging) {
@@ -214,13 +188,11 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
       dragStartY = lastDragY = e.clientY;
       vel.x = 0;
       vel.y = 0;
-      canvas.style.cursor = "grabbing";
     };
 
     const onMouseUp = (e: MouseEvent) => {
       if (!isDragging) return;
       isDragging = false;
-      canvas.style.cursor = "grab";
 
       // Check if it was a click (minimal drag distance)
       const dx = Math.abs(e.clientX - dragStartX);
@@ -238,9 +210,6 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
     const onMouseLeave = () => {
       cursorTarget.x = 0;
       cursorTarget.y = 0;
-      pillTarget.x = 0.5;
-      pillTarget.y = 0.5;
-      setPillVisible(false);
     };
 
     // Touch support for drag
@@ -286,7 +255,6 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
     // ── 10. RAF loop ─────────────────────────────────────────────────────────
     let rafId: number;
     const clock = new THREE.Clock();
-    let lastDt = 0;
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
@@ -347,13 +315,7 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
         model.position.set(0, 0, 0);
       }
 
-      // ── Pill badge lerp (speed 8, slightly lagged) ────────────────────
-      pillPos.x = damp(pillPos.x, pillTarget.x, 8, dt);
-      pillPos.y = damp(pillPos.y, pillTarget.y, 8, dt);
-      applyPillTransform();
-
       renderer.render(scene, camera);
-      lastDt = dt;
     };
     animate();
 
@@ -395,6 +357,7 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
   return (
     <div
       ref={wrapperRef}
+      data-cursor="drag"
       className="relative w-full select-none"
       style={{
         height: "clamp(280px, 58vh, 620px)",
@@ -422,32 +385,9 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
       {/* Three.js canvas mount */}
       <div
         ref={canvasRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing outline-none"
+        className="w-full h-full outline-none"
         style={{ overflow: "visible" }}
       />
-
-      {/*
-        Pill badge — absolute top:0 left:0, then translate3d'd by JS lerp.
-        Fades in/scales when cursor is over the K; fades out otherwise.
-      */}
-      <div
-        ref={pillRef}
-        className="absolute top-0 left-0 pointer-events-none z-20 select-none will-change-transform"
-        style={{
-          opacity: pillVisible && !isLoading ? 1 : 0,
-          transform: "translate3d(50%, 50%, 0) translate(-50%, -50%)",
-          transition: "opacity 0.2s ease, scale 0.2s ease",
-          scale: pillVisible && !isLoading ? "1" : "0.9",
-        }}
-      >
-        <div
-          className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-mono font-semibold text-[#0f1115] shadow-lg"
-          style={{ backgroundColor: accentColor }}
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-[#0f1115]" />
-          <span>drag · click</span>
-        </div>
-      </div>
     </div>
   );
 }

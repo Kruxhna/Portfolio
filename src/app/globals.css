@@ -11,6 +11,13 @@
     --accent-indigo: #6366f1;
     --card-bg: #111115;
     --card-border: #27272a;
+
+    /* Hero Design Tokens */
+    --bg: #0f1115;
+    --fg: #fafafa;
+    --muted: #71717a;
+    --line: rgba(255, 255, 255, 0.08);
+    --accent: #3ecf8e;
   }
 
   body {
@@ -155,31 +162,20 @@
   line-height: 0.85;
 }
 
-/* ─── Cursor ring ────────────────────────────────────────────────────────── */
-#cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  pointer-events: none;
-  mix-blend-mode: difference;
-  z-index: 9999;
-  will-change: transform;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
-}
-
-#cursor-ring.over-wordmark {
-  width: 56px;
-  height: 56px;
-}
-
-/* Hide on touch/coarse pointer */
-@media (pointer: coarse) {
-  #cursor-ring { display: none; }
+/* ─── Unified Custom Cursor ─────────────────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none !important;
+  }
+  html.has-custom-cursor [data-cursor="text"],
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea,
+  html.has-custom-cursor select,
+  html.has-custom-cursor [contenteditable="true"],
+  html.has-custom-cursor [data-cursor="none"] {
+    cursor: auto !important;
+  }
 }
 
 /* ─── Nav link underline scale ───────────────────────────────────────────── */
@@ -215,5 +211,4 @@
     animation: none !important;
     text-decoration-color: currentColor !important;
   }
-  #cursor-ring { display: none; }
 }
