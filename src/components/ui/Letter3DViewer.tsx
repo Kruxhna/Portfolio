@@ -386,23 +386,6 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
         </div>
       )}
 
-      {/* Floating Interactive Pill (• drag · click) */}
-      {!isLoading && !loadError && (
-        <div
-          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center gap-2 rounded-full px-3.5 py-1.5 font-mono text-[11px] backdrop-blur-md select-none transition-opacity duration-300"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.75)",
-            border: "1px solid rgba(173, 106, 76, 0.45)",
-            color: "#DEC1B4",
-          }}
-        >
-          <span
-            className="h-1.5 w-1.5 rounded-full shrink-0"
-            style={{ backgroundColor: "#AD6A4C" }}
-          />
-          <span className="tracking-wider uppercase">drag · click</span>
-        </div>
-      )}
 
       {/* Three.js canvas mount */}
       <div

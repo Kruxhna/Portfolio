@@ -124,13 +124,13 @@ const LANGUAGE_COLORS: Record<string, string> = {
 };
 
 // Generate simulated activity heatmap grid data (18 weeks x 7 days)
+// Use deterministic pseudo-random based on index to ensure exact SSR/client match
 const GENERATED_HEATMAP = Array.from({ length: 18 * 7 }, (_, i) => {
-  // Higher activity density in recent weeks
+  const pseudoRand = (Math.abs(Math.sin((i + 1) * 12.9898 + (i % 7) * 78.233)) * 43758.5453) % 1;
   const factor = (i / (18 * 7)) * 0.7 + 0.3;
-  const rand = Math.random();
-  if (rand < 0.28) return 0;
-  if (rand < 0.6) return Math.min(3, Math.floor(rand * 3 * factor) + 1);
-  if (rand < 0.88) return Math.min(4, Math.floor(rand * 4 * factor) + 2);
+  if (pseudoRand < 0.28) return 0;
+  if (pseudoRand < 0.6) return Math.min(3, Math.floor(pseudoRand * 3 * factor) + 1);
+  if (pseudoRand < 0.88) return Math.min(4, Math.floor(pseudoRand * 4 * factor) + 2);
   return 4;
 });
 
