@@ -5,7 +5,6 @@ import { ArrowUpRight } from "lucide-react";
 import {
   AeroMeshTwoTierSandbox,
   SmartScanTwoTierSandbox,
-  MLBenchmarkerTwoTierSandbox,
   GateLearnStackedDeckSandbox,
 } from "@/components/ui/ProjectMicroSandboxes";
 
@@ -13,7 +12,6 @@ type CategoryFilter =
   | "all"
   | "distributed llm"
   | "signal processing"
-  | "mlops"
   | "full-stack";
 
 interface ProjectEditorialItem {
@@ -38,7 +36,6 @@ export function ProjectsSection() {
     { id: "all", label: "[ all ]" },
     { id: "distributed llm", label: "[ distributed llm ]" },
     { id: "signal processing", label: "[ signal processing ]" },
-    { id: "mlops", label: "[ mlops ]" },
     { id: "full-stack", label: "[ full-stack ]" },
   ];
 
@@ -106,37 +103,8 @@ export function ProjectsSection() {
       ],
     },
     {
-      id: "ml-benchmarker",
-      num: "03",
-      categoryTag: "MLOPS & CLASSICAL ML · 2025",
-      categoryFilter: "mlops",
-      title: "Modular ML Benchmarker",
-      subtitle: "Zero-leakage Scikit-Learn DAG pipeline and automated SHAP diagnostic suite.",
-      problem:
-        "Standard ML notebooks silently leak validation statistics during global feature scaling and imputation, inflating benchmark scores that collapse in production.",
-      fix:
-        "Enforces strict fold-isolated Scikit-Learn ColumnTransformer DAGs across mixed-type features, polynomial expansions, and 5-fold nested CV, packaged into a live SHAP residual dashboard.",
-      stats: [
-        { value: "5-Fold", label: "nested cv" },
-        { value: "12+", label: "model estimators" },
-        { value: "±0.038", label: "residual error" },
-        { value: "0%", label: "data leakage" },
-      ],
-      stack: ["Scikit-Learn", "Python", "XGBoost", "Pandas", "Streamlit", "FastAPI"],
-      primaryPill: {
-        label: "mlbench.kruxhna.dev",
-        href: "https://github.com/Kruxhna/ml-pipeline-benchmarks",
-      },
-      secondaryPills: [
-        {
-          label: "get it on GitHub",
-          href: "https://github.com/Kruxhna/ml-pipeline-benchmarks",
-        },
-      ],
-    },
-    {
       id: "gate-learn",
-      num: "04",
+      num: "03",
       categoryTag: "FULL-STACK & MOBILE · 2026",
       categoryFilter: "full-stack",
       title: "Adaptive GATE Engine",
@@ -176,8 +144,6 @@ export function ProjectsSection() {
         return <AeroMeshTwoTierSandbox />;
       case "smart-scan-ew":
         return <SmartScanTwoTierSandbox />;
-      case "ml-benchmarker":
-        return <MLBenchmarkerTwoTierSandbox />;
       case "gate-learn":
         return <GateLearnStackedDeckSandbox />;
       default:
@@ -188,219 +154,222 @@ export function ProjectsSection() {
   return (
     <section
       id="work"
-      className="relative z-10 w-full bg-transparent py-20 sm:py-28 md:py-32"
+      className="relative z-10 w-full bg-transparent py-12 sm:py-16 md:py-20"
     >
       {/* Anchor for backward-compatible #projects navigation */}
       <span id="projects" className="absolute -top-28 pointer-events-none" />
 
-      {/* 1. GIANT SECTION HEADER (Exact Egorz.com Title "i made") */}
-      <div className="mb-14 sm:mb-20">
-        <h2 className="text-7xl sm:text-8xl md:text-[9rem] font-black tracking-tighter leading-none text-[#FDFCFB] mb-8 sm:mb-12 select-none lowercase">
-          i made
-        </h2>
+      {/* Full-width Container Matching Navbar Alignment (max-w-[1720px]) */}
+      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12">
+        {/* 1. GIANT SECTION HEADER (Exact Egorz.com Title "i made") */}
+        <div className="mb-8 md:mb-10">
+          <h2 className="text-7xl sm:text-8xl md:text-[9rem] font-black tracking-tighter leading-none text-[#FDFCFB] mb-6 sm:mb-8 select-none lowercase">
+            i made
+          </h2>
 
-        {/* Minimal Monospace Category Filter Strip */}
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 font-mono text-xs uppercase tracking-wider">
-          {filterTabs.map((tab) => {
-            const isActive = activeFilter === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveFilter(tab.id)}
-                data-cursor="magnetic"
-                className={`transition-colors cursor-pointer ${
-                  isActive
-                    ? "text-[#AD6A4C] font-bold"
-                    : "text-[#CEA491]/60 hover:text-[#EEDED7]"
-                }`}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
+          {/* Minimal Monospace Category Filter Strip */}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 font-mono text-xs uppercase tracking-wider">
+            {filterTabs.map((tab) => {
+              const isActive = activeFilter === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveFilter(tab.id)}
+                  data-cursor="magnetic"
+                  className={`transition-colors cursor-pointer ${
+                    isActive
+                      ? "text-[#AD6A4C] font-bold"
+                      : "text-[#CEA491]/60 hover:text-[#EEDED7]"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* 2. FULL-WIDTH EDITORIAL PROJECT ROWS */}
-      <div>
-        {filteredProjects.map((project) => (
-          <article
-            key={project.id}
-            className="py-16 md:py-24 border-t border-[#CEA491]/18 first:border-t-0"
-          >
-            {/* Top Meta Bar */}
-            <div className="flex items-center justify-between font-mono text-xs mb-8">
-              <span className="text-xs font-mono text-[#AD6A4C] font-bold">
-                {project.num}
-              </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-[#CEA491]/60">
-                {project.categoryTag}
-              </span>
-            </div>
-
-            {/* 12-Column Asymmetrical Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-              {/* ── Left Column (lg:col-span-5) ── */}
-              <div className="lg:col-span-5 flex flex-col justify-between">
-                <div>
-                  {/* Project Title */}
-                  <h3 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#FDFCFB] leading-[1.02]">
-                    {project.title}
-                  </h3>
-
-                  {/* Subtitle */}
-                  <p className="text-base sm:text-lg text-[#DEC1B4] font-normal mt-3 leading-snug">
-                    {project.subtitle}
-                  </p>
-
-                  {/* THE PROBLEM Block */}
-                  <div className="mt-8">
-                    <div className="text-[11px] font-mono uppercase tracking-widest text-[#CEA491]/50 mb-2">
-                      THE PROBLEM
-                    </div>
-                    <p className="text-sm sm:text-[15px] text-[#DEC1B4]/80 leading-relaxed font-sans">
-                      {project.problem}
-                    </p>
-                  </div>
-
-                  {/* the fix ↓ Block */}
-                  <div className="mt-6">
-                    <div className="text-xs font-mono text-[#AD6A4C] mb-2 font-semibold">
-                      the fix ↓
-                    </div>
-                    <p className="text-sm sm:text-[15px] text-[#EEDED7]/90 leading-relaxed font-sans">
-                      {project.fix}
-                    </p>
-                  </div>
-
-                  {/* Framed 4-Column Stat Strip (Exact Video Layout: Number on Top, Label Below) */}
-                  <div className="grid grid-cols-4 gap-4 py-5 my-8 border-y border-[#CEA491]/18">
-                    {project.stats.map((s, idx) => (
-                      <div key={idx}>
-                        <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#FDFCFB] font-mono leading-none">
-                          {s.value}
-                        </div>
-                        <div className="text-[11px] font-mono text-[#CEA491]/55 mt-1.5 lowercase leading-tight">
-                          {s.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Borderless Inline Monospace Tech Stack */}
-                  <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-mono text-[#CEA491]/65 mb-8">
-                    {project.stack.map((tech) => (
-                      <span key={tech}>{tech}</span>
-                    ))}
-                  </div>
-
-                  {/* Capsule Pill Action Row + Floating *open ↗* Cursor Follower */}
-                  <div className="flex flex-wrap items-center gap-3">
-                    {/* Primary Solid Capsule Pill */}
-                    <a
-                      href={project.primaryPill.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-cursor="view"
-                      data-cursor-label="*open ↗*"
-                      className="group rounded-full bg-[#AD6A4C] px-5 py-2.5 text-xs font-mono font-medium text-[#000000] inline-flex items-center gap-2 hover:bg-[#BF866D] transition-all cursor-pointer shadow-md shadow-[#AD6A4C]/20"
-                    >
-                      <span>{project.primaryPill.label}</span>
-                      {/* Slot Machine Diagonal Arrow Animation */}
-                      <span className="relative inline-block overflow-hidden h-3 w-3 shrink-0">
-                        <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full" />
-                        <ArrowUpRight className="absolute inset-0 h-3 w-3 transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0" />
+        {/* 2. FULL-WIDTH EDITORIAL PROJECT ROWS */}
+        <div>
+          {filteredProjects.map((project) => (
+            <article
+              key={project.id}
+              className="pt-10 pb-16 border-t border-[#CEA491]/18 first:border-t-0 first:pt-4"
+            >
+              {/* 12-Column Asymmetrical Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {/* ── Left Column (lg:col-span-5): Narrative, Stats, Tech, Pills ── */}
+                <div className="lg:col-span-5 flex flex-col justify-between">
+                  <div>
+                    {/* Meta Bar inside Left Column (Aligned Horizontally with Right Window Top) */}
+                    <div className="flex items-center justify-between text-xs font-mono mb-4">
+                      <span className="text-xs font-mono text-[#AD6A4C] font-bold">
+                        {project.num}
                       </span>
-                    </a>
+                      <span className="text-xs font-mono uppercase tracking-widest text-[#CEA491]/60">
+                        {project.categoryTag}
+                      </span>
+                    </div>
 
-                    {/* Secondary Ghost Pills */}
-                    {project.secondaryPills.map((pill, pIdx) => (
+                    {/* Project Title */}
+                    <h3 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#FDFCFB] leading-[1.02]">
+                      {project.title}
+                    </h3>
+
+                    {/* Subtitle */}
+                    <p className="text-base sm:text-lg text-[#DEC1B4] font-normal mt-3 leading-snug">
+                      {project.subtitle}
+                    </p>
+
+                    {/* THE PROBLEM Block */}
+                    <div className="mt-8">
+                      <div className="text-[11px] font-mono uppercase tracking-widest text-[#CEA491]/50 mb-2">
+                        THE PROBLEM
+                      </div>
+                      <p className="text-sm sm:text-[15px] text-[#DEC1B4]/80 leading-relaxed font-sans">
+                        {project.problem}
+                      </p>
+                    </div>
+
+                    {/* the fix ↓ Block */}
+                    <div className="mt-6">
+                      <div className="text-xs font-mono text-[#AD6A4C] mb-2 font-semibold">
+                        the fix ↓
+                      </div>
+                      <p className="text-sm sm:text-[15px] text-[#EEDED7]/90 leading-relaxed font-sans">
+                        {project.fix}
+                      </p>
+                    </div>
+
+                    {/* Framed 4-Column Stat Strip (Exact Video Layout: Number on Top, Label Below) */}
+                    <div className="grid grid-cols-4 gap-4 py-5 my-8 border-y border-[#CEA491]/18">
+                      {project.stats.map((s, idx) => (
+                        <div key={idx}>
+                          <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#FDFCFB] font-mono leading-none">
+                            {s.value}
+                          </div>
+                          <div className="text-[11px] font-mono text-[#CEA491]/55 mt-1.5 lowercase leading-tight">
+                            {s.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Borderless Inline Monospace Tech Stack */}
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-mono text-[#CEA491]/65 mb-8">
+                      {project.stack.map((tech) => (
+                        <span key={tech}>{tech}</span>
+                      ))}
+                    </div>
+
+                    {/* Capsule Pill Action Row + Floating *open ↗* Cursor Follower */}
+                    <div className="flex flex-wrap items-center gap-3">
+                      {/* Primary Solid Capsule Pill */}
                       <a
-                        key={pIdx}
-                        href={pill.href}
+                        href={project.primaryPill.href}
                         target="_blank"
                         rel="noopener noreferrer"
                         data-cursor="view"
                         data-cursor-label="*open ↗*"
-                        className="group rounded-full bg-[#0A0807]/60 border border-[#CEA491]/22 px-5 py-2.5 text-xs font-mono text-[#EEDED7] inline-flex items-center gap-2 hover:border-[#AD6A4C]/60 hover:bg-[#AD6A4C]/10 transition-all cursor-pointer"
+                        className="group rounded-full bg-[#AD6A4C] px-5 py-2.5 text-xs font-mono font-medium text-[#000000] inline-flex items-center gap-2 hover:bg-[#BF866D] transition-all cursor-pointer shadow-md shadow-[#AD6A4C]/20"
                       >
-                        <span>{pill.label}</span>
+                        <span>{project.primaryPill.label}</span>
                         {/* Slot Machine Diagonal Arrow Animation */}
                         <span className="relative inline-block overflow-hidden h-3 w-3 shrink-0">
-                          <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full text-[#DEC1B4]" />
-                          <ArrowUpRight className="absolute inset-0 h-3 w-3 transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 text-[#AD6A4C]" />
+                          <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full" />
+                          <ArrowUpRight className="absolute inset-0 h-3 w-3 transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0" />
                         </span>
                       </a>
-                    ))}
+
+                      {/* Secondary Ghost Pills */}
+                      {project.secondaryPills.map((pill, pIdx) => (
+                        <a
+                          key={pIdx}
+                          href={pill.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-cursor="view"
+                          data-cursor-label="*open ↗*"
+                          className="group rounded-full bg-[#0A0807]/60 border border-[#CEA491]/22 px-5 py-2.5 text-xs font-mono text-[#EEDED7] inline-flex items-center gap-2 hover:border-[#AD6A4C]/60 hover:bg-[#AD6A4C]/10 transition-all cursor-pointer"
+                        >
+                          <span>{pill.label}</span>
+                          {/* Slot Machine Diagonal Arrow Animation */}
+                          <span className="relative inline-block overflow-hidden h-3 w-3 shrink-0">
+                            <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full text-[#DEC1B4]" />
+                            <ArrowUpRight className="absolute inset-0 h-3 w-3 transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 text-[#AD6A4C]" />
+                          </span>
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* ── Right Column (lg:col-span-7): Two-Tier Sandbox ── */}
-              <div className="lg:col-span-7">
-                {renderSandbox(project.id)}
+                {/* ── Right Column (lg:col-span-7): Two-Tier Sandbox ── */}
+                <div className="lg:col-span-7">
+                  {renderSandbox(project.id)}
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      {/* 3. "ALSO MADE" COMPACT ARCHIVE SECTION (Video 00:10–00:12) */}
-      <div className="mt-20 pt-10 border-t border-[#CEA491]/18">
-        <div className="text-xs font-mono uppercase tracking-widest text-[#CEA491]/55 mb-6">
-          ALSO MADE
+            </article>
+          ))}
         </div>
 
-        <div className="divide-y divide-[#CEA491]/18 border-b border-[#CEA491]/18">
-          {/* Archive Row 1 */}
-          <a
-            href="https://github.com/Kruxhna"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cursor="view"
-            data-cursor-label="*open ↗*"
-            className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#AD6A4C]/[0.04] transition-colors px-2 rounded-lg cursor-pointer block"
-          >
-            <div className="md:col-span-4 flex items-center gap-2">
-              <span className="text-xl sm:text-2xl font-bold text-[#FDFCFB] group-hover:text-[#AD6A4C] transition-colors">
-                Project Glassbox
-              </span>
-              <span className="relative inline-block overflow-hidden h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowUpRight className="h-3.5 w-3.5 text-[#AD6A4C]" />
-              </span>
-            </div>
-            <div className="md:col-span-6 text-sm text-[#DEC1B4]/80 leading-relaxed font-sans">
-              Python forensic triage engine to parse, filter, and score evidence leads from multi-gigabyte UFDR mobile dumps.
-            </div>
-            <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#CEA491]/60">
-              FORENSIC ENGINE
-            </div>
-          </a>
+        {/* 3. "ALSO MADE" COMPACT ARCHIVE SECTION (Video 00:10–00:12) */}
+        <div className="mt-16 pt-10 border-t border-[#CEA491]/18">
+          <div className="text-xs font-mono uppercase tracking-widest text-[#CEA491]/55 mb-6">
+            ALSO MADE
+          </div>
 
-          {/* Archive Row 2 */}
-          <a
-            href="https://github.com/Kruxhna"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cursor="view"
-            data-cursor-label="*open ↗*"
-            className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#AD6A4C]/[0.04] transition-colors px-2 rounded-lg cursor-pointer block"
-          >
-            <div className="md:col-span-4 flex items-center gap-2">
-              <span className="text-xl sm:text-2xl font-bold text-[#FDFCFB] group-hover:text-[#AD6A4C] transition-colors">
-                Multi-Agent Research Suite
-              </span>
-              <span className="relative inline-block overflow-hidden h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowUpRight className="h-3.5 w-3.5 text-[#AD6A4C]" />
-              </span>
-            </div>
-            <div className="md:col-span-6 text-sm text-[#DEC1B4]/80 leading-relaxed font-sans">
-              Autonomous tool-calling agent workflows and evaluation harness built for the Google &amp; Kaggle 5-Day AI Agents Intensive.
-            </div>
-            <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#CEA491]/60">
-              AGENTIC AI
-            </div>
-          </a>
+          <div className="divide-y divide-[#CEA491]/18 border-b border-[#CEA491]/18">
+            {/* Archive Row 1 */}
+            <a
+              href="https://github.com/Kruxhna"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="view"
+              data-cursor-label="*open ↗*"
+              className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#AD6A4C]/[0.04] transition-colors px-2 rounded-lg cursor-pointer block"
+            >
+              <div className="md:col-span-4 flex items-center gap-2">
+                <span className="text-xl sm:text-2xl font-bold text-[#FDFCFB] group-hover:text-[#AD6A4C] transition-colors">
+                  Project Glassbox
+                </span>
+                <span className="relative inline-block overflow-hidden h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ArrowUpRight className="h-3.5 w-3.5 text-[#AD6A4C]" />
+                </span>
+              </div>
+              <div className="md:col-span-6 text-sm text-[#DEC1B4]/80 leading-relaxed font-sans">
+                Python forensic triage engine to parse, filter, and score evidence leads from multi-gigabyte UFDR mobile dumps.
+              </div>
+              <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#CEA491]/60">
+                FORENSIC ENGINE
+              </div>
+            </a>
+
+            {/* Archive Row 2 */}
+            <a
+              href="https://github.com/Kruxhna"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="view"
+              data-cursor-label="*open ↗*"
+              className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#AD6A4C]/[0.04] transition-colors px-2 rounded-lg cursor-pointer block"
+            >
+              <div className="md:col-span-4 flex items-center gap-2">
+                <span className="text-xl sm:text-2xl font-bold text-[#FDFCFB] group-hover:text-[#AD6A4C] transition-colors">
+                  Multi-Agent Research Suite
+                </span>
+                <span className="relative inline-block overflow-hidden h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ArrowUpRight className="h-3.5 w-3.5 text-[#AD6A4C]" />
+                </span>
+              </div>
+              <div className="md:col-span-6 text-sm text-[#DEC1B4]/80 leading-relaxed font-sans">
+                Autonomous tool-calling agent workflows and evaluation harness built for the Google &amp; Kaggle 5-Day AI Agents Intensive.
+              </div>
+              <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#CEA491]/60">
+                AGENTIC AI
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </section>
