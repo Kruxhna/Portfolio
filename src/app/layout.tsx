@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Roboto_Flex } from "next/font/google";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { FluidBackground } from "@/components/layout/FluidBackground";
 import "./globals.css";
 
 const inter = Inter({
@@ -54,11 +55,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      style={{ backgroundColor: "#0A0807" }}
       className={`${inter.variable} ${jetbrainsMono.variable} ${robotoFlex.variable} dark scroll-smooth`}
     >
-      <body className="min-h-screen bg-black text-[var(--text-primary)] font-sans antialiased">
+      <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#AD6A4C] selection:text-black">
+        {/* Site-wide WebGL2 Navier-Stokes Fluid Hover Reveal (Fixed Background at z-0) */}
+        <FluidBackground />
+
+        {/* Global Unified Custom Cursor */}
         <CustomCursor />
-        {children}
+
+        {/* Main Content Stacking Context at z-10 */}
+        <div className="relative z-10 bg-transparent min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );

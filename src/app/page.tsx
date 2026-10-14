@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { BackgroundDecor } from "@/components/layout/BackgroundDecor";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CommandMenu } from "@/components/layout/CommandMenu";
@@ -19,10 +18,6 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-transparent text-[var(--text-primary)] antialiased">
-
-      {/* Background Decor Layer (Dot Grid, Film Grain, Ambient Glows) */}
-      <BackgroundDecor />
-
       {/* Floating Pill Navigation */}
       <Navbar onOpenCommandMenu={() => setCommandMenuOpen(true)} />
 
