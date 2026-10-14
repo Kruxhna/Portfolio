@@ -73,23 +73,23 @@ export function CommandMenu({ isOpen, onClose, onRunTerminalCommand }: CommandMe
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
       <div
-        className="w-full max-w-xl overflow-hidden rounded-2xl border border-[rgba(206,164,145,0.18)] bg-[#0A0807] shadow-2xl shadow-black/90"
+        className="w-full max-w-xl overflow-hidden rounded-2xl border border-[rgba(221,112,116,0.22)] bg-[#0A0807] shadow-2xl shadow-black/90"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center gap-3 border-b border-[rgba(206,164,145,0.14)] px-4 py-3.5">
-          <Search className="h-4 w-4 text-[rgba(222,193,180,0.55)]" />
+        <div className="flex items-center gap-3 border-b border-[rgba(221,112,116,0.18)] px-4 py-3.5">
+          <Search className="h-4 w-4 text-[#DD7074]" />
           <input
             type="text"
             placeholder="Type a command or search sections..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
-            className="flex-1 bg-transparent text-sm text-[#EEDED7] placeholder-[rgba(222,193,180,0.4)] focus:outline-none"
+            className="flex-1 bg-transparent text-sm text-[#ECC3AB] placeholder-[#DD7074]/50 focus:outline-none"
           />
           <button
             onClick={onClose}
-            className="rounded p-1 text-[rgba(222,193,180,0.55)] hover:bg-[rgba(173,106,76,0.1)] hover:text-[#DEC1B4]"
+            className="rounded p-1 text-[#DD7074] hover:bg-[#4E0104]/85 hover:text-[#ECC3AB] cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
@@ -98,24 +98,24 @@ export function CommandMenu({ isOpen, onClose, onRunTerminalCommand }: CommandMe
         {/* Command List */}
         <div className="max-h-80 overflow-y-auto p-2">
           {/* Quick Actions Group */}
-          <div className="px-2 py-1.5 text-[11px] font-mono text-[rgba(222,193,180,0.55)] uppercase tracking-wider">
+          <div className="px-2 py-1.5 text-[11px] font-mono text-[#DD7074] uppercase tracking-wider">
             Quick Actions
           </div>
 
           <button
             onClick={copyEmail}
-            className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#DEC1B4] hover:bg-[rgba(173,106,76,0.1)] hover:text-[#EEDED7]"
+            className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#ECC3AB] hover:bg-[#4E0104]/85 hover:text-[#ECC3AB] cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <Mail className="h-4 w-4 text-[#AD6A4C]" />
+              <Mail className="h-4 w-4 text-[#E46B5E]" />
               <span>Copy Direct Email</span>
             </div>
             {copied ? (
-              <span className="flex items-center gap-1 text-xs text-[#AD6A4C]">
+              <span className="flex items-center gap-1 text-xs text-[#E46B5E]">
                 <Check className="h-3 w-3" /> Copied!
               </span>
             ) : (
-              <span className="font-mono text-xs text-[rgba(222,193,180,0.55)]">{PERSONAL_INFO.email}</span>
+              <span className="font-mono text-xs text-[#DD7074]">{PERSONAL_INFO.email}</span>
             )}
           </button>
 
@@ -124,17 +124,17 @@ export function CommandMenu({ isOpen, onClose, onRunTerminalCommand }: CommandMe
             target="_blank"
             rel="noreferrer"
             onClick={onClose}
-            className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#DEC1B4] hover:bg-[rgba(173,106,76,0.1)] hover:text-[#EEDED7]"
+            className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#ECC3AB] hover:bg-[#4E0104]/85 hover:text-[#ECC3AB] cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <FolderGit2 className="h-4 w-4 text-[#AD6A4C]" />
+              <FolderGit2 className="h-4 w-4 text-[#E46B5E]" />
               <span>GitHub Profile</span>
             </div>
-            <ExternalLink className="h-3.5 w-3.5 text-[rgba(222,193,180,0.55)]" />
+            <ExternalLink className="h-3.5 w-3.5 text-[#DD7074]" />
           </a>
 
           {/* Navigation Group */}
-          <div className="mt-3 px-2 py-1.5 text-[11px] font-mono text-[rgba(222,193,180,0.55)] uppercase tracking-wider">
+          <div className="mt-3 px-2 py-1.5 text-[11px] font-mono text-[#DD7074] uppercase tracking-wider">
             Navigation
           </div>
 
@@ -145,13 +145,13 @@ export function CommandMenu({ isOpen, onClose, onRunTerminalCommand }: CommandMe
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className="flex items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#DEC1B4] hover:bg-[rgba(173,106,76,0.1)] hover:text-[#EEDED7]"
+                className="flex items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#ECC3AB] hover:bg-[#4E0104]/85 hover:text-[#ECC3AB] cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <Icon className="h-4 w-4 text-[#AD6A4C]" />
+                  <Icon className="h-4 w-4 text-[#E46B5E]" />
                   <span>{item.label}</span>
                 </div>
-                <span className="rounded bg-[#14100D] border border-[rgba(206,164,145,0.14)] px-1.5 py-0.5 font-mono text-[10px] text-[rgba(222,193,180,0.55)]">
+                <span className="rounded bg-[#14100D] border border-[rgba(221,112,116,0.18)] px-1.5 py-0.5 font-mono text-[10px] text-[#DD7074]">
                   {item.tag}
                 </span>
               </a>
@@ -159,14 +159,14 @@ export function CommandMenu({ isOpen, onClose, onRunTerminalCommand }: CommandMe
           })}
 
           {filteredNav.length === 0 && (
-            <div className="py-8 text-center text-sm text-[rgba(222,193,180,0.55)]">
+            <div className="py-8 text-center text-sm text-[#DD7074]">
               No actions found for &ldquo;{query}&rdquo;
             </div>
           )}
         </div>
 
         {/* Footer shortcuts */}
-        <div className="flex items-center justify-between border-t border-[rgba(206,164,145,0.14)] px-4 py-2.5 bg-[#070504] text-[11px] text-[rgba(222,193,180,0.55)]">
+        <div className="flex items-center justify-between border-t border-[rgba(221,112,116,0.18)] px-4 py-2.5 bg-[#070504] text-[11px] text-[#DD7074]">
           <span className="font-mono">ESC to dismiss</span>
           <span className="font-mono">KRUSHNA // PORTFOLIO</span>
         </div>

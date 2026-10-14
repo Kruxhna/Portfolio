@@ -14,13 +14,13 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const variantStyles = {
-    default: "bg-[#120E0B] text-[#DEC1B4] border-[rgba(206,164,145,0.18)]",
-    emerald: "bg-[rgba(173,106,76,0.15)] text-[#AD6A4C] border-[rgba(173,106,76,0.35)]",
-    cyan: "bg-[rgba(173,106,76,0.15)] text-[#AD6A4C] border-[rgba(173,106,76,0.35)]",
-    indigo: "bg-[rgba(173,106,76,0.15)] text-[#AD6A4C] border-[rgba(173,106,76,0.35)]",
-    accent: "bg-[rgba(173,106,76,0.15)] text-[#AD6A4C] border-[rgba(173,106,76,0.35)]",
-    outline: "bg-transparent text-[rgba(222,193,180,0.55)] border-[rgba(206,164,145,0.18)]",
-    mono: "bg-[#0A0807] text-[#DEC1B4] border-[rgba(206,164,145,0.18)] font-mono",
+    default: "bg-[#14100D] text-[#ECC3AB] border-[rgba(221,112,116,0.22)]",
+    emerald: "bg-[#4E0104]/85 text-[#E8A791] border-[#9A142C]",
+    cyan: "bg-[#4E0104]/85 text-[#E8A791] border-[#9A142C]",
+    indigo: "bg-[#4E0104]/85 text-[#E8A791] border-[#9A142C]",
+    accent: "bg-[#4E0104]/85 text-[#E8A791] border-[#9A142C]",
+    outline: "bg-transparent text-[#DD7074] border-[rgba(221,112,116,0.22)]",
+    mono: "bg-[#0A0807] text-[#ECC3AB] border-[rgba(221,112,116,0.22)] font-mono",
   };
 
   const sizeStyles = {

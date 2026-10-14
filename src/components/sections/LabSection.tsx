@@ -114,13 +114,13 @@ const FALLBACK_GITHUB_DATA: GithubProfileData = {
 };
 
 const LANGUAGE_COLORS: Record<string, string> = {
-  Python: "#AD6A4C",
-  TypeScript: "#DEC1B4",
-  JavaScript: "#EEDED7",
-  "C++": "#AD6A4C",
-  "Jupyter Notebook": "#DEC1B4",
-  HTML: "#EEDED7",
-  CSS: "#AD6A4C",
+  Python: "#E46B5E",
+  TypeScript: "#ECC3AB",
+  JavaScript: "#E69683",
+  "C++": "#E46B5E",
+  "Jupyter Notebook": "#ECC3AB",
+  HTML: "#E69683",
+  CSS: "#E46B5E",
 };
 
 // Generate simulated activity heatmap grid data (18 weeks x 7 days)
@@ -341,29 +341,29 @@ export function LabSection() {
     <section id="lab" className="relative py-20 sm:py-28">
       {/* Section Header */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#AD6A4C]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#AD6A4C] animate-pulse" />
+        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#DD7074]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
           <span>Interactive Terminal & Activity Widget</span>
         </div>
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-[#DEC1B4] sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-[#ECC3AB] sm:text-4xl">
               Terminal &amp; Live GitHub Activity
             </h2>
-            <p className="mt-1 max-w-2xl text-sm sm:text-base text-[#EEDED7]/80">
+            <p className="mt-1 max-w-2xl text-sm sm:text-base text-[#ECC3AB]/80">
               Query Krushna&apos;s stack and credentials through a macOS-styled interactive terminal or inspect real-time GitHub stats, repositories, and contribution telemetry.
             </p>
           </div>
 
           {/* Tab Switcher: Terminal & Activity vs Neural Simulator */}
-          <div className="flex gap-1.5 rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#0A0807]/90 p-1 backdrop-blur-md">
+          <div className="flex gap-1.5 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#0A0807]/90 p-1 backdrop-blur-md">
             <button
               onClick={() => setActiveMainTab("terminal")}
               data-cursor="magnetic"
               className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all ${
                 activeMainTab === "terminal"
-                  ? "bg-[#14100D] text-[#AD6A4C] border border-[#AD6A4C]/40 shadow-sm"
-                  : "text-[rgba(206, 164, 145,0.52)] hover:text-[#DEC1B4]"
+                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm"
+                  : "text-[#DD7074] hover:text-[#ECC3AB]"
               }`}
             >
               <TerminalIcon className="h-3.5 w-3.5" />
@@ -374,8 +374,8 @@ export function LabSection() {
               data-cursor="magnetic"
               className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all ${
                 activeMainTab === "neural"
-                  ? "bg-[#14100D] text-[#AD6A4C] border border-[#AD6A4C]/40 shadow-sm"
-                  : "text-[rgba(206, 164, 145,0.52)] hover:text-[#DEC1B4]"
+                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm"
+                  : "text-[#DD7074] hover:text-[#ECC3AB]"
               }`}
             >
               <Cpu className="h-3.5 w-3.5" />
@@ -396,11 +396,11 @@ export function LabSection() {
               }`}
             >
               <div
-                className="group relative flex flex-col rounded-2xl border border-[rgba(206, 164, 145,0.12)] bg-[#0A0807] shadow-2xl transition-all duration-200 hover:border-[#AD6A4C]/40"
+                className="group relative flex flex-col rounded-2xl border border-[rgba(221,112,116,0.18)] bg-[#0A0807] shadow-2xl transition-all duration-200 hover:border-[#E46B5E]/50"
                 onClick={() => terminalInputRef.current?.focus()}
               >
                 {/* macOS Style Window Titlebar */}
-                <div className="flex items-center justify-between border-b border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] px-4 py-3 select-none">
+                <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] bg-[#120E0B] px-4 py-3 select-none">
                   {/* macOS Traffic Light Window Controls */}
                   <div className="flex items-center gap-2">
                     <button
@@ -441,18 +441,18 @@ export function LabSection() {
                     </button>
 
                     {/* Window Title with Prompt Identification */}
-                    <div className="ml-3 flex items-center gap-2 font-mono text-[11px] text-[#DEC1B4]">
-                      <TerminalIcon className="h-3 w-3 text-[#AD6A4C]" />
-                      <span className="font-semibold text-[#EEDED7]">visitor@krushna-aiml:~</span>
-                      <span className="text-[rgba(206, 164, 145,0.3)]">|</span>
-                      <span className="text-[10px] text-[rgba(206, 164, 145,0.52)]">zsh</span>
+                    <div className="ml-3 flex items-center gap-2 font-mono text-[11px] text-[#ECC3AB]">
+                      <TerminalIcon className="h-3 w-3 text-[#E46B5E]" />
+                      <span className="font-semibold text-[#ECC3AB]">visitor@krushna-aiml:~</span>
+                      <span className="text-[rgba(221,112,116,0.3)]">|</span>
+                      <span className="text-[10px] text-[#DD7074]">zsh</span>
                     </div>
                   </div>
 
                   {/* Window Controls Right */}
-                  <div className="flex items-center gap-2 font-mono text-[10px] text-[rgba(206, 164, 145,0.52)]">
-                    <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-[rgba(173, 106, 76,0.3)] bg-[rgba(173, 106, 76,0.12)] px-2 py-0.5 text-[#AD6A4C]">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#AD6A4C] animate-pulse" />
+                  <div className="flex items-center gap-2 font-mono text-[10px] text-[#DD7074]">
+                    <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-[#9A142C] bg-[#4E0104]/85 px-2 py-0.5 text-[#E8A791]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
                       ONLINE
                     </span>
                     <button
@@ -460,7 +460,7 @@ export function LabSection() {
                         e.stopPropagation();
                         setIsTerminalExpanded(!isTerminalExpanded);
                       }}
-                      className="rounded p-1 hover:bg-[#14100D] hover:text-[#DEC1B4] transition-colors"
+                      className="rounded p-1 hover:bg-[#14100D] hover:text-[#ECC3AB] text-[#DD7074] transition-colors"
                       title={isTerminalExpanded ? "Restore" : "Maximize"}
                     >
                       {isTerminalExpanded ? (
@@ -473,8 +473,8 @@ export function LabSection() {
                 </div>
 
                 {/* Quick Command Suggestion Chips */}
-                <div className="flex flex-wrap items-center gap-1.5 border-b border-[rgba(206, 164, 145,0.08)] bg-[#0A0807]/90 px-4 py-2 font-mono">
-                  <span className="text-[10.5px] text-[rgba(206, 164, 145,0.52)] mr-1">Quick run:</span>
+                <div className="flex flex-wrap items-center gap-1.5 border-b border-[rgba(221,112,116,0.14)] bg-[#0A0807]/90 px-4 py-2 font-mono">
+                  <span className="text-[10.5px] text-[#DD7074] mr-1">Quick run:</span>
                   {commandChips.map((chip) => (
                     <button
                       key={chip}
@@ -483,16 +483,10 @@ export function LabSection() {
                         handleCommand(chip);
                       }}
                       data-cursor="link"
-                      className={`rounded-md border px-2 py-0.5 text-[11px] transition-all ${
+                      className={`rounded-md border px-2 py-0.5 text-[11px] transition-all cursor-pointer ${
                         chip === "help"
-                          ? "border-[#AD6A4C]/40 bg-[#AD6A4C]/15 text-[#AD6A4C] hover:bg-[#AD6A4C]/25"
-                          : chip === "skills"
-                          ? "border-[rgba(206, 164, 145,0.3)] bg-[rgba(206, 164, 145,0.1)] text-[#DEC1B4] hover:bg-[rgba(206, 164, 145,0.18)]"
-                          : chip === "contact"
-                          ? "border-[#AD6A4C]/30 bg-[#120E0B] text-[#EEDED7] hover:border-[#AD6A4C]"
-                          : chip === "clear"
-                          ? "border-[rgba(206, 164, 145,0.15)] bg-[#120E0B] text-[rgba(206, 164, 145,0.6)] hover:text-[#DEC1B4]"
-                          : "border-[rgba(206, 164, 145,0.15)] bg-[#120E0B] text-[#DEC1B4] hover:border-[#AD6A4C]/40 hover:text-[#EEDED7]"
+                          ? "border-[#E44847]/60 bg-[#C3181E] text-[#ECC3AB] hover:bg-[#E14945]"
+                          : "border border-[#9A142C] bg-[#4E0104]/85 text-[#E8A791] hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
                       }`}
                     >
                       {chip}
@@ -503,16 +497,16 @@ export function LabSection() {
                 {/* Terminal Console Output Scroll Area */}
                 <div className="min-h-[340px] max-h-[440px] overflow-y-auto p-4 sm:p-5 space-y-4 font-mono text-xs">
                   {/* Terminal Greeting Banner */}
-                  <div className="rounded-lg border border-[rgba(206, 164, 145,0.1)] bg-[#120E0B]/60 p-3 text-[11px] leading-relaxed text-[#EEDED7]/80">
-                    <div className="flex items-center gap-2 text-[#AD6A4C] font-bold">
-                      <Sparkles className="h-3.5 w-3.5 text-[#AD6A4C]" />
+                  <div className="rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#120E0B]/60 p-3 text-[11px] leading-relaxed text-[#ECC3AB]/80">
+                    <div className="flex items-center gap-2 text-[#E46B5E] font-bold">
+                      <Sparkles className="h-3.5 w-3.5 text-[#E46B5E]" />
                       <span>Krushna&apos;s AIML Interactive Terminal [Build v2026.10]</span>
                     </div>
-                    <p className="mt-1 text-[rgba(206, 164, 145,0.65)]">
-                      Connected to <span className="text-[#DEC1B4]">visitor@krushna-aiml</span>. Type commands below or click the quick action chips.
+                    <p className="mt-1 text-[#DD7074]">
+                      Connected to <span className="text-[#ECC3AB]">visitor@krushna-aiml</span>. Type commands below or click the quick action chips.
                     </p>
-                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-[rgba(206, 164, 145,0.45)]">
-                      <span>Commands: <strong className="text-[#AD6A4C]">help</strong>, <strong className="text-[#AD6A4C]">skills</strong>, <strong className="text-[#AD6A4C]">contact</strong>, <strong className="text-[#AD6A4C]">clear</strong></span>
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-[#DD7074]/70">
+                      <span>Commands: <strong className="text-[#E46B5E]">help</strong>, <strong className="text-[#E46B5E]">skills</strong>, <strong className="text-[#E46B5E]">contact</strong>, <strong className="text-[#E46B5E]">clear</strong></span>
                       <span>• Tab completion supported</span>
                     </div>
                   </div>
@@ -521,25 +515,25 @@ export function LabSection() {
                   {history.map((item, idx) => (
                     <div key={idx} className="space-y-1.5 animate-in fade-in duration-200">
                       {/* Executed Command Line */}
-                      <div className="flex items-center gap-2 text-[#AD6A4C]">
-                        <span className="font-bold select-none text-[#AD6A4C]">
+                      <div className="flex items-center gap-2 text-[#E46B5E]">
+                        <span className="font-bold select-none text-[#E46B5E]">
                           visitor@krushna-aiml:~$
                         </span>
-                        <span className="font-bold text-[#EEDED7]">{item.cmd}</span>
+                        <span className="font-bold text-[#ECC3AB]">{item.cmd}</span>
                       </div>
 
                       {/* Render Rich Special Output Cards or Monospace Output */}
                       {item.isSpecial === "contact" ? (
-                        <div className="rounded-xl border border-[rgba(173, 106, 76,0.3)] bg-[#120E0B] p-4 text-[12px] space-y-3">
-                          <div className="flex items-center justify-between border-b border-[rgba(206, 164, 145,0.12)] pb-2">
-                            <span className="font-bold text-[#AD6A4C]">
+                        <div className="rounded-xl border border-[#9A142C] bg-[#120E0B] p-4 text-[12px] space-y-3">
+                          <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] pb-2">
+                            <span className="font-bold text-[#E46B5E]">
                               ⚡ DIRECT COMMUNICATION & SOCIALS
                             </span>
                             <button
                               onClick={copyContactEmail}
-                              className="flex items-center gap-1 rounded bg-[#181310] px-2 py-0.5 text-[10px] text-[#DEC1B4] hover:text-[#EEDED7] border border-[rgba(206, 164, 145,0.15)]"
+                              className="flex items-center gap-1 rounded border border-[#9A142C] bg-[#4E0104]/85 px-2 py-0.5 text-[10px] text-[#E8A791] hover:text-[#ECC3AB] hover:bg-[#7B0408] cursor-pointer"
                             >
-                              {copiedLink ? <Check className="h-3 w-3 text-[#AD6A4C]" /> : <Copy className="h-3 w-3" />}
+                              {copiedLink ? <Check className="h-3 w-3 text-[#E46B5E]" /> : <Copy className="h-3 w-3" />}
                               <span>{copiedLink ? "Copied Email!" : "Copy Email"}</span>
                             </button>
                           </div>
@@ -548,62 +542,62 @@ export function LabSection() {
                               href="https://www.linkedin.com/in/krushna-nole/"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(206, 164, 145,0.12)] bg-[#0A0807] p-2.5 text-[#DEC1B4] hover:border-[#AD6A4C] hover:text-[#EEDED7] transition-all"
+                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
                             >
-                              <LinkedinIcon className="h-4 w-4 text-[#AD6A4C]" />
+                              <LinkedinIcon className="h-4 w-4 text-[#E46B5E]" />
                               <div>
-                                <div className="text-[10px] text-[rgba(206, 164, 145,0.52)]">LinkedIn</div>
-                                <div className="font-bold text-[#EEDED7]">/in/krushna-nole ↗</div>
+                                <div className="text-[10px] text-[#DD7074]">LinkedIn</div>
+                                <div className="font-bold text-[#ECC3AB]">/in/krushna-nole ↗</div>
                               </div>
                             </a>
                             <a
                               href="mailto:krushna.aiml@gmail.com"
-                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(206, 164, 145,0.12)] bg-[#0A0807] p-2.5 text-[#DEC1B4] hover:border-[#AD6A4C] hover:text-[#EEDED7] transition-all"
+                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
                             >
-                              <div className="flex h-4 w-4 items-center justify-center rounded bg-[rgba(173, 106, 76,0.2)] text-[#AD6A4C] text-xs font-bold">
+                              <div className="flex h-4 w-4 items-center justify-center rounded bg-[#4E0104]/85 text-[#E8A791] text-xs font-bold">
                                 @
                               </div>
                               <div>
-                                <div className="text-[10px] text-[rgba(206, 164, 145,0.52)]">Direct Email</div>
-                                <div className="font-bold text-[#EEDED7]">krushna.aiml@gmail.com</div>
+                                <div className="text-[10px] text-[#DD7074]">Direct Email</div>
+                                <div className="font-bold text-[#ECC3AB]">krushna.aiml@gmail.com</div>
                               </div>
                             </a>
                             <a
                               href="https://github.com/Kruxhna"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(206, 164, 145,0.12)] bg-[#0A0807] p-2.5 text-[#DEC1B4] hover:border-[#AD6A4C] hover:text-[#EEDED7] transition-all"
+                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
                             >
-                              <GithubIcon className="h-4 w-4 text-[#AD6A4C]" />
+                              <GithubIcon className="h-4 w-4 text-[#E46B5E]" />
                               <div>
-                                <div className="text-[10px] text-[rgba(206, 164, 145,0.52)]">GitHub Profile</div>
-                                <div className="font-bold text-[#EEDED7]">github.com/Kruxhna ↗</div>
+                                <div className="text-[10px] text-[#DD7074]">GitHub Profile</div>
+                                <div className="font-bold text-[#ECC3AB]">github.com/Kruxhna ↗</div>
                               </div>
                             </a>
                             <a
                               href="https://codolio.com/profile/Kruxhna/problemSolving"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(206, 164, 145,0.12)] bg-[#0A0807] p-2.5 text-[#DEC1B4] hover:border-[#AD6A4C] hover:text-[#EEDED7] transition-all"
+                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
                             >
-                              <CodolioIcon className="h-4 w-4 text-[#AD6A4C]" />
+                              <CodolioIcon className="h-4 w-4 text-[#E46B5E]" />
                               <div>
-                                <div className="text-[10px] text-[rgba(206, 164, 145,0.52)]">Codolio DSA Hub</div>
-                                <div className="font-bold text-[#EEDED7]">300+ Problems Solved ↗</div>
+                                <div className="text-[10px] text-[#DD7074]">Codolio DSA Hub</div>
+                                <div className="font-bold text-[#ECC3AB]">300+ Problems Solved ↗</div>
                               </div>
                             </a>
                           </div>
                         </div>
                       ) : item.isSpecial === "skills" ? (
-                        <div className="rounded-xl border border-[rgba(173, 106, 76,0.3)] bg-[#120E0B] p-4 text-[11.5px] space-y-3">
-                          <div className="font-bold text-[#AD6A4C] flex items-center justify-between border-b border-[rgba(173, 106, 76,0.2)] pb-2">
+                        <div className="rounded-xl border border-[#9A142C] bg-[#120E0B] p-4 text-[11.5px] space-y-3">
+                          <div className="font-bold text-[#E46B5E] flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] pb-2">
                             <span>🧠 TECHNICAL MATRIX: AI/ML & DSA</span>
-                            <span className="text-[10px] text-[rgba(206, 164, 145,0.52)]">B.E. AIML Mumbai</span>
+                            <span className="text-[10px] text-[#DD7074]">B.E. AIML Mumbai</span>
                           </div>
 
                           <div className="space-y-2">
                             <div>
-                              <span className="font-bold text-[#DEC1B4]">[AI/ML & Deep Learning]</span>
+                              <span className="font-bold text-[#ECC3AB]">[AI/ML & Deep Learning]</span>
                               <div className="mt-1 flex flex-wrap gap-1.5">
                                 {[
                                   "PyTorch",
@@ -619,7 +613,7 @@ export function LabSection() {
                                 ].map((tag) => (
                                   <span
                                     key={tag}
-                                    className="rounded border border-[rgba(173, 106, 76,0.3)] bg-[rgba(173, 106, 76,0.12)] px-1.5 py-0.5 text-[10.5px] text-[#AD6A4C]"
+                                    className="rounded border border-[#9A142C] bg-[#4E0104]/85 px-1.5 py-0.5 text-[10.5px] text-[#E8A791]"
                                   >
                                     {tag}
                                   </span>
@@ -628,7 +622,7 @@ export function LabSection() {
                             </div>
 
                             <div className="pt-1">
-                              <span className="font-bold text-[#EEDED7]">[Data Structures & Algorithms]</span>
+                              <span className="font-bold text-[#ECC3AB]">[Data Structures & Algorithms]</span>
                               <div className="mt-1 flex flex-wrap gap-1.5">
                                 {[
                                   "C++ (STL)",
@@ -643,7 +637,7 @@ export function LabSection() {
                                 ].map((tag) => (
                                   <span
                                     key={tag}
-                                    className="rounded border border-[rgba(206, 164, 145,0.18)] bg-[#14100D] px-1.5 py-0.5 text-[10.5px] text-[#DEC1B4]"
+                                    className="rounded border border-[rgba(221,112,116,0.22)] bg-[#14100D] px-1.5 py-0.5 text-[10.5px] text-[#ECC3AB]"
                                   >
                                     {tag}
                                   </span>
@@ -653,7 +647,7 @@ export function LabSection() {
                           </div>
                         </div>
                       ) : (
-                        <pre className="whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-[#EEDED7]">
+                        <pre className="whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-[#ECC3AB]/90">
                           {item.output}
                         </pre>
                       )}
@@ -669,9 +663,9 @@ export function LabSection() {
                     e.preventDefault();
                     handleCommand(inputVal);
                   }}
-                  className="flex items-center gap-2 border-t border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] px-4 py-3 font-mono text-xs"
+                  className="flex items-center gap-2 border-t border-[rgba(221,112,116,0.18)] bg-[#120E0B] px-4 py-3 font-mono text-xs"
                 >
-                  <span className="text-[#AD6A4C] font-bold select-none whitespace-nowrap">
+                  <span className="text-[#E46B5E] font-bold select-none whitespace-nowrap">
                     visitor@krushna-aiml:~$
                   </span>
                   <input
@@ -682,7 +676,7 @@ export function LabSection() {
                     onChange={(e) => setInputVal(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="type 'help', 'skills', 'contact', 'clear'..."
-                    className="flex-1 bg-transparent text-sm text-[#EEDED7] placeholder-[rgba(206, 164, 145,0.35)] focus:outline-none"
+                    className="flex-1 bg-transparent text-sm text-[#ECC3AB] placeholder-[#DD7074]/50 focus:outline-none"
                     autoComplete="off"
                     autoCapitalize="off"
                     spellCheck="false"
@@ -690,10 +684,10 @@ export function LabSection() {
                   <button
                     type="submit"
                     data-cursor="magnetic"
-                    className="flex items-center gap-1.5 rounded-lg border border-[rgba(206, 164, 145,0.15)] bg-[#181310] px-3 py-1.5 text-xs font-semibold text-[#DEC1B4] hover:border-[#AD6A4C] hover:bg-[#AD6A4C]/15 hover:text-[#AD6A4C] transition-all"
+                    className="flex items-center gap-1.5 rounded-lg bg-[#C3181E] border border-[#E44847]/60 px-3 py-1.5 text-xs font-semibold text-[#ECC3AB] hover:bg-[#E14945] hover:text-[#ECC3AB] transition-all cursor-pointer"
                   >
                     <span>Run</span>
-                    <span className="text-[10px] text-[rgba(206, 164, 145,0.52)]">↵</span>
+                    <span className="text-[10px] text-[#ECC3AB]/70">↵</span>
                   </button>
                 </form>
               </div>
@@ -705,10 +699,10 @@ export function LabSection() {
                 isTerminalExpanded ? "hidden" : "lg:col-span-5"
               }`}
             >
-              <SpotlightCard className="h-full flex flex-col justify-between border-[rgba(206, 164, 145,0.12)] bg-[#0A0807]/95 p-5 sm:p-6 shadow-2xl">
+              <SpotlightCard className="h-full flex flex-col justify-between border-[rgba(221,112,116,0.18)] bg-[#0A0807]/95 p-5 sm:p-6 shadow-2xl">
                 <div>
                   {/* GitHub Profile Header & Real-time Status */}
-                  <div className="flex items-start justify-between gap-3 border-b border-[rgba(206, 164, 145,0.12)] pb-5">
+                  <div className="flex items-start justify-between gap-3 border-b border-[rgba(221,112,116,0.18)] pb-5">
                     <div className="flex items-center gap-3">
                       <div className="relative">
                         {/* Live Avatar */}
@@ -716,23 +710,23 @@ export function LabSection() {
                         <img
                           src={githubData.avatar_url}
                           alt={githubData.name}
-                          className="h-12 w-12 rounded-xl border-2 border-[rgba(206, 164, 145,0.2)] object-cover shadow-md"
+                          className="h-12 w-12 rounded-xl border-2 border-[rgba(221,112,116,0.22)] object-cover shadow-md"
                         />
-                        <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#AD6A4C] ring-2 ring-[#0A0807]">
-                          <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
+                        <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#E02E32] ring-2 ring-[#0A0807]">
+                          <span className="h-2 w-2 rounded-full bg-[#ECC3AB] animate-pulse" />
                         </span>
                       </div>
 
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="font-bold text-[#DEC1B4] text-base leading-tight">
+                          <h3 className="font-bold text-[#ECC3AB] text-base leading-tight">
                             {githubData.name}
                           </h3>
                           <Badge variant="accent" size="sm">
                             github.com/{githubData.login}
                           </Badge>
                         </div>
-                        <p className="mt-0.5 text-xs text-[rgba(206, 164, 145,0.52)] font-mono">
+                        <p className="mt-0.5 text-xs text-[#DD7074] font-mono">
                           B.E. AIML @ University of Mumbai
                         </p>
                       </div>
@@ -743,70 +737,70 @@ export function LabSection() {
                       onClick={fetchGithubData}
                       disabled={isFetchingGithub}
                       title="Sync live stats from GitHub API"
-                      className="rounded-lg border border-[rgba(206, 164, 145,0.15)] bg-[#120E0B] p-2 text-[rgba(206, 164, 145,0.7)] hover:border-[#AD6A4C]/60 hover:text-[#DEC1B4] transition-all"
+                      className="rounded-lg border border-[#9A142C] bg-[#4E0104]/85 p-2 text-[#E8A791] hover:text-[#ECC3AB] hover:bg-[#7B0408] transition-all cursor-pointer"
                     >
                       <RotateCw
-                        className={`h-4 w-4 ${isFetchingGithub ? "animate-spin text-[#AD6A4C]" : ""}`}
+                        className={`h-4 w-4 ${isFetchingGithub ? "animate-spin text-[#E46B5E]" : ""}`}
                       />
                     </button>
                   </div>
 
                   {/* Bio Synopsis */}
-                  <p className="mt-4 text-xs leading-relaxed text-[#EEDED7]/80">
+                  <p className="mt-4 text-xs leading-relaxed text-[#ECC3AB]/80">
                     {githubData.bio}
                   </p>
 
                   {/* High-Impact Real-Time Stats Bento Grid */}
                   <div className="mt-4 grid grid-cols-3 gap-2 font-mono">
-                    <div className="rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-2.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[11px] text-[rgba(206, 164, 145,0.52)]">
-                        <Star className="h-3 w-3 text-[#AD6A4C]" />
+                    <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2.5 text-center">
+                      <div className="flex items-center justify-center gap-1 text-[11px] text-[#DD7074]">
+                        <Star className="h-3 w-3 text-[#E46B5E]" />
                         <span>Stars</span>
                       </div>
-                      <div className="mt-1 text-base font-bold text-[#DEC1B4]">
+                      <div className="mt-1 text-base font-bold text-[#ECC3AB]">
                         {githubData.total_stars}+
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-2.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[11px] text-[rgba(206, 164, 145,0.52)]">
-                        <Code2 className="h-3 w-3 text-[#AD6A4C]" />
+                    <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2.5 text-center">
+                      <div className="flex items-center justify-center gap-1 text-[11px] text-[#DD7074]">
+                        <Code2 className="h-3 w-3 text-[#E46B5E]" />
                         <span>Repos</span>
                       </div>
-                      <div className="mt-1 text-base font-bold text-[#DEC1B4]">
+                      <div className="mt-1 text-base font-bold text-[#ECC3AB]">
                         {githubData.public_repos}
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-2.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[11px] text-[rgba(206, 164, 145,0.52)]">
-                        <Flame className="h-3 w-3 text-[#AD6A4C]" />
+                    <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2.5 text-center">
+                      <div className="flex items-center justify-center gap-1 text-[11px] text-[#DD7074]">
+                        <Flame className="h-3 w-3 text-[#E02E32]" />
                         <span>Streak</span>
                       </div>
-                      <div className="mt-1 text-base font-bold text-[#AD6A4C]">
+                      <div className="mt-1 text-base font-bold text-[#E46B5E]">
                         {githubData.streak_days}d
                       </div>
                     </div>
                   </div>
 
                   {/* Sub-view Switcher: Repos vs Readme Stats Card */}
-                  <div className="mt-4 flex rounded-lg border border-[rgba(206, 164, 145,0.12)] bg-[#0A0807] p-1 text-xs">
+                  <div className="mt-4 flex rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-1 text-xs">
                     <button
                       onClick={() => setGithubViewMode("overview")}
-                      className={`flex-1 rounded-md py-1 font-medium transition-all ${
+                      className={`flex-1 rounded-md py-1 font-medium transition-all cursor-pointer ${
                         githubViewMode === "overview"
-                          ? "bg-[#14100D] text-[#DEC1B4] shadow"
-                          : "text-[rgba(206, 164, 145,0.52)] hover:text-[#DEC1B4]"
+                          ? "bg-[#C3181E] text-[#ECC3AB] shadow"
+                          : "text-[#DD7074] hover:text-[#ECC3AB]"
                       }`}
                     >
                       Top Repositories & Heatmap
                     </button>
                     <button
                       onClick={() => setGithubViewMode("readme_stats")}
-                      className={`flex-1 rounded-md py-1 font-medium transition-all ${
+                      className={`flex-1 rounded-md py-1 font-medium transition-all cursor-pointer ${
                         githubViewMode === "readme_stats"
-                          ? "bg-[#14100D] text-[#AD6A4C] shadow"
-                          : "text-[rgba(206, 164, 145,0.52)] hover:text-[#DEC1B4]"
+                          ? "bg-[#C3181E] text-[#ECC3AB] shadow"
+                          : "text-[#DD7074] hover:text-[#ECC3AB]"
                       }`}
                     >
                       GitHub Readme Stats
@@ -816,7 +810,7 @@ export function LabSection() {
                   {/* View 1: Top Repositories & Contribution Heatmap */}
                   {githubViewMode === "overview" ? (
                     <div className="mt-4 space-y-3">
-                      <div className="flex items-center justify-between text-xs font-mono text-[rgba(206, 164, 145,0.52)]">
+                      <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]">
                         <span>FEATURED OSS REPOSITORIES</span>
                         <span>{githubData.top_repos.length} SHOWCASED</span>
                       </div>
@@ -828,33 +822,33 @@ export function LabSection() {
                             href={repo.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group block rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-3 transition-all hover:border-[#AD6A4C]/50 hover:bg-[#14100D]"
+                            className="group block rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-3 transition-all hover:border-[#E46B5E]/50 hover:bg-[#14100D]"
                           >
                             <div className="flex items-center justify-between">
-                              <span className="font-mono text-xs font-bold text-[#DEC1B4] group-hover:text-[#AD6A4C] transition-colors">
+                              <span className="font-mono text-xs font-bold text-[#ECC3AB] group-hover:text-[#E46B5E] transition-colors">
                                 {repo.name}
                               </span>
-                              <div className="flex items-center gap-3 text-[11px] font-mono text-[rgba(206, 164, 145,0.52)]">
+                              <div className="flex items-center gap-3 text-[11px] font-mono text-[#DD7074]">
                                 {repo.stars > 0 && (
-                                  <span className="flex items-center gap-1 text-[#AD6A4C]">
+                                  <span className="flex items-center gap-1 text-[#E46B5E]">
                                     <Star className="h-3 w-3 fill-current" />
                                     {repo.stars}
                                   </span>
                                 )}
-                                <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity text-[#AD6A4C]" />
+                                <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity text-[#E46B5E]" />
                               </div>
                             </div>
-                            <p className="mt-1 line-clamp-1 text-[11px] text-[#EEDED7]/80">
+                            <p className="mt-1 line-clamp-1 text-[11px] text-[#ECC3AB]/80">
                               {repo.description}
                             </p>
                             <div className="mt-2 flex items-center gap-2">
                               {repo.language && (
-                                <span className="flex items-center gap-1 font-mono text-[10px] text-[rgba(206, 164, 145,0.52)]">
+                                <span className="flex items-center gap-1 font-mono text-[10px] text-[#DD7074]">
                                   <span
                                     className="h-2 w-2 rounded-full"
                                     style={{
                                       backgroundColor:
-                                        LANGUAGE_COLORS[repo.language] || "#AD6A4C",
+                                        LANGUAGE_COLORS[repo.language] || "#E46B5E",
                                     }}
                                   />
                                   <span>{repo.language}</span>
@@ -866,10 +860,10 @@ export function LabSection() {
                       </div>
 
                       {/* Simulated 18-week Contribution Streak Heatmap */}
-                      <div className="mt-4 rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-3">
-                        <div className="flex items-center justify-between text-[11px] font-mono text-[rgba(206, 164, 145,0.52)] mb-2">
-                          <span className="flex items-center gap-1.5 text-[#AD6A4C]">
-                            <Flame className="h-3 w-3 text-[#AD6A4C] fill-current" />
+                      <div className="mt-4 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-3">
+                        <div className="flex items-center justify-between text-[11px] font-mono text-[#DD7074] mb-2">
+                          <span className="flex items-center gap-1.5 text-[#E46B5E]">
+                            <Flame className="h-3 w-3 text-[#E02E32] fill-current" />
                             <span>18-Week Contribution Activity</span>
                           </span>
                           <span>Synced</span>
@@ -883,24 +877,24 @@ export function LabSection() {
                                 level === 0
                                   ? "bg-[#181310]"
                                   : level === 1
-                                  ? "bg-[#2E1F14] border border-[#5C402B]/40"
+                                  ? "bg-[#4E0104] border border-[#9A142C]/40"
                                   : level === 2
-                                  ? "bg-[#5C402B]"
+                                  ? "bg-[#7B0408]"
                                   : level === 3
-                                  ? "bg-[#8C5E38]"
-                                  : "bg-[#AD6A4C] shadow-xs shadow-[#AD6A4C]/40"
+                                  ? "bg-[#C3181E]"
+                                  : "bg-[#E46B5E] shadow-xs shadow-[#E46B5E]/40"
                               }`}
                             />
                           ))}
                         </div>
-                        <div className="mt-2 flex items-center justify-between text-[9.5px] font-mono text-[rgba(206, 164, 145,0.45)]">
+                        <div className="mt-2 flex items-center justify-between text-[9.5px] font-mono text-[#DD7074]/70">
                           <span>Less active</span>
                           <div className="flex items-center gap-1">
                             <span className="h-2 w-2 rounded-xs bg-[#181310]" />
-                            <span className="h-2 w-2 rounded-xs bg-[#2E1F14]" />
-                            <span className="h-2 w-2 rounded-xs bg-[#5C402B]" />
-                            <span className="h-2 w-2 rounded-xs bg-[#8C5E38]" />
-                            <span className="h-2 w-2 rounded-xs bg-[#AD6A4C]" />
+                            <span className="h-2 w-2 rounded-xs bg-[#4E0104]" />
+                            <span className="h-2 w-2 rounded-xs bg-[#7B0408]" />
+                            <span className="h-2 w-2 rounded-xs bg-[#C3181E]" />
+                            <span className="h-2 w-2 rounded-xs bg-[#E46B5E]" />
                           </div>
                           <span>More active</span>
                         </div>
@@ -909,10 +903,10 @@ export function LabSection() {
                   ) : (
                     /* View 2: Live GitHub Readme Stats Embeds */
                     <div className="mt-4 space-y-3 animate-in fade-in duration-200">
-                      <div className="text-[11px] font-mono text-[rgba(206, 164, 145,0.52)]">
+                      <div className="text-[11px] font-mono text-[#DD7074]">
                         GITHUB README STATS CARD:
                       </div>
-                      <div className="rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-2 overflow-hidden">
+                      <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2 overflow-hidden">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src="https://github-readme-stats.vercel.app/api?username=Kruxhna&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0a0807&title_color=ad7d56&icon_color=ad7d56&text_color=cdb49e"
@@ -921,10 +915,10 @@ export function LabSection() {
                         />
                       </div>
 
-                      <div className="text-[11px] font-mono text-[rgba(206, 164, 145,0.52)] pt-1">
+                      <div className="text-[11px] font-mono text-[#DD7074] pt-1">
                         CONTRIBUTION STREAK:
                       </div>
-                      <div className="rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-2 overflow-hidden">
+                      <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2 overflow-hidden">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src="https://github-readme-streak-stats.herokuapp.com/?user=Kruxhna&theme=tokyonight&hide_border=true&background=0a0807&stroke=201b17&ring=ad7d56&fire=ad7d56&currStreakNum=cdb49e"
@@ -937,12 +931,12 @@ export function LabSection() {
                 </div>
 
                 {/* Footer Link to GitHub Profile */}
-                <div className="mt-5 border-t border-[rgba(206, 164, 145,0.12)] pt-4">
+                <div className="mt-5 border-t border-[rgba(221,112,116,0.18)] pt-4">
                   <a
                     href="https://github.com/Kruxhna"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#AD6A4C]/30 bg-[#AD6A4C]/15 py-2.5 text-xs font-semibold text-[#AD6A4C] transition-all hover:bg-[#AD6A4C] hover:text-black hover:shadow-lg hover:shadow-[#AD6A4C]/20"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#C3181E] border border-[#E44847]/60 py-2.5 text-xs font-semibold text-[#ECC3AB] hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10] transition-all cursor-pointer"
                   >
                     <GithubIcon className="h-4 w-4" />
                     <span>View https://github.com/Kruxhna ↗</span>
@@ -953,16 +947,16 @@ export function LabSection() {
           </div>
         ) : (
           /* TAB 2: Neural Architecture Forensic Simulator */
-          <SpotlightCard className="p-6 sm:p-8 border-[rgba(206, 164, 145,0.12)] bg-[#0A0807]/95">
-            <div className="flex flex-col justify-between gap-4 border-b border-[rgba(206, 164, 145,0.12)] pb-5 sm:flex-row sm:items-center">
+          <SpotlightCard className="p-6 sm:p-8 border-[rgba(221,112,116,0.18)] bg-[#0A0807]/95">
+            <div className="flex flex-col justify-between gap-4 border-b border-[rgba(221,112,116,0.18)] pb-5 sm:flex-row sm:items-center">
               <div>
                 <div className="flex items-center gap-2">
                   <Badge variant="accent">Spatial-Temporal Forensic Pipeline</Badge>
-                  <span className="font-mono text-xs text-[rgba(206, 164, 145,0.52)]">
+                  <span className="font-mono text-xs text-[#DD7074]/70">
                     PyTorch • 16-Frame Sequence
                   </span>
                 </div>
-                <h3 className="mt-2 text-lg sm:text-xl font-bold text-[#DEC1B4]">
+                <h3 className="mt-2 text-lg sm:text-xl font-bold text-[#ECC3AB]">
                   EfficientNet-B0 + Bidirectional LSTM Pipeline Visualizer
                 </h3>
               </div>
@@ -973,13 +967,13 @@ export function LabSection() {
                 data-cursor="magnetic"
                 className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold transition-all ${
                   simRunning
-                    ? "bg-[#181310] text-[rgba(206, 164, 145,0.4)] cursor-not-allowed"
-                    : "bg-[#AD6A4C] text-black hover:bg-[#C49268] hover:shadow-lg hover:shadow-[#AD6A4C]/20"
+                    ? "bg-[#181310] text-[#DD7074]/60 cursor-not-allowed border border-[rgba(221,112,116,0.15)]"
+                    : "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10] shadow-lg shadow-[#C3181E]/20"
                 }`}
               >
                 {simRunning ? (
                   <>
-                    <Activity className="h-4 w-4 animate-spin text-black" />
+                    <Activity className="h-4 w-4 animate-spin text-[#ECC3AB]" />
                     <span>Processing Frames...</span>
                   </>
                 ) : (
@@ -997,21 +991,21 @@ export function LabSection() {
               <div
                 className={`rounded-xl border p-4 transition-all ${
                   simStep >= 1
-                    ? "border-[#AD6A4C] bg-[#AD6A4C]/10 shadow-md shadow-[#AD6A4C]/10"
-                    : "border-[rgba(206, 164, 145,0.12)] bg-[#120E0B]/50"
+                    ? "border-[#E46B5E] bg-[#4E0104]/30 shadow-md shadow-[#C3181E]/10"
+                    : "border-[rgba(221,112,116,0.18)] bg-[#120E0B]/50"
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-mono text-[rgba(206, 164, 145,0.52)]">
+                <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]/70">
                   <span>STAGE 01</span>
-                  {simStep >= 1 && <span className="text-[#AD6A4C]">ACTIVE</span>}
+                  {simStep >= 1 && <span className="text-[#E46B5E]">ACTIVE</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-[#DEC1B4]">
+                <div className="mt-2 text-sm font-bold text-[#ECC3AB]">
                   MTCNN Face Alignment
                 </div>
-                <p className="mt-1 text-xs text-[#EEDED7]/80">
+                <p className="mt-1 text-xs text-[#E69683]">
                   Detects landmarks & crops 16 consecutive 224x224 RGB face patches.
                 </p>
-                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[rgba(206, 164, 145,0.52)]">
+                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#DD7074]/70">
                   Shape: [16, 3, 224, 224]
                 </div>
               </div>
@@ -1020,21 +1014,21 @@ export function LabSection() {
               <div
                 className={`rounded-xl border p-4 transition-all ${
                   simStep >= 2
-                    ? "border-[#AD6A4C] bg-[#AD6A4C]/10 shadow-md shadow-[#AD6A4C]/10"
-                    : "border-[rgba(206, 164, 145,0.12)] bg-[#120E0B]/50"
+                    ? "border-[#E46B5E] bg-[#4E0104]/30 shadow-md shadow-[#C3181E]/10"
+                    : "border-[rgba(221,112,116,0.18)] bg-[#120E0B]/50"
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-mono text-[rgba(206, 164, 145,0.52)]">
+                <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]/70">
                   <span>STAGE 02</span>
-                  {simStep >= 2 && <span className="text-[#AD6A4C]">ACTIVE</span>}
+                  {simStep >= 2 && <span className="text-[#E46B5E]">ACTIVE</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-[#DEC1B4]">
+                <div className="mt-2 text-sm font-bold text-[#ECC3AB]">
                   Spatial Feature Backbone
                 </div>
-                <p className="mt-1 text-xs text-[#EEDED7]/80">
+                <p className="mt-1 text-xs text-[#E69683]">
                   EfficientNet-B0 maps frame textures into compact latent representations.
                 </p>
-                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[rgba(206, 164, 145,0.52)]">
+                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#DD7074]/70">
                   Shape: [16, 1280]
                 </div>
               </div>
@@ -1043,21 +1037,21 @@ export function LabSection() {
               <div
                 className={`rounded-xl border p-4 transition-all ${
                   simStep >= 3
-                    ? "border-[#AD6A4C] bg-[#AD6A4C]/10 shadow-md shadow-[#AD6A4C]/10"
-                    : "border-[rgba(206, 164, 145,0.12)] bg-[#120E0B]/50"
+                    ? "border-[#E46B5E] bg-[#4E0104]/30 shadow-md shadow-[#C3181E]/10"
+                    : "border-[rgba(221,112,116,0.18)] bg-[#120E0B]/50"
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-mono text-[rgba(206, 164, 145,0.52)]">
+                <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]/70">
                   <span>STAGE 03</span>
-                  {simStep >= 3 && <span className="text-[#AD6A4C]">ACTIVE</span>}
+                  {simStep >= 3 && <span className="text-[#E46B5E]">ACTIVE</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-[#DEC1B4]">
+                <div className="mt-2 text-sm font-bold text-[#ECC3AB]">
                   Bi-LSTM Temporal Pass
                 </div>
-                <p className="mt-1 text-xs text-[#EEDED7]/80">
+                <p className="mt-1 text-xs text-[#E69683]">
                   Learns inter-frame velocity, micro-flicker, and facial landmark jitter.
                 </p>
-                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[rgba(206, 164, 145,0.52)]">
+                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#DD7074]/70">
                   Hidden Dim: 256 x 2
                 </div>
               </div>
@@ -1066,34 +1060,34 @@ export function LabSection() {
               <div
                 className={`rounded-xl border p-4 transition-all ${
                   simStep >= 4
-                    ? "border-[#AD6A4C] bg-[#AD6A4C]/15 shadow-md shadow-[#AD6A4C]/10"
-                    : "border-[rgba(206, 164, 145,0.12)] bg-[#120E0B]/50"
+                    ? "border-[#E46B5E] bg-[#4E0104]/30 shadow-md shadow-[#C3181E]/10"
+                    : "border-[rgba(221,112,116,0.18)] bg-[#120E0B]/50"
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-mono text-[rgba(206, 164, 145,0.52)]">
+                <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]/70">
                   <span>STAGE 04</span>
-                  {simStep >= 4 && <span className="text-[#AD6A4C]">COMPLETE</span>}
+                  {simStep >= 4 && <span className="text-[#E46B5E]">COMPLETE</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-[#DEC1B4]">
+                <div className="mt-2 text-sm font-bold text-[#ECC3AB]">
                   Forensic Confidence
                 </div>
-                <p className="mt-1 text-xs text-[#EEDED7]/80">
+                <p className="mt-1 text-xs text-[#E69683]">
                   Linear classification head with sigmoid probability calibration.
                 </p>
-                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[rgba(206, 164, 145,0.52)]">
+                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#DD7074]/70">
                   Output: [0.0 to 1.0]
                 </div>
               </div>
             </div>
 
             {/* 16-Frame Temporal Video Progress Line (Scrubber) */}
-            <div className="mt-8 rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-4 font-mono text-xs">
-              <div className="flex items-center justify-between text-[11px] text-[rgba(206, 164, 145,0.52)] mb-2.5">
-                <span className="flex items-center gap-1.5 text-[#AD6A4C] uppercase tracking-wider font-semibold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#AD6A4C] animate-pulse" />
+            <div className="mt-8 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-4 font-mono text-xs">
+              <div className="flex items-center justify-between text-[11px] text-[#DD7074]/70 mb-2.5">
+                <span className="flex items-center gap-1.5 text-[#E46B5E] uppercase tracking-wider font-semibold">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
                   Video Sequence Progress Scrubber
                 </span>
-                <span className="text-[#DEC1B4]">
+                <span className="text-[#ECC3AB]">
                   FRAME {activeFrame} / 16 • {((activeFrame / 16) * 100).toFixed(0)}% ({(activeFrame * 62.5).toFixed(0)}ms)
                 </span>
               </div>
@@ -1109,27 +1103,27 @@ export function LabSection() {
                   setActiveFrame(Math.max(1, Math.min(16, Math.round(pct * 16))));
                 }}
               >
-                <div className="h-2 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(206, 164, 145,0.12)]">
+                <div className="h-2 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(221,112,116,0.18)]">
                   <div
-                    className="h-full bg-gradient-to-r from-[#AD6A4C] via-[#DEC1B4] to-[#AD6A4C] transition-all duration-100"
+                    className="h-full bg-gradient-to-r from-[#C3181E] via-[#E46B5E] to-[#ECC3AB] transition-all duration-100"
                     style={{ width: `${(activeFrame / 16) * 100}%` }}
                   />
                 </div>
                 {/* Visual frame scrubber head */}
                 <div
-                  className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-[#DEC1B4] border-2 border-[#AD6A4C] shadow-lg pointer-events-none transition-all duration-75"
+                  className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-[#ECC3AB] border-2 border-[#C3181E] shadow-lg pointer-events-none transition-all duration-75"
                   style={{ left: `calc(${(activeFrame / 16) * 100}% - 8px)` }}
                 />
               </div>
 
               {/* Frame ticks */}
-              <div className="mt-1.5 flex justify-between text-[9px] text-[rgba(206, 164, 145,0.4)]">
+              <div className="mt-1.5 flex justify-between text-[9px] text-[#DD7074]/60">
                 {Array.from({ length: 16 }, (_, i) => (
                   <span
                     key={i}
                     onClick={() => setActiveFrame(i + 1)}
-                    className={`cursor-pointer hover:text-[#AD6A4C] transition-colors ${
-                      activeFrame === i + 1 ? "text-[#AD6A4C] font-bold" : ""
+                    className={`cursor-pointer hover:text-[#E46B5E] transition-colors ${
+                      activeFrame === i + 1 ? "text-[#E46B5E] font-bold" : ""
                     }`}
                   >
                     f{i + 1}
@@ -1140,10 +1134,10 @@ export function LabSection() {
 
             {/* Dev Tuning Sliders */}
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
-              <div className="rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-4">
-                <div className="flex items-center justify-between text-[11px] text-[rgba(206, 164, 145,0.52)] mb-2">
-                  <span className="uppercase text-[#EEDED7]">Dev Tuning: Decision Threshold</span>
-                  <span className="text-[#AD6A4C] font-bold">{(tuningThreshold * 100).toFixed(0)}%</span>
+              <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-4">
+                <div className="flex items-center justify-between text-[11px] text-[#DD7074]/70 mb-2">
+                  <span className="uppercase text-[#ECC3AB]">Dev Tuning: Decision Threshold</span>
+                  <span className="text-[#E46B5E] font-bold">{(tuningThreshold * 100).toFixed(0)}%</span>
                 </div>
                 <div
                   data-cursor="scrub"
@@ -1155,34 +1149,34 @@ export function LabSection() {
                     setTuningThreshold(parseFloat(pct.toFixed(2)));
                   }}
                 >
-                  <div className="h-1.5 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(206, 164, 145,0.12)]">
+                  <div className="h-1.5 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(221,112,116,0.18)]">
                     <div
-                      className="h-full bg-[#AD6A4C]"
+                      className="h-full bg-[#C3181E]"
                       style={{ width: `${tuningThreshold * 100}%` }}
                     />
                   </div>
                   <div
-                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-[#DEC1B4] border border-[#AD6A4C] shadow-md pointer-events-none"
+                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-[#ECC3AB] border border-[#C3181E] shadow-md pointer-events-none"
                     style={{ left: `calc(${tuningThreshold * 100}% - 7px)` }}
                   />
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[rgba(206, 164, 145,0.12)] bg-[#120E0B] p-4">
-                <div className="flex items-center justify-between text-[11px] text-[rgba(206, 164, 145,0.52)] mb-2">
-                  <span className="uppercase text-[#EEDED7]">Dev Tuning: Temporal Pass Window</span>
-                  <span className="text-[#AD6A4C] font-bold">16 frames (250ms)</span>
+              <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-4">
+                <div className="flex items-center justify-between text-[11px] text-[#DD7074]/70 mb-2">
+                  <span className="uppercase text-[#ECC3AB]">Dev Tuning: Temporal Pass Window</span>
+                  <span className="text-[#E46B5E] font-bold">16 frames (250ms)</span>
                 </div>
                 <div
                   data-cursor="scrub"
                   data-cursor-label="← drag →"
                   className="group relative h-5 w-full cursor-ew-resize flex items-center select-none"
                 >
-                  <div className="h-1.5 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(206, 164, 145,0.12)]">
-                    <div className="h-full bg-[#AD6A4C]" style={{ width: "75%" }} />
+                  <div className="h-1.5 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(221,112,116,0.18)]">
+                    <div className="h-full bg-[#C3181E]" style={{ width: "75%" }} />
                   </div>
                   <div
-                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-[#DEC1B4] border border-[#AD6A4C] shadow-md pointer-events-none"
+                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-[#ECC3AB] border border-[#C3181E] shadow-md pointer-events-none"
                     style={{ left: "calc(75% - 7px)" }}
                   />
                 </div>
@@ -1191,34 +1185,34 @@ export function LabSection() {
 
             {/* Inference Telemetry & Output */}
             {simResult && (
-              <div className="mt-6 rounded-xl border border-[#AD6A4C]/40 bg-[#120E0B] p-5 animate-in fade-in slide-from-top-2">
+              <div className="mt-6 rounded-xl border border-[#E44847]/40 bg-[#120E0B] p-5 animate-in fade-in slide-from-top-2">
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="flex h-2.5 w-2.5 rounded-full bg-[#AD6A4C] animate-pulse" />
-                      <span className="font-mono text-xs uppercase tracking-wider text-[#AD6A4C] font-semibold">
+                      <span className="flex h-2.5 w-2.5 rounded-full bg-[#E02E32] animate-pulse" />
+                      <span className="font-mono text-xs uppercase tracking-wider text-[#E46B5E] font-semibold">
                         {simResult.label}
                       </span>
                     </div>
-                    <div className="mt-1 text-sm text-[#EEDED7]/80">
+                    <div className="mt-1 text-sm text-[#E69683]">
                       Inter-frame temporal discontinuity score:{" "}
-                      <span className="font-mono text-[#DEC1B4] font-bold">
+                      <span className="font-mono text-[#ECC3AB] font-bold">
                         {(simResult.score * 100).toFixed(1)}%
                       </span>{" "}
                       synthetic confidence.
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs font-mono text-[rgba(206, 164, 145,0.52)]">
+                  <div className="flex items-center gap-4 text-xs font-mono text-[#DD7074]/70">
                     <div>
                       <span>LATENCY: </span>
-                      <span className="text-[#AD6A4C] font-bold">
+                      <span className="text-[#E46B5E] font-bold">
                         {simResult.latency}ms
                       </span>
                     </div>
                     <div>
                       <span>DEVICE: </span>
-                      <span className="text-[#DEC1B4]">CUDA:0 (RTX)</span>
+                      <span className="text-[#ECC3AB]">CUDA:0 (RTX)</span>
                     </div>
                   </div>
                 </div>

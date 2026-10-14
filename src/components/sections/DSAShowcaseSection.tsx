@@ -145,25 +145,25 @@ export function DSAShowcaseSection() {
             {/* ── Top Group: Editorial Header & Narrative ──────────────────── */}
             <div>
               {/* 1. Eyebrow */}
-              <p className="font-mono text-xs uppercase tracking-widest text-[#CEA491]/65 mb-4">
+              <p className="font-mono text-xs uppercase tracking-widest text-[#DD7074] mb-4">
                 {DSA_DATA.eyebrow}
               </p>
 
               {/* 2. Display Title */}
               <h2
                 id="dsa-title"
-                className="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.94] text-[#DEC1B4] mb-6"
+                className="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.94] text-[#ECC3AB] mb-6"
               >
                 {DSA_DATA.title}
               </h2>
 
               {/* 3. Body Copy */}
-              <p className="text-base sm:text-lg text-[#DEC1B4]/80 leading-relaxed max-w-md font-sans">
+              <p className="text-base sm:text-lg text-[#ECC3AB]/90 leading-relaxed max-w-md font-sans">
                 {DSA_DATA.statement}
               </p>
 
               {/* 4. Technical Spec Strip */}
-              <p className="font-mono text-xs text-[#CEA491]/55 mt-6 pt-5 border-t border-[#CEA491]/18">
+              <p className="font-mono text-xs text-[#E69683]/80 mt-6 pt-5 border-t border-[#DD7074]/20">
                 {DSA_DATA.tagline}
               </p>
 
@@ -175,24 +175,24 @@ export function DSAShowcaseSection() {
                   rel="noopener noreferrer"
                   data-cursor="magnetic"
                   data-cursor-label="*open ↗*"
-                  className="text-[#FDFCFB] hover:text-[#AD6A4C] transition-colors inline-flex items-center gap-1 cursor-pointer font-medium"
+                  className="text-[#ECC3AB] hover:text-[#E46B5E] transition-colors inline-flex items-center gap-1 cursor-pointer font-medium"
                 >
                   <span>{DSA_DATA.profileLinkText}</span>
                 </a>
-                <span className="text-[#CEA491]/50 ml-2">
+                <span className="text-[#DD7074] ml-2">
                   / {DSA_DATA.lastSyncedDate}
                 </span>
               </div>
             </div>
 
             {/* ── Bottom Group: Fills Bottom-Left (Flush with Right Column) ── */}
-            <div className="border-t border-[#CEA491]/18 pt-7 mt-8">
+            <div className="border-t border-[#DD7074]/20 pt-7 mt-8">
               {/* Header Row */}
               <div className="flex items-center justify-between text-[11px] font-mono">
-                <span className="uppercase tracking-widest text-[#CEA491]/60 font-semibold">
+                <span className="uppercase tracking-widest text-[#DD7074] font-semibold">
                   PARADIGMS MASTERED
                 </span>
-                <span className="text-[#AD6A4C] text-[10px] tracking-wide">
+                <span className="text-[#E46B5E] text-[10px] tracking-wide">
                   [ click to filter submissions ]
                 </span>
               </div>
@@ -209,8 +209,8 @@ export function DSAShowcaseSection() {
                       data-cursor="magnetic"
                       className={`text-xs font-mono px-3 py-1.5 rounded transition-all cursor-pointer ${
                         isSel
-                          ? "bg-[#AD6A4C]/20 border border-[#AD6A4C] text-[#FDFCFB] font-semibold"
-                          : "bg-[#0A0807]/85 border border-[#CEA491]/20 text-[#DEC1B4] hover:border-[#AD6A4C]/50"
+                          ? "bg-[#C3181E] border border-[#E44847]/60 text-[#ECC3AB] font-semibold shadow-sm"
+                          : "bg-[#4E0104]/85 border border-[#9A142C] text-[#E8A791] hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
                       }`}
                     >
                       {pName === "All Paradigms" ? "[ All Paradigms ]" : `${pName} [${item.count}]`}
@@ -220,34 +220,34 @@ export function DSAShowcaseSection() {
               </div>
 
               {/* Dynamic Complexity Bound Subtitle */}
-              <div className="mt-3 text-[11px] font-mono text-[#AD6A4C] flex items-center gap-1.5 min-h-[20px]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#AD6A4C] shrink-0" />
+              <div className="mt-3 text-[11px] font-mono text-[#E46B5E] flex items-center gap-1.5 min-h-[20px]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#E46B5E] shrink-0" />
                 <span className="truncate">{paradigmData[selectedParadigm].bound}</span>
               </div>
 
               {/* Compact Complexity & Consistency Telemetry Strip */}
-              <div className="grid grid-cols-3 gap-4 mt-6 pt-5 border-t border-[#CEA491]/15">
+              <div className="grid grid-cols-3 gap-4 mt-6 pt-5 border-t border-[#DD7074]/20">
                 <div>
-                  <div className="text-[10px] font-mono text-[#CEA491]/55 uppercase tracking-wider">
+                  <div className="text-[10px] font-mono text-[#DD7074] uppercase tracking-wider">
                     primary lang
                   </div>
-                  <div className="mt-1 text-xs font-mono text-[#FDFCFB] font-bold">
+                  <div className="mt-1 text-xs font-mono text-[#ECC3AB] font-bold">
                     Python 3 / C++
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono text-[#CEA491]/55 uppercase tracking-wider">
+                  <div className="text-[10px] font-mono text-[#DD7074] uppercase tracking-wider">
                     avg runtime
                   </div>
-                  <div className="mt-1 text-xs font-mono text-[#AD6A4C] font-bold">
+                  <div className="mt-1 text-xs font-mono text-[#E46B5E] font-bold">
                     94.2%ile
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono text-[#CEA491]/55 uppercase tracking-wider">
+                  <div className="text-[10px] font-mono text-[#DD7074] uppercase tracking-wider">
                     memory bound
                   </div>
-                  <div className="mt-1 text-xs font-mono text-[#DEC1B4] font-bold">
+                  <div className="mt-1 text-xs font-mono text-[#E8A791] font-bold">
                     O(1) – O(N)
                   </div>
                 </div>
@@ -263,10 +263,10 @@ export function DSAShowcaseSection() {
             style={getEntranceStyle(1)}
           >
             {/* ── BLOCK A: 5-Metric Stat Strip (Aligned with algorithmic rigor) ─ */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 pb-8 border-b border-[#CEA491]/18">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 pb-8 border-b border-[#DD7074]/20">
               {DSA_DATA.stats.map((stat) => (
                 <div key={stat.id} className="flex flex-col">
-                  <div className="text-4xl sm:text-5xl font-black tracking-tight text-[#DEC1B4] font-mono leading-none tabular-nums">
+                  <div className="text-4xl sm:text-5xl font-black tracking-tight text-[#ECC3AB] font-mono leading-none tabular-nums">
                     <span>
                       {counts[stat.id] !== undefined
                         ? counts[stat.id]
@@ -274,7 +274,7 @@ export function DSAShowcaseSection() {
                       {stat.suffix || ""}
                     </span>
                   </div>
-                  <div className="mt-1.5 text-xs font-mono text-[#AD6A4C] lowercase tracking-normal">
+                  <div className="mt-1.5 text-xs font-mono text-[#E46B5E] lowercase tracking-normal">
                     {stat.label}
                   </div>
                 </div>
@@ -282,8 +282,8 @@ export function DSAShowcaseSection() {
             </div>
 
             {/* ── BLOCK B: 3-Column Platform Breakdown ───────────────────────── */}
-            <div className="py-8 border-b border-[#CEA491]/18">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:divide-x sm:divide-[#CEA491]/18">
+            <div className="py-8 border-b border-[#DD7074]/20">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:divide-x sm:divide-[#DD7074]/20">
                 {DSA_DATA.platforms.map((platform, idx) => (
                   <div
                     key={platform.id}
@@ -298,7 +298,7 @@ export function DSAShowcaseSection() {
                     <div>
                       {/* Name + Status Indicator */}
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-sm text-[#DEC1B4] font-semibold lowercase">
+                        <span className="font-mono text-sm text-[#ECC3AB] font-semibold lowercase">
                           {platform.name}
                         </span>
                         <div className="flex items-center gap-1.5 font-mono text-xs lowercase">
@@ -306,15 +306,15 @@ export function DSAShowcaseSection() {
                             className="h-1.5 w-1.5 rounded-full"
                             style={{
                               backgroundColor: platform.isActive
-                                ? "#AD6A4C"
-                                : "rgba(206, 164, 145, 0.4)",
+                                ? "#E46B5E"
+                                : "rgba(221, 112, 116, 0.4)",
                             }}
                           />
                           <span
                             style={{
                               color: platform.isActive
-                                ? "#AD6A4C"
-                                : "rgba(206, 164, 145, 0.6)",
+                                ? "#E46B5E"
+                                : "rgba(221, 112, 116, 0.6)",
                             }}
                           >
                             {platform.isActive ? "active" : "synced"}
@@ -323,22 +323,22 @@ export function DSAShowcaseSection() {
                       </div>
 
                       {/* Metrics */}
-                      <div className="mt-3 font-mono text-xs text-[#CEA491]/75 lowercase leading-relaxed">
-                        <div className="text-[#FDFCFB] font-bold">{platform.solved}</div>
+                      <div className="mt-3 font-mono text-xs text-[#E69683] lowercase leading-relaxed">
+                        <div className="text-[#ECC3AB] font-bold">{platform.solved}</div>
                         <div className="mt-0.5">{platform.metric}</div>
-                        <div className="mt-0.5 text-[#AD6A4C]">{platform.handle}</div>
+                        <div className="mt-0.5 text-[#E46B5E]">{platform.handle}</div>
                       </div>
                     </div>
 
                     {/* Action link */}
-                    <div className="mt-5 pt-3 border-t border-[#CEA491]/10">
+                    <div className="mt-5 pt-3 border-t border-[#DD7074]/15">
                       <a
                         href={platform.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         data-cursor="magnetic"
                         data-cursor-label="*open ↗*"
-                        className="font-mono text-xs text-[#DEC1B4] hover:text-[#AD6A4C] transition-colors inline-flex items-center gap-1 cursor-pointer"
+                        className="font-mono text-xs text-[#E8A791] hover:text-[#ECC3AB] transition-colors inline-flex items-center gap-1 cursor-pointer"
                       >
                         <span>profile</span>
                         <ArrowUpRight className="h-3.5 w-3.5" />
@@ -353,7 +353,7 @@ export function DSAShowcaseSection() {
             <div className="pt-8">
               {/* Header row */}
               <div className="flex items-center justify-between mb-4">
-                <span className="font-mono text-xs uppercase tracking-widest text-[#CEA491]/60 font-semibold">
+                <span className="font-mono text-xs uppercase tracking-widest text-[#DD7074] font-semibold">
                   RECENT SUBMISSIONS
                 </span>
                 <a
@@ -362,14 +362,14 @@ export function DSAShowcaseSection() {
                   rel="noopener noreferrer"
                   data-cursor="magnetic"
                   data-cursor-label="*open ↗*"
-                  className="font-mono text-xs text-[#DEC1B4] hover:text-[#AD6A4C] transition-colors cursor-pointer inline-flex items-center gap-1"
+                  className="font-mono text-xs text-[#E8A791] hover:text-[#ECC3AB] transition-colors cursor-pointer inline-flex items-center gap-1"
                 >
                   <span>view all ↗</span>
                 </a>
               </div>
 
               {/* Submissions List Table */}
-              <div className="w-full divide-y divide-[#CEA491]/15 border-t border-b border-[#CEA491]/15 mt-4">
+              <div className="w-full divide-y divide-[#DD7074]/15 border-t border-b border-[#DD7074]/15 mt-4">
                   {DSA_DATA.submissions.map((sub) => {
                     const isMatch =
                       selectedParadigm === "All Paradigms" ||
@@ -377,10 +377,10 @@ export function DSAShowcaseSection() {
 
                     const diffColor =
                       sub.difficulty === "easy"
-                        ? "text-[#AD6A4C]"
+                        ? "text-[#E46B5E]"
                         : sub.difficulty === "med"
-                        ? "text-[#DEC1B4]"
-                        : "text-[#FDFCFB] font-bold";
+                        ? "text-[#E8A791]"
+                        : "text-[#ECC3AB] font-bold";
 
                     return (
                       <div
@@ -388,8 +388,8 @@ export function DSAShowcaseSection() {
                         className={`py-3.5 px-3 -mx-3 rounded transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isMatch
                             ? selectedParadigm !== "All Paradigms"
-                              ? "bg-[#AD6A4C]/15 border-l-2 border-[#AD6A4C] pl-2.5"
-                              : "hover:bg-[#AD6A4C]/[0.05]"
+                              ? "bg-[#C3181E]/15 border-l-2 border-[#C3181E] pl-2.5"
+                              : "hover:bg-[#C3181E]/[0.08]"
                             : "opacity-35 hover:opacity-70"
                         }`}
                       >
@@ -400,13 +400,13 @@ export function DSAShowcaseSection() {
                             target="_blank"
                             rel="noopener noreferrer"
                             data-cursor="magnetic"
-                            className="font-mono text-xs sm:text-[13px] text-[#EEDED7] hover:text-[#AD6A4C] transition-colors truncate block"
+                            className="font-mono text-xs sm:text-[13px] text-[#ECC3AB] hover:text-[#E46B5E] transition-colors truncate block"
                           >
                             {sub.problem}
                           </a>
                           {/* Mobile-only tag */}
-                          <div className="sm:hidden mt-1 flex items-center gap-2 text-[10px] font-mono text-[#CEA491]/60">
-                            <span className="text-[#AD6A4C]">{sub.paradigm}</span>
+                          <div className="sm:hidden mt-1 flex items-center gap-2 text-[10px] font-mono text-[#DD7074]">
+                            <span className="text-[#E46B5E]">{sub.paradigm}</span>
                             <span>·</span>
                             <span className={diffColor}>{sub.difficulty}</span>
                             <span>·</span>
@@ -417,7 +417,7 @@ export function DSAShowcaseSection() {
                         </div>
 
                         {/* Desktop Paradigm Tag */}
-                        <div className="hidden sm:block text-xs font-mono text-[#CEA491]/65 w-44 truncate">
+                        <div className="hidden sm:block text-xs font-mono text-[#E69683] w-44 truncate">
                           {sub.paradigm}
                         </div>
 
@@ -427,10 +427,10 @@ export function DSAShowcaseSection() {
                         </div>
 
                         {/* Desktop Platform & Time */}
-                        <div className="hidden sm:flex items-center justify-end gap-2 text-xs font-mono text-[#CEA491]/70 w-32 text-right">
+                        <div className="hidden sm:flex items-center justify-end gap-2 text-xs font-mono text-[#DD7074] w-32 text-right">
                           <span>{sub.platform}</span>
                           <span>·</span>
-                          <span className="text-[#FDFCFB]/80">{sub.timeAgo}</span>
+                          <span className="text-[#ECC3AB]/90">{sub.timeAgo}</span>
                         </div>
                       </div>
                     );

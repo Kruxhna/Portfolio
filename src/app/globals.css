@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
 @theme {
+  --color-font-primary: var(--font-primary);
+  --color-font-secondary: var(--font-secondary);
+  --color-font-muted: var(--font-muted);
+  --color-font-dim: var(--font-dim);
+  --color-font-accent-warm: var(--font-accent-warm);
+  --color-font-accent-vivid: var(--font-accent-vivid);
+  --color-font-accent-berry: var(--font-accent-berry);
+  --color-font-display-mark: var(--font-display-mark);
+
+  --color-btn-primary-bg: var(--btn-primary-bg);
+  --color-btn-primary-hover: var(--btn-primary-hover);
+  --color-btn-primary-active: var(--btn-primary-active);
+  --color-btn-primary-text: var(--btn-primary-text);
+  --color-btn-primary-border: var(--btn-primary-border);
+
+  --color-btn-secondary-bg: var(--btn-secondary-bg);
+  --color-btn-secondary-hover: var(--btn-secondary-hover);
+  --color-btn-secondary-text: var(--btn-secondary-text);
+  --color-btn-secondary-border: var(--btn-secondary-border);
+
   --color-bg-black: var(--bg-black);
   --color-bg-obsidian: var(--bg-obsidian);
-  --color-rodeo-900: var(--rodeo-900);
-  --color-rodeo-700: var(--rodeo-700);
-  --color-rodeo-500: var(--rodeo-500);
-  --color-rodeo-400: var(--rodeo-400);
-  --color-rodeo-200: var(--rodeo-200);
-  --color-rodeo-100: var(--rodeo-100);
-  --color-rodeo-50: var(--rodeo-50);
   --color-bg-primary: var(--bg-primary);
   --color-bg-elevated: var(--bg-elevated);
   --color-bg-surface-hover: var(--bg-surface-hover);
@@ -27,72 +40,86 @@
 
 @layer base {
   :root {
-    /* Rodeo Dust Monochromatic Palette (1008-10B) + Pure Black */
+    /* Typography Colors (Custom Red/Peach/Berry Palette from COLOR.jpg) */
+    --font-primary: #ECC3AB;        /* Top-right soft peach cream for main headings & body */
+    --font-secondary: #E69683;      /* Warm apricot blush for subtext & nav links */
+    --font-muted: #DD7074;          /* Dusty rose for eyebrow labels, timestamps & HUD metadata */
+    --font-dim: #A0274B;            /* Deep berry for subtle captions / disabled text */
+    --font-accent-warm: #E46B5E;    /* Coral highlight for italic/serif keywords ("profile, optimize, scale") */
+    --font-accent-vivid: #E02E32;   /* Vibrant vermilion for active nav links & primary highlights */
+    --font-accent-berry: #D94F67;   /* Berry rose for link hover states */
+    --font-display-mark: #E8A791;   /* Warm peach for large "krushna" watermark / display type */
+
+    /* Button Colors */
+    --btn-primary-bg: #C3181E;      /* Rich crimson fill for primary buttons & active toggles */
+    --btn-primary-hover: #E14945;   /* Bright coral-red hover fill */
+    --btn-primary-active: #9F0B10;  /* Deep ruby active/pressed fill */
+    --btn-primary-text: #ECC3AB;    /* Soft peach cream text on primary buttons */
+    --btn-primary-border: #E44847;  /* Coral border highlight */
+
+    --btn-secondary-bg: #4E0104;    /* Deep oxblood fill for secondary/HUD buttons (e.g., "3D" pill) */
+    --btn-secondary-hover: #7B0408; /* Dark blood-red hover fill */
+    --btn-secondary-text: #E8A791;  /* Warm peach text on secondary buttons */
+    --btn-secondary-border: #9A142C;/* Wine-red border for secondary/outline buttons */
+
+    /* Stacking Background Colors — STRICTLY PRESERVED */
     --bg-black: #000000;
     --bg-obsidian: #0A0807;
-    --rodeo-900: #AD6A4C;
-    --rodeo-700: #BF866D;
-    --rodeo-500: #CEA491;
-    --rodeo-400: #DEC1B4;
-    --rodeo-200: #EEDED7;
-    --rodeo-100: #FDFCFB;
-    --rodeo-50: #FFFFFF;
-
-    /* Semantic Token Mappings (Dark Theme Default) */
     --bg-primary: #000000;
     --bg-elevated: #0A0807;
     --bg-surface-hover: #14100D;
     --bg-glass: rgba(10, 8, 7, 0.72);
-    --text-display: #DEC1B4;
-    --text-primary: #EEDED7;
-    --text-secondary: #DEC1B4;
-    --text-muted: rgba(222, 193, 180, 0.55);
-    --accent-primary: #AD6A4C;
-    --accent-hover: #BF866D;
-    --accent-subtle: rgba(173, 106, 76, 0.15);
-    --border-subtle: rgba(206, 164, 145, 0.14);
-    --border-hover: rgba(173, 106, 76, 0.48);
-
-    /* Convenient Core Aliases */
     --bg: #000000;
-    --fg: #EEDED7;
-    --muted: rgba(222, 193, 180, 0.55);
-    --line: rgba(206, 164, 145, 0.14);
-    --accent: #AD6A4C;
     --card-bg: #0A0807;
-    --card-border: rgba(206, 164, 145, 0.14);
     --bg-dim: 0.55;
+
+    /* Semantic Token Mappings */
+    --text-display: #E8A791;
+    --text-primary: #ECC3AB;
+    --text-secondary: #E69683;
+    --text-muted: #DD7074;
+    --fg: #ECC3AB;
+    --muted: #DD7074;
+
+    --accent-primary: #E46B5E;
+    --accent-hover: #D94F67;
+    --accent-subtle: rgba(228, 107, 94, 0.15);
+    --border-subtle: rgba(221, 112, 116, 0.16);
+    --border-hover: rgba(224, 46, 50, 0.45);
+    --line: rgba(221, 112, 116, 0.16);
+    --card-border: rgba(221, 112, 116, 0.16);
+    --accent: #E46B5E;
   }
 
-  /* Light Theme (When THEME: LIGHT / AUTO is toggled) */
+  /* Light Theme (Preserved structure with palette harmonization) */
   .theme-light, [data-theme="light"] {
-    --bg-primary: #EEDED7;
-    --bg-elevated: #DEC1B4;
-    --bg-surface-hover: #CEA491;
-    --bg-glass: rgba(238, 222, 215, 0.78);
-    --text-display: #000000;
-    --text-primary: #000000;
-    --text-secondary: #0A0807;
-    --text-muted: rgba(0, 0, 0, 0.58);
-    --accent-primary: #AD6A4C;
-    --accent-hover: #8F5237;
-    --accent-subtle: rgba(173, 106, 76, 0.15);
-    --border-subtle: rgba(0, 0, 0, 0.14);
-    --border-hover: rgba(173, 106, 76, 0.45);
+    --bg-primary: #ECC3AB;
+    --bg-elevated: #E8A791;
+    --bg-surface-hover: #E69683;
+    --bg-glass: rgba(236, 195, 171, 0.78);
+    --text-display: #4E0104;
+    --text-primary: #4E0104;
+    --text-secondary: #7B0408;
+    --text-muted: rgba(78, 1, 4, 0.65);
+    --accent-primary: #C3181E;
+    --accent-hover: #9F0B10;
+    --accent-subtle: rgba(195, 24, 30, 0.15);
+    --border-subtle: rgba(78, 1, 4, 0.14);
+    --border-hover: rgba(195, 24, 30, 0.45);
 
-    --bg: #EEDED7;
-    --fg: #000000;
-    --muted: rgba(0, 0, 0, 0.58);
-    --line: rgba(0, 0, 0, 0.14);
-    --accent: #AD6A4C;
-    --card-bg: #DEC1B4;
-    --card-border: rgba(0, 0, 0, 0.14);
+    --bg: #ECC3AB;
+    --fg: #4E0104;
+    --muted: rgba(78, 1, 4, 0.65);
+    --line: rgba(78, 1, 4, 0.14);
+    --accent: #C3181E;
+    --card-bg: #E8A791;
+    --card-border: rgba(78, 1, 4, 0.14);
     --bg-dim: 0.35;
   }
 
   ::selection {
-    background-color: #AD6A4C;
-    color: #000000;
+    background-color: #C3181E;
+    color: #ECC3AB;
   }
 
   html {
@@ -140,12 +167,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #AD6A4C;
+  background: #C3181E;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #DEC1B4;
+  background: #E14945;
 }
 
 /* Glassmorphism and Card Aesthetics */

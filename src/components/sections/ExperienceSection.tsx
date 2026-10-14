@@ -19,22 +19,22 @@ export function ExperienceSection() {
     <section id="timeline" className="relative py-20 sm:py-28">
       {/* 1. SECTION HEADER */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#AD6A4C]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#AD6A4C] animate-pulse" />
+        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#DD7074]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
           <span>05 // TRAJECTORY &amp; ETHOS</span>
         </div>
 
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-[#DEC1B4] sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-[#ECC3AB] sm:text-4xl">
               About Me &amp; Journey
             </h2>
-            <p className="mt-1 max-w-xl text-sm sm:text-base text-[rgba(222,193,180,0.65)]">
+            <p className="mt-1 max-w-xl text-sm sm:text-base text-[#E69683]/80">
               Systems-level machine learning engineer with rigorous theoretical foundations in algorithms and automata theory.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full border border-[rgba(173,106,76,0.35)] bg-[rgba(173,106,76,0.15)] px-3 py-1 font-mono text-xs text-[#AD6A4C]">
+          <div className="flex items-center gap-2 rounded-full border border-[#9A142C] bg-[#4E0104]/85 px-3 py-1 font-mono text-xs text-[#E8A791]">
             <span>Mumbai University</span>
             <span>•</span>
             <span>Class of 2024–2028</span>
@@ -46,15 +46,15 @@ export function ExperienceSection() {
       <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Card 1: Academic Credentials (Span 5) */}
         <SpotlightCard
-          className="lg:col-span-5 p-6 sm:p-7 border-[rgba(206,164,145,0.14)] bg-[#0A0807] flex flex-col justify-between"
+          className="lg:col-span-5 p-6 sm:p-7 border-[rgba(221,112,116,0.18)] bg-[#0A0807] flex flex-col justify-between"
         >
           <div>
-            <div className="flex items-center justify-between border-b border-[rgba(206,164,145,0.14)] pb-4">
+            <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] pb-4">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(206,164,145,0.18)] bg-[#14100D] text-[#AD6A4C]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(221,112,116,0.22)] bg-[#14100D] text-[#E46B5E]">
                   <GraduationCap className="h-4 w-4" />
                 </div>
-                <span className="font-mono text-xs uppercase tracking-wider text-[rgba(222,193,180,0.55)]">
+                <span className="font-mono text-xs uppercase tracking-wider text-[#DD7074]">
                   Academic Credentials
                 </span>
               </div>
@@ -65,22 +65,22 @@ export function ExperienceSection() {
 
             <div className="mt-5 space-y-3">
               <div>
-                <span className="text-xs font-mono text-[rgba(222,193,180,0.55)] uppercase">Degree &amp; Program</span>
-                <h3 className="mt-0.5 text-lg font-bold text-[#DEC1B4]">
+                <span className="text-xs font-mono text-[#DD7074] uppercase">Degree &amp; Program</span>
+                <h3 className="mt-0.5 text-lg font-bold text-[#ECC3AB]">
                   {ACADEMIC_CREDENTIALS.degree}
                 </h3>
-                <p className="mt-0.5 text-xs text-[#AD6A4C] font-mono">
+                <p className="mt-0.5 text-xs text-[#E46B5E] font-mono">
                   {ACADEMIC_CREDENTIALS.specialization}
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-[rgba(206,164,145,0.14)]">
-                <span className="text-xs font-mono text-[rgba(222,193,180,0.55)] uppercase">Institution</span>
+              <div className="pt-2 border-t border-[rgba(221,112,116,0.18)]">
+                <span className="text-xs font-mono text-[#DD7074] uppercase">Institution</span>
                 <div className="mt-0.5 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-[#EEDED7]">
+                  <span className="text-sm font-semibold text-[#ECC3AB]">
                     {ACADEMIC_CREDENTIALS.university}
                   </span>
-                  <span className="font-mono text-xs text-[rgba(222,193,180,0.55)]">
+                  <span className="font-mono text-xs text-[#DD7074]">
                     {ACADEMIC_CREDENTIALS.batch}
                   </span>
                 </div>
@@ -88,56 +88,56 @@ export function ExperienceSection() {
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-[rgba(206,164,145,0.14)] font-mono text-[11px] text-[rgba(222,193,180,0.55)] flex items-center justify-between">
+          <div className="mt-6 pt-4 border-t border-[rgba(221,112,116,0.18)] font-mono text-[11px] text-[#DD7074] flex items-center justify-between">
             <span>Specialization: AI, ML &amp; Systems</span>
-            <span className="text-[#AD6A4C]">4-Year Degree Track</span>
+            <span className="text-[#E46B5E]">4-Year Degree Track</span>
           </div>
         </SpotlightCard>
 
         {/* Card 2: Systems Focus & Engineering Passions (Span 7) */}
         <SpotlightCard
-          className="lg:col-span-7 p-6 sm:p-7 border-[rgba(206,164,145,0.14)] bg-[#0A0807] flex flex-col justify-between"
+          className="lg:col-span-7 p-6 sm:p-7 border-[rgba(221,112,116,0.18)] bg-[#0A0807] flex flex-col justify-between"
         >
           <div>
-            <div className="flex items-center justify-between border-b border-[rgba(206,164,145,0.14)] pb-4">
+            <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] pb-4">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(206,164,145,0.18)] bg-[#14100D] text-[#AD6A4C]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(221,112,116,0.22)] bg-[#14100D] text-[#E46B5E]">
                   <Cpu className="h-4 w-4" />
                 </div>
-                <span className="font-mono text-xs uppercase tracking-wider text-[rgba(222,193,180,0.55)]">
+                <span className="font-mono text-xs uppercase tracking-wider text-[#DD7074]">
                   Systems Focus &amp; Core Passions
                 </span>
               </div>
-              <span className="font-mono text-[11px] text-[#AD6A4C]">HPC + Theory</span>
+              <span className="font-mono text-[11px] text-[#E46B5E]">HPC + Theory</span>
             </div>
 
             <div className="mt-5 space-y-4">
               <div>
-                <h4 className="text-xs font-mono text-[#AD6A4C] uppercase tracking-wider">
+                <h4 className="text-xs font-mono text-[#E46B5E] uppercase tracking-wider">
                   // Focus: Systems-Level Machine Learning
                 </h4>
-                <p className="mt-1.5 text-xs sm:text-sm text-[#EEDED7] leading-relaxed">
+                <p className="mt-1.5 text-xs sm:text-sm text-[#ECC3AB]/85 leading-relaxed">
                   {ABOUT_JOURNEY.focus}
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-[rgba(206,164,145,0.14)]">
-                <h4 className="text-xs font-mono text-[#AD6A4C] uppercase tracking-wider">
+              <div className="pt-2 border-t border-[rgba(221,112,116,0.18)]">
+                <h4 className="text-xs font-mono text-[#E46B5E] uppercase tracking-wider">
                   // Passion: Distributed Scale &amp; GATE Preparation
                 </h4>
-                <p className="mt-1.5 text-xs sm:text-sm text-[#EEDED7] leading-relaxed">
+                <p className="mt-1.5 text-xs sm:text-sm text-[#ECC3AB]/85 leading-relaxed">
                   {ABOUT_JOURNEY.passion}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-[rgba(206,164,145,0.14)] flex flex-wrap items-center gap-2 text-[11px] font-mono text-[rgba(222,193,180,0.55)]">
-            <span className="text-[#DEC1B4] font-medium">Core Targets:</span>
-            <span className="rounded bg-[#14100D] border border-[rgba(206,164,145,0.18)] px-2 py-0.5 text-[#AD6A4C]">
+          <div className="mt-6 pt-4 border-t border-[rgba(221,112,116,0.18)] flex flex-wrap items-center gap-2 text-[11px] font-mono text-[#DD7074]">
+            <span className="text-[#ECC3AB] font-medium">Core Targets:</span>
+            <span className="rounded bg-[#14100D] border border-[rgba(221,112,116,0.18)] px-2 py-0.5 text-[#E46B5E]">
               GATE Data Science &amp; AI (DA)
             </span>
-            <span className="rounded bg-[#14100D] border border-[rgba(206,164,145,0.18)] px-2 py-0.5 text-[#DEC1B4]">
+            <span className="rounded bg-[#14100D] border border-[rgba(221,112,116,0.18)] px-2 py-0.5 text-[#ECC3AB]">
               GATE Computer Science (CS)
             </span>
           </div>
@@ -146,8 +146,8 @@ export function ExperienceSection() {
 
       {/* 3. INTERACTIVE TIMELINE & MILESTONE CARDS */}
       <div className="mt-12">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[rgba(222,193,180,0.55)] mb-6">
-          <Calendar className="h-4 w-4 text-[#AD6A4C]" />
+        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#DD7074] mb-6">
+          <Calendar className="h-4 w-4 text-[#E46B5E]" />
           <span>Interactive Milestones &amp; Evolution</span>
         </div>
 
@@ -159,8 +159,8 @@ export function ExperienceSection() {
                 key={idx}
                 className={`p-6 sm:p-8 border transition-all duration-300 ${
                   isActive
-                    ? "border-[rgba(173,106,76,0.55)] bg-[#0A0807] shadow-xl shadow-[0_8px_30px_rgba(173,106,76,0.08)]"
-                    : "border-[rgba(206,164,145,0.14)] bg-[#0A0807] hover:border-[rgba(173,106,76,0.4)]"
+                    ? "border-[rgba(228,107,94,0.55)] bg-[#0A0807] shadow-xl shadow-[0_8px_30px_rgba(228,107,94,0.08)]"
+                    : "border-[rgba(221,112,116,0.18)] bg-[#0A0807] hover:border-[rgba(228,107,94,0.4)]"
                 }`}
                 onClick={() => setActiveMilestoneIndex(idx)}
               >
@@ -168,7 +168,7 @@ export function ExperienceSection() {
                   <div className="flex-1">
                     {/* Milestone Top Badges */}
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded-lg border border-[rgba(173,106,76,0.35)] bg-[#14100D] px-3 py-1 font-mono text-xs font-bold text-[#AD6A4C]">
+                      <span className="rounded-lg border border-[#9A142C] bg-[#4E0104]/85 px-3 py-1 font-mono text-xs font-bold text-[#ECC3AB]">
                         {milestone.period}
                       </span>
 
@@ -181,7 +181,7 @@ export function ExperienceSection() {
                     </div>
 
                     {/* Milestone Title */}
-                    <h3 className="mt-3 text-lg sm:text-xl font-bold tracking-tight text-[#DEC1B4]">
+                    <h3 className="mt-3 text-lg sm:text-xl font-bold tracking-tight text-[#ECC3AB]">
                       {milestone.title}
                     </h3>
 
@@ -190,9 +190,9 @@ export function ExperienceSection() {
                       {milestone.bullets.map((bullet, bIdx) => (
                         <div
                           key={bIdx}
-                          className="flex items-start gap-2.5 text-xs sm:text-sm text-[#EEDED7] leading-relaxed"
+                          className="flex items-start gap-2.5 text-xs sm:text-sm text-[#ECC3AB]/85 leading-relaxed"
                         >
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#AD6A4C]" />
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#E46B5E]" />
                           <span>{bullet}</span>
                         </div>
                       ))}
@@ -200,17 +200,17 @@ export function ExperienceSection() {
 
                     {/* Milestone Action Links */}
                     {milestone.links && milestone.links.length > 0 && (
-                      <div className="mt-5 flex flex-wrap items-center gap-2 pt-2 border-t border-[rgba(206,164,145,0.14)]">
+                      <div className="mt-5 flex flex-wrap items-center gap-2 pt-2 border-t border-[rgba(221,112,116,0.18)]">
                         {milestone.links.map((link, lIdx) => (
                           <a
                             key={lIdx}
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-[rgba(206,164,145,0.18)] bg-[#120E0B] px-3 py-1 font-mono text-xs text-[#DEC1B4] transition-colors hover:border-[#AD6A4C] hover:text-[#AD6A4C]"
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-[#9A142C] bg-[#4E0104]/85 px-3 py-1 font-mono text-xs text-[#E8A791] transition-colors hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
                           >
                             <span>{link.label}</span>
-                            <ArrowUpRight className="h-3 w-3 text-[rgba(222,193,180,0.55)]" />
+                            <ArrowUpRight className="h-3 w-3 text-[#DD7074]" />
                           </a>
                         ))}
                       </div>

@@ -14,7 +14,7 @@ function damp(current: number, target: number, speed: number, dt: number): numbe
   return current + (target - current) * (1 - Math.exp(-speed * dt));
 }
 
-export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps) {
+export function Letter3DViewer({ accentColor = "#E46B5E" }: Letter3DViewerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef  = useRef<HTMLDivElement>(null);
 
@@ -81,8 +81,8 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
     const roomEnv = new RoomEnvironment();
     scene.environment = pmremGenerator.fromScene(roomEnv, 0.04).texture;
 
-    // Ambient: Rodeo Dust (#DEC1B4) at 0.7 intensity
-    const ambientLight = new THREE.AmbientLight(0xDEC1B4, 0.7);
+    // Ambient: Soft Peach Cream (#ECC3AB) at 0.7 intensity
+    const ambientLight = new THREE.AmbientLight(0xECC3AB, 0.7);
     scene.add(ambientLight);
 
     // Key Directional Light (top-left [4, 6, 5]): Warm cream (#FFF5EB) at 2.0 intensity
@@ -90,8 +90,8 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
     keyLight.position.set(4, 6, 5);
     scene.add(keyLight);
 
-    // Rim/Fill Directional Light (bottom-left [-4, -3, 2]): Deep Terracotta (#AD6A4C) at 0.8 intensity
-    const rimLight = new THREE.DirectionalLight(0xAD6A4C, 0.8);
+    // Rim/Fill Directional Light (bottom-left [-4, -3, 2]): Crimson / Coral-Red (#C3181E) at 0.85 intensity
+    const rimLight = new THREE.DirectionalLight(0xC3181E, 0.85);
     rimLight.position.set(-4, -3, 2);
     scene.add(rimLight);
 
@@ -278,10 +278,10 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
     >
       {/* Loading spinner */}
       {isLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 font-mono text-[11px] text-[rgba(222,193,180,0.55)] pointer-events-none">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 font-mono text-[11px] text-[#DD7074] pointer-events-none">
           <div
-            className="h-6 w-6 rounded-full border-2 border-[rgba(206,164,145,0.18)] animate-spin"
-            style={{ borderTopColor: "#AD6A4C" }}
+            className="h-6 w-6 rounded-full border-2 border-[#9A142C]/40 animate-spin"
+            style={{ borderTopColor: "#E46B5E" }}
           />
           <span>Loading…</span>
         </div>
@@ -289,7 +289,7 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
 
       {/* Error fallback */}
       {loadError && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 font-mono text-[11px] text-[#AD6A4C] pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center z-10 font-mono text-[11px] text-[#E46B5E] pointer-events-none">
           Unable to display 3D model
         </div>
       )}
