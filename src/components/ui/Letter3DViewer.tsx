@@ -36,7 +36,22 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
     const canvas  = canvasRef.current;
     if (!wrapper || !canvas) return;
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Track reduced motion dynamically (both media query and .reduced-motion class from HUD toggle)
+    let isReducedMotion = false;
+    const checkReducedMotion = () => {
+      const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      isReducedMotion =
+        mq.matches || document.documentElement.classList.contains("reduced-motion");
+    };
+    checkReducedMotion();
+
+    const motionObserver = new MutationObserver(checkReducedMotion);
+    motionObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    motionMq.addEventListener("change", checkReducedMotion);
 
     // ── 1. Scene ─────────────────────────────────────────────────────────────
     const scene = new THREE.Scene();
@@ -138,117 +153,36 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
       }
     );
 
-    // ── 7. Interaction state ──────────────────────────────────────────────────
-    // All values here are "targets" or "current animated values"
-    const rot = { x: initialRot.x, y: initialRot.y }; // current animated rotation
-    const rotTarget = { x: initialRot.x, y: initialRot.y }; // target from cursor/drag
-    const vel = { x: 0, y: 0 }; // angular velocity from drag inertia
+    // ── 7. Global Pointer Tracking & Smooth Rotation Damping (STEP 4) ────────
+    // Current animated rotations
+    const rot = { x: initialRot.x, y: initialRot.y };
+    // Target rotations derived from global window pointer
+    let targetRotX = initialRot.x;
+    let targetRotY = initialRot.y;
 
-    let isDragging = false;
-    let dragStartX = 0, dragStartY = 0;
-    let lastDragX = 0, lastDragY = 0;
-    let isSpinning = false;            // click spin impulse active
-    let spinProgress = 0;              // 0→1 over ~1.1s
+    const onPointerMove = (e: PointerEvent) => {
+      if (isReducedMotion) return;
 
-    // cursor follow target (when not dragging)
-    const cursorTarget = { x: 0, y: 0 };
+      // Normalized viewport coordinates [-1, 1]
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
 
-    // ── 8. Pointer events ─────────────────────────────────────────────────────
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = wrapper.getBoundingClientRect();
-      const margin = 80;
-      const isOver =
-        e.clientX >= rect.left - margin && e.clientX <= rect.right  + margin &&
-        e.clientY >= rect.top  - margin && e.clientY <= rect.bottom + margin;
-
-      if (isOver && !isDragging) {
-        const localX = (e.clientX - rect.left) / rect.width;
-        const localY = (e.clientY - rect.top)  / rect.height;
-        const nx = localX * 2 - 1;
-        const ny = -(localY * 2 - 1);
-        cursorTarget.x = Math.max(-0.25, Math.min(0.25, ny * 0.25)); // rotation.x
-        cursorTarget.y = Math.max(-0.25, Math.min(0.25, nx * 0.25)); // rotation.y
-      } else if (!isDragging) {
-        cursorTarget.x = 0;
-        cursorTarget.y = 0;
-      }
-
-      // Drag tracking
-      if (isDragging) {
-        const dx = e.clientX - lastDragX;
-        const dy = e.clientY - lastDragY;
-        vel.y = dx * 0.004;
-        vel.x = dy * 0.004;
-        rotTarget.y += dx * 0.004;
-        rotTarget.x = Math.max(-0.5, Math.min(0.5, rotTarget.x + dy * 0.004));
-        lastDragX = e.clientX;
-        lastDragY = e.clientY;
-      }
+      // Smooth tilt target: clamped to prevent extreme rotation angles
+      targetRotX = THREE.MathUtils.clamp(-ny * 0.22, -0.25, 0.25);
+      targetRotY = initialRot.y + THREE.MathUtils.clamp(nx * 0.35, -0.4, 0.4);
     };
 
-    const onMouseDown = (e: MouseEvent) => {
-      isDragging = true;
-      dragStartX = lastDragX = e.clientX;
-      dragStartY = lastDragY = e.clientY;
-      vel.x = 0;
-      vel.y = 0;
+    const onPointerLeave = () => {
+      // Smoothly return to resting pose without snapping
+      targetRotX = initialRot.x;
+      targetRotY = initialRot.y;
     };
 
-    const onMouseUp = (e: MouseEvent) => {
-      if (!isDragging) return;
-      isDragging = false;
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onPointerLeave, { passive: true });
+    window.addEventListener("blur", onPointerLeave);
 
-      // Check if it was a click (minimal drag distance)
-      const dx = Math.abs(e.clientX - dragStartX);
-      const dy = Math.abs(e.clientY - dragStartY);
-      if (dx < 6 && dy < 6 && !isSpinning) {
-        // Click impulse: one smooth full turn on Y
-        isSpinning = true;
-        spinProgress = 0;
-        vel.x = 0;
-        vel.y = 0;
-      }
-      // else inertia continues via vel decay in RAF loop
-    };
-
-    const onMouseLeave = () => {
-      cursorTarget.x = 0;
-      cursorTarget.y = 0;
-    };
-
-    // Touch support for drag
-    let lastTouchX = 0, lastTouchY = 0;
-    const onTouchStart = (e: TouchEvent) => {
-      const t = e.touches[0];
-      isDragging = true;
-      dragStartX = lastTouchX = t.clientX;
-      dragStartY = lastTouchY = t.clientY;
-      vel.x = 0; vel.y = 0;
-    };
-    const onTouchMove = (e: TouchEvent) => {
-      if (!isDragging) return;
-      const t = e.touches[0];
-      const dx = t.clientX - lastTouchX;
-      const dy = t.clientY - lastTouchY;
-      vel.y = dx * 0.004;
-      vel.x = dy * 0.004;
-      rotTarget.y += dx * 0.004;
-      rotTarget.x = Math.max(-0.5, Math.min(0.5, rotTarget.x + dy * 0.004));
-      lastTouchX = t.clientX;
-      lastTouchY = t.clientY;
-    };
-    const onTouchEnd = () => { isDragging = false; };
-
-    canvas.addEventListener("mousedown", onMouseDown);
-    canvas.addEventListener("mouseup", onMouseUp);
-    canvas.addEventListener("touchstart", onTouchStart, { passive: true });
-    canvas.addEventListener("touchmove", onTouchMove, { passive: true });
-    canvas.addEventListener("touchend", onTouchEnd);
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
-    window.addEventListener("mouseup", onMouseUp);
-    window.addEventListener("mouseleave", onMouseLeave);
-
-    // ── 9. IntersectionObserver: pause rendering offscreen ────────────────────
+    // ── 8. IntersectionObserver: pause rendering offscreen ────────────────────
     let isVisible = true;
     const io = new IntersectionObserver(
       ([entry]) => { isVisible = entry.isIntersecting; },
@@ -256,74 +190,52 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
     );
     io.observe(wrapper);
 
-    // ── 10. RAF loop ─────────────────────────────────────────────────────────
+    // ── 9. RAF loop ─────────────────────────────────────────────────────────
     let rafId: number;
-    const clock = new THREE.Clock();
+    let lastTime = performance.now();
+    let elapsedTime = 0;
 
-    const animate = () => {
+    const animate = (now: number) => {
       rafId = requestAnimationFrame(animate);
 
       if (document.hidden || !isVisible) {
-        clock.getDelta(); // consume delta to avoid dt spike on resume
+        lastTime = now;
         return;
       }
 
-      const rawDt = clock.getDelta();
+      const rawDt = (now - lastTime) / 1000;
+      lastTime = now;
       const dt = Math.min(rawDt, 0.05);
-      const t  = clock.elapsedTime;
+      elapsedTime += dt;
+      const t = elapsedTime;
 
-      if (model && !prefersReducedMotion) {
-        // ── Idle float ────────────────────────────────────────────────────
-        // Two independent sines so it never looks looped
+      if (model && !isReducedMotion) {
+        // Idle gentle breathing float & drift
         const floatY    = Math.sin(t * (Math.PI * 2 / 7))   * 0.038;
         const driftRotY = Math.sin(t * (Math.PI * 2 / 11.3)) * 0.022;
 
-        if (!isDragging) {
-          if (isSpinning) {
-            // Click spin impulse: ease-out cubic over ~1.1s
-            spinProgress = Math.min(1, spinProgress + dt / 1.1);
-            const eased = 1 - Math.pow(1 - spinProgress, 3);
-            rotTarget.y = initialRot.y + eased * Math.PI * 2;
-            if (spinProgress >= 1) {
-              isSpinning = false;
-              spinProgress = 0;
-              rotTarget.y = initialRot.y;
-            }
-          } else {
-            // Inertia decay after drag release
-            vel.x *= Math.exp(-3 * dt);
-            vel.y *= Math.exp(-3 * dt);
-            rotTarget.x += vel.x;
-            rotTarget.y += vel.y;
-
-            // Spring back toward neutral over ~1.2s when velocity is tiny
-            const speed = Math.sqrt(vel.x ** 2 + vel.y ** 2);
-            if (speed < 0.001) {
-              rotTarget.x = damp(rotTarget.x, initialRot.x + cursorTarget.x, 2, dt);
-              rotTarget.y = damp(rotTarget.y, initialRot.y + cursorTarget.y + driftRotY, 2, dt);
-            }
-          }
-        }
-
-        // Smooth current rotation toward target (speed 5)
-        rot.x = damp(rot.x, rotTarget.x, 5, dt);
-        rot.y = damp(rot.y, rotTarget.y, 5, dt);
+        // Smooth exponential damping toward targets (speed 6)
+        rot.x = damp(rot.x, targetRotX, 6, dt);
+        rot.y = damp(rot.y, targetRotY, 6, dt);
 
         model.rotation.x = rot.x;
-        model.rotation.y = rot.y;
+        model.rotation.y = rot.y + driftRotY;
         model.position.y = floatY;
-
       } else if (model) {
-        // reduced motion: hold neutral
+        // Reduced motion: hold neutral resting pose cleanly
+        rot.x = initialRot.x;
+        rot.y = initialRot.y;
+        targetRotX = initialRot.x;
+        targetRotY = initialRot.y;
         model.rotation.set(initialRot.x, initialRot.y, initialRot.z);
         model.position.set(0, 0, 0);
       }
 
       renderer.render(scene, camera);
     };
-    animate();
+    animate(performance.now());
 
-    // ── 11. Resize observer ───────────────────────────────────────────────────
+    // ── 10. Resize observer ───────────────────────────────────────────────────
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width: nW, height: nH } = entry.contentRect;
@@ -336,16 +248,13 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
     });
     ro.observe(canvas);
 
-    // ── 12. Cleanup ───────────────────────────────────────────────────────────
+    // ── 11. Cleanup ───────────────────────────────────────────────────────────
     return () => {
-      canvas.removeEventListener("mousedown", onMouseDown);
-      canvas.removeEventListener("mouseup", onMouseUp);
-      canvas.removeEventListener("touchstart", onTouchStart);
-      canvas.removeEventListener("touchmove", onTouchMove);
-      canvas.removeEventListener("touchend", onTouchEnd);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-      window.removeEventListener("mouseleave", onMouseLeave);
+      window.removeEventListener("pointermove", onPointerMove);
+      document.documentElement.removeEventListener("pointerleave", onPointerLeave);
+      window.removeEventListener("blur", onPointerLeave);
+      motionObserver.disconnect();
+      motionMq.removeEventListener("change", checkReducedMotion);
       ro.disconnect();
       io.disconnect();
       cancelAnimationFrame(rafId);
@@ -361,8 +270,7 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
   return (
     <div
       ref={wrapperRef}
-      data-cursor="drag"
-      className="relative w-full select-none"
+      className="relative w-full select-none pointer-events-none"
       style={{
         height: "clamp(280px, 58vh, 620px)",
         overflow: "visible",
@@ -370,7 +278,7 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
     >
       {/* Loading spinner */}
       {isLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 font-mono text-[11px] text-[rgba(222,193,180,0.55)]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 font-mono text-[11px] text-[rgba(222,193,180,0.55)] pointer-events-none">
           <div
             className="h-6 w-6 rounded-full border-2 border-[rgba(206,164,145,0.18)] animate-spin"
             style={{ borderTopColor: "#AD6A4C" }}
@@ -381,16 +289,15 @@ export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps)
 
       {/* Error fallback */}
       {loadError && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 font-mono text-[11px] text-[#AD6A4C]">
+        <div className="absolute inset-0 flex items-center justify-center z-10 font-mono text-[11px] text-[#AD6A4C] pointer-events-none">
           Unable to display 3D model
         </div>
       )}
 
-
       {/* Three.js canvas mount */}
       <div
         ref={canvasRef}
-        className="w-full h-full outline-none"
+        className="w-full h-full outline-none pointer-events-none"
         style={{ overflow: "visible" }}
       />
     </div>

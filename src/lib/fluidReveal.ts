@@ -1,13 +1,12 @@
 /**
  * WebGL2 Navier-Stokes 2D Eulerian Fluid Simulation & Image Mask Reveal Engine
  *
- * Implements:
- * - Velocity & Density Advection (Semi-Lagrangian with thresholding)
- * - Vorticity Confinement (curl strength = 25.0)
- * - Divergence & Pressure Projection (Jacobi iterations)
- * - Sub-stepped splat interpolation with speed-scaled radius
- * - Stationary hold puddle & pointer-leave fast-heal
- * - Centered object-fit: cover composite shader blending FRONT.png & BACK.png
+ * Precision fixes applied:
+ * 1. Global pointer tracking with re-entry protection and MAX_DELTA clamping (no giant wedges/jumps).
+ * 2. Clean mask compositing with getCoverUV and tight smoothstep(0.18, 0.35, mask) directly mixing
+ *    FRONT.png and BACK.png (no muddy black/grey halo).
+ * 3. Frame-rate independent exponential decay + linear floor subtraction (no pooling or stagnant stains).
+ * 4. Respects reduced motion toggle.
  */
 
 export interface FluidRevealOptions {
@@ -15,19 +14,13 @@ export interface FluidRevealOptions {
   backImagePath?: string;
   simResolution?: number;       // default: 128 (on short viewport side)
   dyeResolution?: number;       // default: 512 (on short viewport side)
-  densityDissipation?: number;  // default: 0.8
+  densityDissipation?: number;  // default: 0.92 (decay base)
   velocityDissipation?: number; // default: 0.3
   pressure?: number;            // default: 0.8
   pressureIterations?: number;  // default: 20
   curl?: number;                // default: 25.0
   splatRadius?: number;         // default: 0.0035
   splatForce?: number;          // default: 4500.0
-  velocityGain?: number;        // default: 2.4
-  edgeLo?: number;              // default: 0.22
-  edgeHi?: number;              // default: 0.52
-  wisp?: number;                // default: 0.28
-  refraction?: number;          // default: 0.025
-  healOnLeave?: number;         // default: 0.9s
   onFirstFrameReady?: () => void;
 }
 
@@ -69,19 +62,13 @@ export function createFluidReveal(
     backImagePath: options.backImagePath || "/Images/BACK.png",
     simResolution: options.simResolution ?? 128,
     dyeResolution: options.dyeResolution ?? 512,
-    densityDissipation: options.densityDissipation ?? 0.8,
+    densityDissipation: options.densityDissipation ?? 0.92,
     velocityDissipation: options.velocityDissipation ?? 0.3,
     pressure: options.pressure ?? 0.8,
     pressureIterations: options.pressureIterations ?? 20,
     curl: options.curl ?? 25.0,
     splatRadius: options.splatRadius ?? 0.0035,
     splatForce: options.splatForce ?? 4500.0,
-    velocityGain: options.velocityGain ?? 2.4,
-    edgeLo: options.edgeLo ?? 0.22,
-    edgeHi: options.edgeHi ?? 0.52,
-    wisp: options.wisp ?? 0.28,
-    refraction: options.refraction ?? 0.025,
-    healOnLeave: options.healOnLeave ?? 0.9,
     onFirstFrameReady: options.onFirstFrameReady,
   };
 
@@ -122,7 +109,12 @@ export function createFluidReveal(
       float distSq = dot(p, p);
       vec3 base = texture(uTarget, vUv).xyz;
       vec3 splat = exp(-distSq / max(uRadius, 0.000001)) * uColor;
-      fragColor = vec4(base + splat, 1.0);
+      vec3 result = base + splat;
+      // Cap density to 1.2 so ink never pools into unbounded dark stains
+      if (uColor.y == 0.0 && uColor.z == 0.0) {
+        result.x = min(result.x, 1.2);
+      }
+      fragColor = vec4(result, 1.0);
     }
   `;
 
@@ -273,7 +265,9 @@ export function createFluidReveal(
     uniform vec2 uTexelSize;
     uniform float uDt;
     uniform float uDissipation;
-    uniform float uClampThreshold;
+    uniform float uDecayBase;
+    uniform float uLinearSub;
+    uniform int uIsDensity;
 
     #ifndef HAS_LINEAR_FILTERING
     vec4 bilerp(sampler2D sam, vec2 uv, vec2 tsize) {
@@ -297,11 +291,17 @@ export function createFluidReveal(
       vec4 result = bilerp(uSource, coord, uTexelSize);
       #endif
 
-      float decay = 1.0 / (1.0 + uDissipation * uDt);
-      result *= decay;
-
-      if (result.r < uClampThreshold) {
-        result.r = 0.0;
+      if (uIsDensity == 1) {
+        // Frame-rate independent exponential decay + linear floor subtraction
+        // Prevents stagnant blobs and guarantees full clearance to zero
+        float decay = pow(uDecayBase, uDt * 60.0);
+        result.r = max(0.0, result.r * decay - uLinearSub * (uDt * 60.0));
+        if (result.r < 0.002) {
+          result.r = 0.0;
+        }
+      } else {
+        float decay = 1.0 / (1.0 + uDissipation * uDt);
+        result.xy *= decay;
       }
 
       fragColor = result;
@@ -316,44 +316,34 @@ export function createFluidReveal(
     uniform sampler2D uFrontTex;
     uniform sampler2D uBackTex;
     uniform sampler2D uDensity;
-    uniform sampler2D uVelocity;
 
     uniform vec2 uViewport;
     uniform vec2 uImageResolution;
 
-    uniform float uEdgeLo;
-    uniform float uEdgeHi;
-    uniform float uWisp;
-    uniform float uRefraction;
+    vec2 getCoverUV(vec2 uv, vec2 planeRes, vec2 texRes) {
+      float planeAspect = planeRes.x / planeRes.y;
+      float texAspect = texRes.x / texRes.y;
+      vec2 scale = vec2(1.0);
+      if (planeAspect > texAspect) {
+        scale.y = texAspect / planeAspect;
+      } else {
+        scale.x = planeAspect / texAspect;
+      }
+      return (uv - 0.5) * scale + 0.5;
+    }
 
     void main() {
-      float viewportAspect = uViewport.x / uViewport.y;
-      float imageAspect = uImageResolution.x / uImageResolution.y;
+      vec2 coverUv = getCoverUV(vUv, uViewport, uImageResolution);
 
-      vec2 coverUv = vUv;
-      if (viewportAspect > imageAspect) {
-        float scale = imageAspect / viewportAspect;
-        coverUv.y = (vUv.y - 0.5) * scale + 0.5;
-      } else {
-        float scale = viewportAspect / imageAspect;
-        coverUv.x = (vUv.x - 0.5) * scale + 0.5;
-      }
+      float rawMask = texture(uDensity, vUv).r;
+      // Tight organic edge with no muddy wide grey ramp, no black halo
+      float reveal = smoothstep(0.18, 0.35, rawMask);
 
-      float d = texture(uDensity, vUv).r;
-      vec2 vel = texture(uVelocity, vUv).xy;
+      vec4 frontCol = texture(uFrontTex, coverUv);
+      vec4 backCol  = texture(uBackTex, coverUv);
 
-      // Crisp thresholded core + wispy smoke decay tail
-      float core = smoothstep(uEdgeLo, uEdgeHi, d);
-      float tail = uWisp * smoothstep(0.002, uEdgeLo, d);
-      float reveal = max(core, tail);
-
-      // Subtle fluid refraction on revealed back layer
-      vec2 backUv = coverUv + uRefraction * vel * reveal;
-
-      vec3 frontCol = texture(uFrontTex, coverUv).rgb;
-      vec3 backCol  = texture(uBackTex, backUv).rgb;
-
-      fragColor = vec4(mix(frontCol, backCol, clamp(reveal, 0.0, 1.0)), 1.0);
+      // Directly mix the two textures at full opacity (no dirty alpha / black border bleed)
+      fragColor = vec4(mix(frontCol.rgb, backCol.rgb, reveal), 1.0);
     }
   `;
 
@@ -497,7 +487,6 @@ export function createFluidReveal(
     };
   }
 
-  // FBO resolution computation
   let simW = 128;
   let simH = 128;
   let dyeW = 512;
@@ -565,7 +554,6 @@ export function createFluidReveal(
   function loadTexture(url: string, onLoad: (tex: WebGLTexture, img: HTMLImageElement) => void) {
     const tex = gl.createTexture()!;
     gl.bindTexture(gl.TEXTURE_2D, tex);
-    // Placeholder 1x1 black
     gl.texImage2D(
       gl.TEXTURE_2D,
       0,
@@ -603,29 +591,48 @@ export function createFluidReveal(
     backLoaded = true;
   });
 
-  // ─── POINTER TRACKING & INTERPOLATION ──────────────────────────────────────
-  let targetPointerX = -1000;
-  let targetPointerY = -1000;
-  let smoothPointerX = -1000;
-  let smoothPointerY = -1000;
-  let prevPointerX = -1000;
-  let prevPointerY = -1000;
-  let hasPointerMoved = false;
+  // ─── CLAMPED POINTER TRACKING (STEP 1) ─────────────────────────────────────
+  const lastMouse = { x: -1, y: -1 };
+  const currentMouse = { x: -1, y: -1 };
+  let hasFirstMove = false;
   let isPointerInside = false;
-  let lastMoveTime = 0;
+  let reentered = false;
+
+  // Track prefers-reduced-motion / .reduced-motion
+  let isReducedMotion = false;
+  function checkReducedMotion() {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    isReducedMotion =
+      mq.matches || document.documentElement.classList.contains("reduced-motion");
+  }
+  checkReducedMotion();
+  const motionObserver = new MutationObserver(checkReducedMotion);
+  motionObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
 
   function updatePointer(clientX: number, clientY: number) {
-    targetPointerX = clientX;
-    targetPointerY = clientY;
-    isPointerInside = true;
+    if (isReducedMotion) return;
 
-    if (!hasPointerMoved) {
-      smoothPointerX = targetPointerX;
-      smoothPointerY = targetPointerY;
-      prevPointerX = targetPointerX;
-      prevPointerY = targetPointerY;
-      hasPointerMoved = true;
+    // Viewport-normalized coordinates [0, 1] (WebGL UV space)
+    const x = clientX / window.innerWidth;
+    const y = 1.0 - clientY / window.innerHeight;
+
+    if (!hasFirstMove || !isPointerInside || reentered) {
+      lastMouse.x = x;
+      lastMouse.y = y;
+      currentMouse.x = x;
+      currentMouse.y = y;
+      hasFirstMove = true;
+      isPointerInside = true;
+      reentered = false;
+      return;
     }
+
+    currentMouse.x = x;
+    currentMouse.y = y;
+    isPointerInside = true;
   }
 
   const onPointerMove = (e: PointerEvent) => {
@@ -636,19 +643,25 @@ export function createFluidReveal(
     updatePointer(e.clientX, e.clientY);
   };
 
-  const onPointerUp = () => {
-    // Keep tracking inside
-  };
-
   const onPointerLeave = () => {
     isPointerInside = false;
+    reentered = true;
+  };
+
+  const onVisibilityChange = () => {
+    if (document.hidden) {
+      isPointerInside = false;
+      reentered = true;
+    }
   };
 
   window.addEventListener("pointermove", onPointerMove, { passive: true });
   window.addEventListener("pointerdown", onPointerDown, { passive: true });
-  window.addEventListener("pointerup", onPointerUp, { passive: true });
   document.documentElement.addEventListener("pointerleave", onPointerLeave, { passive: true });
-  document.documentElement.addEventListener("mouseout", onPointerLeave, { passive: true });
+  document.documentElement.addEventListener("mouseout", (e) => {
+    if (!e.relatedTarget) onPointerLeave();
+  }, { passive: true });
+  document.addEventListener("visibilitychange", onVisibilityChange);
 
   // Resize handler
   let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -712,61 +725,70 @@ export function createFluidReveal(
 
     let dt = (now - lastTime) / 1000;
     lastTime = now;
-    dt = Math.min(dt, 1 / 30);
+    dt = Math.min(dt, 0.033);
 
-    // ── 1. Exponential Pointer Damping ───────────────────────────────────────
-    if (hasPointerMoved) {
-      const k = 12.0; // Lerp damping factor
-      const alpha = 1.0 - Math.exp(-k * dt);
-      smoothPointerX += (targetPointerX - smoothPointerX) * alpha;
-      smoothPointerY += (targetPointerY - smoothPointerY) * alpha;
+    // If reduced motion is active, clear and skip fluid advection
+    if (isReducedMotion) {
+      if (frontTexture && backTexture) {
+        gl.useProgram(compositeProgram);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, frontTexture);
+        gl.uniform1i(gl.getUniformLocation(compositeProgram, "uFrontTex"), 0);
 
-      const deltaX = smoothPointerX - prevPointerX;
-      const deltaY = smoothPointerY - prevPointerY;
-      const distPx = Math.hypot(deltaX, deltaY);
-      const speedPxPerSec = distPx / Math.max(dt, 0.0001);
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, backTexture);
+        gl.uniform1i(gl.getUniformLocation(compositeProgram, "uBackTex"), 1);
 
-      // ── 2. Movement Splats Interpolation ──────────────────────────────────
-      if (isPointerInside && distPx > 0.4) {
-        const speedRatio = Math.min(Math.max(speedPxPerSec / 1500, 0), 1);
-        const radius = config.splatRadius * (1 + config.velocityGain * speedRatio);
-        const minDim = Math.min(window.innerWidth, window.innerHeight);
-        const stepSize = Math.max(radius * minDim * 0.4, 6);
-        const steps = Math.max(1, Math.min(Math.ceil(distPx / stepSize), 20));
+        gl.activeTexture(gl.TEXTURE2);
+        gl.bindTexture(gl.TEXTURE_2D, density.read.texture);
+        gl.uniform1i(gl.getUniformLocation(compositeProgram, "uDensity"), 2);
+
+        gl.uniform2f(gl.getUniformLocation(compositeProgram, "uViewport"), canvas.width, canvas.height);
+        gl.uniform2f(gl.getUniformLocation(compositeProgram, "uImageResolution"), imageResolution[0], imageResolution[1]);
+
+        blit(null);
+      }
+      return;
+    }
+
+    // ── 1. CLAMPED SPLAT INJECTION (STEP 1) ───────────────────────────────────
+    if (hasFirstMove && isPointerInside) {
+      const rawDx = currentMouse.x - lastMouse.x;
+      const rawDy = currentMouse.y - lastMouse.y;
+      const dist = Math.hypot(rawDx, rawDy);
+
+      // Threshold to ignore sub-pixel jitter
+      if (dist > 0.0004) {
+        // Clamp maximum delta per frame to 0.08 in UV space to eliminate giant wedges
+        const MAX_DELTA = 0.08;
+        const clampedDist = Math.min(dist, MAX_DELTA);
+        const scale = clampedDist / dist;
+        const dx = rawDx * scale;
+        const dy = rawDy * scale;
+
+        // Sub-step stroke interpolation: deposit splats evenly along segment
+        const stepSize = 0.008;
+        const steps = Math.min(16, Math.max(1, Math.ceil(clampedDist / stepSize)));
+        const radius = config.splatRadius;
 
         for (let s = 1; s <= steps; s++) {
           const t = s / steps;
-          const currPx = prevPointerX + deltaX * t;
-          const currPy = prevPointerY + deltaY * t;
+          const px = lastMouse.x + dx * t;
+          const py = lastMouse.y + dy * t;
 
-          const normX = currPx / window.innerWidth;
-          const normY = 1.0 - currPy / window.innerHeight; // WebGL UV flip
+          const forceX = (dx / steps) * config.splatForce;
+          const forceY = (dy / steps) * config.splatForce;
 
-          const forceX = deltaX * config.splatForce;
-          const forceY = -deltaY * config.splatForce; // Invert Y for WebGL coordinates
-
-          splat(velocity, normX, normY, forceX, forceY, 0.0, radius);
-          splat(density, normX, normY, 1.0, 0.0, 0.0, radius);
+          splat(velocity, px, py, forceX, forceY, 0.0, radius);
+          splat(density, px, py, 1.0, 0.0, 0.0, radius);
         }
 
-        prevPointerX = smoothPointerX;
-        prevPointerY = smoothPointerY;
-        lastMoveTime = now;
-      } else if (isPointerInside && now - lastMoveTime < 250) {
-        // ── 3. Stationary Hold Puddle ────────────────────────────────────────
-        const normX = smoothPointerX / window.innerWidth;
-        const normY = 1.0 - smoothPointerY / window.innerHeight;
-        const holdRadius = config.splatRadius * 0.85;
-        splat(density, normX, normY, 0.4 * dt * 60, 0.0, 0.0, holdRadius);
+        lastMouse.x = currentMouse.x;
+        lastMouse.y = currentMouse.y;
       }
     }
 
-    // ── 4. Pointer Leave Fast-Heal ───────────────────────────────────────────
-    const currentDensityDissipation = isPointerInside
-      ? config.densityDissipation
-      : 1.0 / Math.max(config.healOnLeave, 0.1);
-
-    // ── 5. Curl & Vorticity Confinement ──────────────────────────────────────
+    // ── 2. Curl & Vorticity Confinement ──────────────────────────────────────
     gl.useProgram(curlProgram);
     gl.uniform2f(
       gl.getUniformLocation(curlProgram, "uTexelSize"),
@@ -795,7 +817,7 @@ export function createFluidReveal(
     blit(velocity.write);
     velocity.swap();
 
-    // ── 6. Divergence & Pressure Projection (Jacobi) ─────────────────────────
+    // ── 3. Divergence & Pressure Projection (Jacobi) ─────────────────────────
     gl.useProgram(divergenceProgram);
     gl.uniform2f(
       gl.getUniformLocation(divergenceProgram, "uTexelSize"),
@@ -851,7 +873,7 @@ export function createFluidReveal(
     blit(velocity.write);
     velocity.swap();
 
-    // ── 7. Velocity Advection ────────────────────────────────────────────────
+    // ── 4. Velocity Advection ────────────────────────────────────────────────
     gl.useProgram(advectionProgram);
     gl.uniform2f(
       gl.getUniformLocation(advectionProgram, "uTexelSize"),
@@ -865,15 +887,17 @@ export function createFluidReveal(
     gl.bindTexture(gl.TEXTURE_2D, velocity.read.texture);
     gl.uniform1i(gl.getUniformLocation(advectionProgram, "uSource"), 1);
     gl.uniform1f(gl.getUniformLocation(advectionProgram, "uDt"), dt);
-    gl.uniform1f(
-      gl.getUniformLocation(advectionProgram, "uDissipation"),
-      config.velocityDissipation
-    );
-    gl.uniform1f(gl.getUniformLocation(advectionProgram, "uClampThreshold"), 0.0);
+    gl.uniform1f(gl.getUniformLocation(advectionProgram, "uDissipation"), config.velocityDissipation);
+    gl.uniform1f(gl.getUniformLocation(advectionProgram, "uDecayBase"), 0.92);
+    gl.uniform1f(gl.getUniformLocation(advectionProgram, "uLinearSub"), 0.0);
+    gl.uniform1i(gl.getUniformLocation(advectionProgram, "uIsDensity"), 0);
     blit(velocity.write);
     velocity.swap();
 
-    // ── 8. Density (Ink) Advection ───────────────────────────────────────────
+    // ── 5. Density Advection with Frame-Rate Independent Decay (STEP 3) ─────
+    const decayBase = isPointerInside ? 0.92 : 0.82;
+    const linearSub = isPointerInside ? 0.004 : 0.008;
+
     gl.useProgram(advectionProgram);
     gl.uniform2f(
       gl.getUniformLocation(advectionProgram, "uTexelSize"),
@@ -887,15 +911,14 @@ export function createFluidReveal(
     gl.bindTexture(gl.TEXTURE_2D, density.read.texture);
     gl.uniform1i(gl.getUniformLocation(advectionProgram, "uSource"), 1);
     gl.uniform1f(gl.getUniformLocation(advectionProgram, "uDt"), dt);
-    gl.uniform1f(
-      gl.getUniformLocation(advectionProgram, "uDissipation"),
-      currentDensityDissipation
-    );
-    gl.uniform1f(gl.getUniformLocation(advectionProgram, "uClampThreshold"), 0.0015);
+    gl.uniform1f(gl.getUniformLocation(advectionProgram, "uDissipation"), 0.0);
+    gl.uniform1f(gl.getUniformLocation(advectionProgram, "uDecayBase"), decayBase);
+    gl.uniform1f(gl.getUniformLocation(advectionProgram, "uLinearSub"), linearSub);
+    gl.uniform1i(gl.getUniformLocation(advectionProgram, "uIsDensity"), 1);
     blit(density.write);
     density.swap();
 
-    // ── 9. Final Screen Composite Pass ───────────────────────────────────────
+    // ── 6. Composite Shader Pass (STEP 2) ────────────────────────────────────
     if (frontTexture && backTexture) {
       gl.useProgram(compositeProgram);
       gl.activeTexture(gl.TEXTURE0);
@@ -910,24 +933,8 @@ export function createFluidReveal(
       gl.bindTexture(gl.TEXTURE_2D, density.read.texture);
       gl.uniform1i(gl.getUniformLocation(compositeProgram, "uDensity"), 2);
 
-      gl.activeTexture(gl.TEXTURE3);
-      gl.bindTexture(gl.TEXTURE_2D, velocity.read.texture);
-      gl.uniform1i(gl.getUniformLocation(compositeProgram, "uVelocity"), 3);
-
-      gl.uniform2f(
-        gl.getUniformLocation(compositeProgram, "uViewport"),
-        canvas.width,
-        canvas.height
-      );
-      gl.uniform2f(
-        gl.getUniformLocation(compositeProgram, "uImageResolution"),
-        imageResolution[0],
-        imageResolution[1]
-      );
-      gl.uniform1f(gl.getUniformLocation(compositeProgram, "uEdgeLo"), config.edgeLo);
-      gl.uniform1f(gl.getUniformLocation(compositeProgram, "uEdgeHi"), config.edgeHi);
-      gl.uniform1f(gl.getUniformLocation(compositeProgram, "uWisp"), config.wisp);
-      gl.uniform1f(gl.getUniformLocation(compositeProgram, "uRefraction"), config.refraction);
+      gl.uniform2f(gl.getUniformLocation(compositeProgram, "uViewport"), canvas.width, canvas.height);
+      gl.uniform2f(gl.getUniformLocation(compositeProgram, "uImageResolution"), imageResolution[0], imageResolution[1]);
 
       blit(null); // Render to canvas screen
 
@@ -943,11 +950,11 @@ export function createFluidReveal(
   return {
     destroy: () => {
       cancelAnimationFrame(animationFrameId);
+      motionObserver.disconnect();
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("pointerup", onPointerUp);
       document.documentElement.removeEventListener("pointerleave", onPointerLeave);
-      document.documentElement.removeEventListener("mouseout", onPointerLeave);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("resize", onResize);
 
       if (resizeTimeout) clearTimeout(resizeTimeout);

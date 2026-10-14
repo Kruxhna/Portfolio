@@ -366,7 +366,7 @@ export function HeroSection() {
       <section
         ref={sectionRef}
         id="about"
-        className="relative w-full bg-transparent select-none overflow-visible"
+        className="relative w-full bg-transparent select-none overflow-visible pointer-events-none"
         style={{ height: "100dvh" }}
       >
         {/*
@@ -376,25 +376,25 @@ export function HeroSection() {
             2. Wordmark zone: shrink-0, pinned to bottom
         */}
         <div
-          className="w-full h-full flex flex-col overflow-visible"
+          className="w-full h-full flex flex-col overflow-visible pointer-events-none"
           style={{ padding: "0 2.5vw" }}
         >
 
           {/* ── UPPER ZONE ──────────────────────────────────────────────── */}
           <div
-            className="flex-1 min-h-0 flex flex-row items-start justify-between"
+            className="flex-1 min-h-0 flex flex-row items-start justify-between pointer-events-none"
             style={{ paddingTop: "clamp(5.5rem, 8vh, 7rem)" }}
           >
 
             {/* ── LEFT COLUMN ───────────────────────────────────────────── */}
             <div
-              className="flex flex-col items-start"
+              className="flex flex-col items-start pointer-events-none"
               style={{ maxWidth: "min(40rem, 54vw)" }}
             >
 
               {/* Eyebrow — delay 0.05s */}
               <p
-                className="hero-animate hero-fade-up font-mono uppercase text-[rgba(222,193,180,0.55)] tracking-widest mb-3"
+                className="hero-animate hero-fade-up font-mono uppercase text-[rgba(222,193,180,0.55)] tracking-widest mb-3 pointer-events-none"
                 style={{
                   fontSize: 11,
                   letterSpacing: "0.14em",
@@ -406,7 +406,7 @@ export function HeroSection() {
 
               {/* Headline — delay 0.18s */}
               <h2
-                className="hero-animate hero-fade-up text-[#DEC1B4] font-sans font-normal select-text"
+                className="hero-animate hero-fade-up text-[#DEC1B4] font-sans font-normal pointer-events-none"
                 style={{
                   fontSize: "clamp(36px, 3.2vw, 58px)",
                   lineHeight: 1.25,
@@ -442,7 +442,7 @@ export function HeroSection() {
               {/* Handwritten Footnote (aka rset + Curved Arrow) — delay 0.38s */}
               <div
                 data-cursor="magnetic"
-                className="hero-animate hero-fade-up mt-1 inline-flex items-center gap-2 font-mono cursor-pointer group transition-opacity hover:opacity-75 select-none"
+                className="hero-animate hero-fade-up mt-1 inline-flex items-center gap-2 font-mono cursor-pointer group transition-opacity hover:opacity-75 select-none pointer-events-auto"
                 style={{
                   marginLeft: "clamp(200px, 18vw, 320px)",
                   fontSize: "clamp(15px, 1.2vw, 19px)",
@@ -470,7 +470,7 @@ export function HeroSection() {
 
             {/* ── RIGHT ZONE: 3D K — delay 0.30s ───────────────────────── */}
             <div
-              className="hero-animate hero-k shrink-0 flex items-start justify-end"
+              className="hero-animate hero-k shrink-0 flex items-start justify-end pointer-events-none"
               style={{
                 width: "clamp(240px, 35vw, 560px)",
                 marginTop: "-0.5rem",
@@ -484,7 +484,7 @@ export function HeroSection() {
 
           {/* ── WORDMARK ZONE ────────────────────────────────────────────── */}
           <div
-            className="w-full shrink-0 flex flex-col justify-end relative z-30 overflow-visible"
+            className="w-full shrink-0 flex flex-col justify-end relative z-30 overflow-visible pointer-events-none"
             style={{ paddingBottom: "clamp(1.5rem, 4vh, 3rem)" }}
           >
             {/*
@@ -531,7 +531,7 @@ export function HeroSection() {
 
             {/* 1px divider — delay 0.72s, expands left→right */}
             <div
-              className="hero-animate hero-divider w-full h-px mt-3 relative z-10"
+              className="hero-animate hero-divider w-full h-px mt-3 relative z-10 pointer-events-none"
               style={{
                 background: "rgba(206, 164, 145, 0.14)",
                 animationDelay: "0.72s",
