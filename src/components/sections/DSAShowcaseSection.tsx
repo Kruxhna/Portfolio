@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { DSA_DATA, formatRelativeTime } from "@/data/dsaData";
+import { ArrowUpRight, Flame } from "lucide-react";
+import { DSA_DATA } from "@/data/dsaData";
 
 // Ease-out cubic for smooth count-up
 function easeOutCubic(t: number): number {
@@ -13,11 +14,39 @@ export function DSAShowcaseSection() {
   const [hasEntered, setHasEntered] = useState(false);
   const [counts, setCounts] = useState<{ [key: string]: number }>({});
   const [isReducedMotion, setIsReducedMotion] = useState(false);
-  const [nowMs, setNowMs] = useState<number | null>(null);
+  const [selectedParadigm, setSelectedParadigm] = useState<string>("All Paradigms");
 
-  useEffect(() => {
-    setNowMs(Date.now());
-  }, []);
+  // Paradigms with counts and complexity bounds
+  const paradigmData: { [key: string]: { count: string; bound: string } } = {
+    "All Paradigms": {
+      count: "350+",
+      bound: "strictly bounded O(N), O(log N) & O(1) auxiliary space",
+    },
+    "Dynamic Programming": {
+      count: "65+",
+      bound: "optimal bound: O(N) / O(N·K) time with space compression",
+    },
+    "Graphs & Trees": {
+      count: "80+",
+      bound: "optimal bound: O(V + E) BFS/DFS · O(E log V) Dijkstra",
+    },
+    "Binary Search": {
+      count: "45+",
+      bound: "optimal bound: strictly O(log N) on monotonic search space",
+    },
+    "Heaps & Sliding Window": {
+      count: "50+",
+      bound: "optimal bound: O(N log K) min/max-heap · O(N) monotonic deque",
+    },
+    "Divide & Conquer": {
+      count: "30+",
+      bound: "optimal bound: O(N log N) merge count with Akra-Bazzi recurrence",
+    },
+    "Bit Manipulation": {
+      count: "35+",
+      bound: "optimal bound: O(1) word-level parallel bitwise operations",
+    },
+  };
 
   // Check prefers-reduced-motion
   useEffect(() => {
@@ -33,7 +62,6 @@ export function DSAShowcaseSection() {
     const el = sectionRef.current;
     if (!el) return;
 
-    // If reduced motion is requested, show final state immediately
     if (isReducedMotion) {
       setHasEntered(true);
       const initial: { [key: string]: number } = {};
@@ -50,7 +78,6 @@ export function DSAShowcaseSection() {
           setHasEntered(true);
           observer.disconnect();
 
-          // 900ms count-up with easeOutCubic
           const startTime = performance.now();
           const duration = 900;
 
@@ -68,7 +95,6 @@ export function DSAShowcaseSection() {
             if (progress < 1) {
               requestAnimationFrame(animateCounts);
             } else {
-              // Ensure exact final numbers
               const finalCounts: { [key: string]: number } = {};
               DSA_DATA.stats.forEach((s) => {
                 finalCounts[s.id] = s.value;
@@ -87,7 +113,6 @@ export function DSAShowcaseSection() {
     return () => observer.disconnect();
   }, [isReducedMotion]);
 
-  // Motion entrance styles helper (80ms stagger, 16px rise)
   const getEntranceStyle = (index: number): React.CSSProperties => {
     if (isReducedMotion) {
       return { opacity: 1, transform: "none" };
@@ -104,144 +129,192 @@ export function DSAShowcaseSection() {
       ref={sectionRef}
       id="dsa"
       aria-labelledby="dsa-title"
-      className="relative w-full bg-transparent scroll-mt-24 select-none"
-      style={{
-        paddingTop: "clamp(64px, 10vw, 128px)",
-        paddingBottom: "clamp(64px, 10vw, 128px)",
-        paddingLeft: "2.5vw",
-        paddingRight: "2.5vw",
-      }}
+      className="relative z-10 w-full bg-transparent py-14 sm:py-20 md:py-24 select-none"
     >
-      <div className="mx-auto w-full max-w-[1440px]">
-        {/* 12-Column Asymmetric Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+      {/* Full-Width Container Aligned with Navbar and Featured Work (max-w-[1720px]) */}
+      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12">
+        {/* 12-Column Asymmetric Grid with Equal Height Columns (items-stretch) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-stretch">
           {/* ================================================================= */}
-          {/* LEFT COLUMN: IDENTITY BLOCK (Cols 1-4, Sticky)                     */}
+          {/* LEFT COLUMN: TOP NARRATIVE + BOTTOM PARADIGMS & TELEMETRY         */}
           {/* ================================================================= */}
           <div
-            className="lg:col-span-4 lg:sticky lg:top-[104px] flex flex-col items-start select-text"
+            className="lg:col-span-5 flex flex-col justify-between h-full select-text"
             style={getEntranceStyle(0)}
           >
-            {/* 1. Eyebrow */}
-            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--muted)] mb-3">
-              {DSA_DATA.eyebrow}
-            </p>
+            {/* ── Top Group: Editorial Header & Narrative ──────────────────── */}
+            <div>
+              {/* 1. Eyebrow */}
+              <p className="font-mono text-xs uppercase tracking-widest text-[#CEA491]/65 mb-4">
+                {DSA_DATA.eyebrow}
+              </p>
 
-            {/* 2. Title: algorithmic rigor */}
-            <h2
-              id="dsa-title"
-              className="text-[#DEC1B4] font-normal leading-[0.95] tracking-tighter"
-              style={{
-                fontFamily: "var(--font-roboto-flex), var(--font-inter), sans-serif",
-                fontVariationSettings: '"wght" 850, "wdth" 120',
-                fontSize: "clamp(40px, 5vw, 88px)",
-              }}
-            >
-              {DSA_DATA.title}
-            </h2>
-
-            {/* 3. Statement */}
-            <p className="mt-6 text-[16px] sm:text-[17px] text-[var(--muted)] leading-[1.6] max-w-[36ch]">
-              {DSA_DATA.statement}
-            </p>
-
-            {/* 4. Tag line */}
-            <p className="mt-6 font-mono text-[11px] text-[var(--muted)] tracking-[0.08em] lowercase">
-              {DSA_DATA.tagline}
-            </p>
-
-            {/* 5. Plain text link + sync metadata */}
-            <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px]">
-              <a
-                href={DSA_DATA.profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nav-link-underline text-[#DEC1B4] hover:text-[#AD6A4C] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#AD6A4C] focus-visible:outline-offset-[3px] inline-flex items-center gap-1"
+              {/* 2. Display Title */}
+              <h2
+                id="dsa-title"
+                className="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.94] text-[#DEC1B4] mb-6"
               >
-                {DSA_DATA.profileLinkText}
-              </a>
-              <span className="text-[var(--line)]" aria-hidden="true">
-                /
-              </span>
-              <span className="text-[var(--muted)]">{DSA_DATA.lastSyncedDate}</span>
+                {DSA_DATA.title}
+              </h2>
+
+              {/* 3. Body Copy */}
+              <p className="text-base sm:text-lg text-[#DEC1B4]/80 leading-relaxed max-w-md font-sans">
+                {DSA_DATA.statement}
+              </p>
+
+              {/* 4. Technical Spec Strip */}
+              <p className="font-mono text-xs text-[#CEA491]/55 mt-6 pt-5 border-t border-[#CEA491]/18">
+                {DSA_DATA.tagline}
+              </p>
+
+              {/* 5. External Profile Link Row */}
+              <div className="mt-6 flex flex-wrap items-center font-mono text-xs">
+                <a
+                  href={DSA_DATA.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="magnetic"
+                  data-cursor-label="*open ↗*"
+                  className="text-[#FDFCFB] hover:text-[#AD6A4C] transition-colors inline-flex items-center gap-1 cursor-pointer font-medium"
+                >
+                  <span>{DSA_DATA.profileLinkText}</span>
+                </a>
+                <span className="text-[#CEA491]/50 ml-2">
+                  / {DSA_DATA.lastSyncedDate}
+                </span>
+              </div>
+            </div>
+
+            {/* ── Bottom Group: Fills Bottom-Left (Flush with Right Column) ── */}
+            <div className="border-t border-[#CEA491]/18 pt-7 mt-8">
+              {/* Header Row */}
+              <div className="flex items-center justify-between text-[11px] font-mono">
+                <span className="uppercase tracking-widest text-[#CEA491]/60 font-semibold">
+                  PARADIGMS MASTERED
+                </span>
+                <span className="text-[#AD6A4C] text-[10px] tracking-wide">
+                  [ click to filter submissions ]
+                </span>
+              </div>
+
+              {/* Interactive Paradigm Pills */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                {Object.keys(paradigmData).map((pName) => {
+                  const isSel = selectedParadigm === pName;
+                  const item = paradigmData[pName];
+                  return (
+                    <button
+                      key={pName}
+                      onClick={() => setSelectedParadigm(pName)}
+                      data-cursor="magnetic"
+                      className={`text-xs font-mono px-3 py-1.5 rounded transition-all cursor-pointer ${
+                        isSel
+                          ? "bg-[#AD6A4C]/20 border border-[#AD6A4C] text-[#FDFCFB] font-semibold"
+                          : "bg-[#0A0807]/85 border border-[#CEA491]/20 text-[#DEC1B4] hover:border-[#AD6A4C]/50"
+                      }`}
+                    >
+                      {pName === "All Paradigms" ? "[ All Paradigms ]" : `${pName} [${item.count}]`}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Dynamic Complexity Bound Subtitle */}
+              <div className="mt-3 text-[11px] font-mono text-[#AD6A4C] flex items-center gap-1.5 min-h-[20px]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#AD6A4C] shrink-0" />
+                <span className="truncate">{paradigmData[selectedParadigm].bound}</span>
+              </div>
+
+              {/* Compact Complexity & Consistency Telemetry Strip */}
+              <div className="grid grid-cols-3 gap-4 mt-6 pt-5 border-t border-[#CEA491]/15">
+                <div>
+                  <div className="text-[10px] font-mono text-[#CEA491]/55 uppercase tracking-wider">
+                    primary lang
+                  </div>
+                  <div className="mt-1 text-xs font-mono text-[#FDFCFB] font-bold">
+                    Python 3 / C++
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] font-mono text-[#CEA491]/55 uppercase tracking-wider">
+                    avg runtime
+                  </div>
+                  <div className="mt-1 text-xs font-mono text-[#AD6A4C] font-bold">
+                    94.2%ile
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] font-mono text-[#CEA491]/55 uppercase tracking-wider">
+                    memory bound
+                  </div>
+                  <div className="mt-1 text-xs font-mono text-[#DEC1B4] font-bold">
+                    O(1) – O(N)
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* ================================================================= */}
-          {/* RIGHT COLUMN: STACKED BLOCKS (Cols 6-12)                           */}
+          {/* RIGHT COLUMN: STATS + PLATFORMS + RECENT SUBMISSIONS               */}
           {/* ================================================================= */}
-          <div className="lg:col-span-7 lg:col-start-6 flex flex-col select-text">
-            {/* ── BLOCK A: STATS ───────────────────────────────────────────── */}
-            <div
-              className="border-t border-[var(--line)] pt-8 pb-12"
-              style={getEntranceStyle(1)}
-            >
-              <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-4">
-                {DSA_DATA.stats.map((stat) => (
-                  <div key={stat.id} className="flex flex-col">
-                    <dd
-                      className="text-[#DEC1B4] tracking-tight leading-none tabular-nums font-normal"
-                      style={{
-                        fontFamily:
-                          "var(--font-roboto-flex), var(--font-inter), sans-serif",
-                        fontVariationSettings: '"wght" 800, "wdth" 110',
-                        fontSize: "clamp(34px, 4vw, 56px)",
-                        fontVariantNumeric: "tabular-nums",
-                      }}
-                    >
-                      {/* Fixed min-width prevents layout shift during count-up */}
-                      <span className="inline-block tabular-nums">
-                        {counts[stat.id] !== undefined
-                          ? counts[stat.id]
-                          : stat.value}
-                        {stat.suffix || ""}
-                      </span>
-                    </dd>
-                    <dt className="mt-2.5 font-mono text-[12px] text-[#AD6A4C] lowercase tracking-normal">
-                      {stat.label}
-                    </dt>
+          <div
+            className="lg:col-span-7 flex flex-col justify-between h-full select-text"
+            style={getEntranceStyle(1)}
+          >
+            {/* ── BLOCK A: 5-Metric Stat Strip (Aligned with algorithmic rigor) ─ */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 pb-8 border-b border-[#CEA491]/18">
+              {DSA_DATA.stats.map((stat) => (
+                <div key={stat.id} className="flex flex-col">
+                  <div className="text-4xl sm:text-5xl font-black tracking-tight text-[#DEC1B4] font-mono leading-none tabular-nums">
+                    <span>
+                      {counts[stat.id] !== undefined
+                        ? counts[stat.id]
+                        : stat.value}
+                      {stat.suffix || ""}
+                    </span>
                   </div>
-                ))}
-              </dl>
+                  <div className="mt-1.5 text-xs font-mono text-[#AD6A4C] lowercase tracking-normal">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
             </div>
 
-            {/* ── BLOCK B: PLATFORMS ───────────────────────────────────────── */}
-            <div
-              className="border-t border-[var(--line)] pt-12 pb-12"
-              style={getEntranceStyle(2)}
-            >
-              <ul className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[var(--line)]">
+            {/* ── BLOCK B: 3-Column Platform Breakdown ───────────────────────── */}
+            <div className="py-8 border-b border-[#CEA491]/18">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:divide-x sm:divide-[#CEA491]/18">
                 {DSA_DATA.platforms.map((platform, idx) => (
-                  <li
+                  <div
                     key={platform.id}
                     className={`flex flex-col justify-between ${
                       idx === 0
-                        ? "md:pr-6 pb-6 md:pb-0"
+                        ? "sm:pr-6 pb-6 sm:pb-0"
                         : idx === 1
-                        ? "md:px-6 py-6 md:py-0"
-                        : "md:pl-6 pt-6 md:pt-0"
+                        ? "sm:px-6 py-6 sm:py-0"
+                        : "sm:pl-6 pt-6 sm:pt-0"
                     }`}
                   >
                     <div>
                       {/* Name + Status Indicator */}
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[13px] text-[#DEC1B4] font-normal lowercase">
+                        <span className="font-mono text-sm text-[#DEC1B4] font-semibold lowercase">
                           {platform.name}
                         </span>
-                        <div className="flex items-center gap-1.5 font-mono text-[11px] lowercase">
+                        <div className="flex items-center gap-1.5 font-mono text-xs lowercase">
                           <span
                             className="h-1.5 w-1.5 rounded-full"
                             style={{
                               backgroundColor: platform.isActive
                                 ? "#AD6A4C"
-                                : "rgba(205, 180, 158, 0.4)",
+                                : "rgba(206, 164, 145, 0.4)",
                             }}
                           />
                           <span
                             style={{
                               color: platform.isActive
                                 ? "#AD6A4C"
-                                : "rgba(205, 180, 158, 0.4)",
+                                : "rgba(206, 164, 145, 0.6)",
                             }}
                           >
                             {platform.isActive ? "active" : "synced"}
@@ -250,142 +323,123 @@ export function DSAShowcaseSection() {
                       </div>
 
                       {/* Metrics */}
-                      <div className="mt-3 font-mono text-[12px] text-[var(--muted)] lowercase leading-relaxed">
-                        <div>{platform.solved}</div>
+                      <div className="mt-3 font-mono text-xs text-[#CEA491]/75 lowercase leading-relaxed">
+                        <div className="text-[#FDFCFB] font-bold">{platform.solved}</div>
                         <div className="mt-0.5">{platform.metric}</div>
-                        <div className="mt-0.5">{platform.handle}</div>
+                        <div className="mt-0.5 text-[#AD6A4C]">{platform.handle}</div>
                       </div>
                     </div>
 
                     {/* Action link */}
-                    <div className="mt-5 pt-3">
+                    <div className="mt-5 pt-3 border-t border-[#CEA491]/10">
                       <a
                         href={platform.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="nav-link-underline font-mono text-[11px] text-[#DEC1B4] hover:text-[#AD6A4C] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#AD6A4C] focus-visible:outline-offset-[3px] inline-flex items-center gap-1"
+                        data-cursor="magnetic"
+                        data-cursor-label="*open ↗*"
+                        className="font-mono text-xs text-[#DEC1B4] hover:text-[#AD6A4C] transition-colors inline-flex items-center gap-1 cursor-pointer"
                       >
-                        profile ↗
+                        <span>profile</span>
+                        <ArrowUpRight className="h-3.5 w-3.5" />
                       </a>
                     </div>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
-            {/* ── BLOCK C: PARADIGMS MASTERED ──────────────────────────────── */}
-            <div
-              className="border-t border-[var(--line)] pt-12 pb-12"
-              style={getEntranceStyle(3)}
-            >
-              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">
-                PARADIGMS MASTERED
-              </p>
-
-              <ul className="mt-5 flex flex-wrap gap-2">
-                {DSA_DATA.paradigms.map((p) => (
-                  <li
-                    key={p.name}
-                    data-cursor="link"
-                    className="border border-[var(--line)] bg-[#0A0807] rounded-[4px] px-3 py-1.5 font-mono text-[12px] text-[#DEC1B4] transition-colors duration-150 hover:border-[#AD6A4C] hover:text-[#EEDED7] cursor-default"
-                  >
-                    {p.name} [{p.count}]
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* ── BLOCK D: RECENT SUBMISSIONS (LEDGER) ──────────────────────── */}
-            <div
-              className="border-t border-[var(--line)] pt-12 pb-6"
-              style={getEntranceStyle(4)}
-            >
+            {/* ── BLOCK C: RECENT SUBMISSIONS Table (Bottom-Aligned with Left) ─ */}
+            <div className="pt-8">
               {/* Header row */}
-              <div className="flex items-center justify-between mb-5">
-                <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-mono text-xs uppercase tracking-widest text-[#CEA491]/60 font-semibold">
                   RECENT SUBMISSIONS
-                </p>
+                </span>
                 <a
                   href={DSA_DATA.profileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="nav-link-underline font-mono text-[11px] lowercase text-[var(--muted)] hover:text-[#AD6A4C] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#AD6A4C] focus-visible:outline-offset-[3px]"
+                  data-cursor="magnetic"
+                  data-cursor-label="*open ↗*"
+                  className="font-mono text-xs text-[#DEC1B4] hover:text-[#AD6A4C] transition-colors cursor-pointer inline-flex items-center gap-1"
                 >
-                  view all ↗
+                  <span>view all ↗</span>
                 </a>
               </div>
 
-              {/* Ledger Table */}
-              <div className="w-full overflow-x-auto">
-                <table className="w-full border-collapse text-left font-mono text-[12px]">
-                  <thead className="sr-only">
-                    <tr>
-                      <th scope="col">Problem</th>
-                      <th scope="col">Difficulty</th>
-                      <th scope="col">Platform</th>
-                      <th scope="col">Time</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[var(--line)]">
-                    {DSA_DATA.submissions.map((sub) => {
-                      const diffColor =
-                        sub.difficulty === "easy"
-                          ? "text-[#AD6A4C]"
-                          : sub.difficulty === "med"
-                          ? "text-[#DEC1B4]"
-                          : "text-[#EEDED7] font-medium";
+              {/* Submissions List Table */}
+              <div className="w-full divide-y divide-[#CEA491]/15 border-t border-b border-[#CEA491]/15 mt-4">
+                  {DSA_DATA.submissions.map((sub) => {
+                    const isMatch =
+                      selectedParadigm === "All Paradigms" ||
+                      sub.paradigm.toLowerCase() === selectedParadigm.toLowerCase();
 
-                      return (
-                        <tr
-                          key={sub.id}
-                          className="transition-colors duration-150 hover:bg-[rgba(173,125,86,0.06)] group"
-                        >
-                          {/* Problem name */}
-                          <td className="py-3.5 pr-4 text-[#EEDED7] font-normal">
-                            <a
-                              href={sub.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="nav-link-underline hover:text-[#AD6A4C] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#AD6A4C] focus-visible:outline-offset-[3px]"
-                            >
-                              {sub.problem}
-                            </a>
-                            {/* Mobile subtitle with platform & time */}
-                            <div className="sm:hidden mt-1 text-[11px] text-[var(--muted)] flex items-center gap-2">
-                              <span className={diffColor}>{sub.difficulty}</span>
-                              <span>·</span>
-                              <span>{sub.platform}</span>
-                              <span>·</span>
-                              <span className="tabular-nums">
-                                {formatRelativeTime(sub.timestamp, nowMs)}
-                              </span>
-                            </div>
-                          </td>
+                    const diffColor =
+                      sub.difficulty === "easy"
+                        ? "text-[#AD6A4C]"
+                        : sub.difficulty === "med"
+                        ? "text-[#DEC1B4]"
+                        : "text-[#FDFCFB] font-bold";
 
-                          {/* Difficulty (Hidden on very narrow mobile, visible sm+) */}
-                          <td className="hidden sm:table-cell py-3.5 px-4">
+                    return (
+                      <div
+                        key={sub.id}
+                        className={`py-3.5 px-3 -mx-3 rounded transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+                          isMatch
+                            ? selectedParadigm !== "All Paradigms"
+                              ? "bg-[#AD6A4C]/15 border-l-2 border-[#AD6A4C] pl-2.5"
+                              : "hover:bg-[#AD6A4C]/[0.05]"
+                            : "opacity-35 hover:opacity-70"
+                        }`}
+                      >
+                        {/* Problem Name & Mobile Meta */}
+                        <div className="flex-1 min-w-0 pr-4">
+                          <a
+                            href={sub.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-cursor="magnetic"
+                            className="font-mono text-xs sm:text-[13px] text-[#EEDED7] hover:text-[#AD6A4C] transition-colors truncate block"
+                          >
+                            {sub.problem}
+                          </a>
+                          {/* Mobile-only tag */}
+                          <div className="sm:hidden mt-1 flex items-center gap-2 text-[10px] font-mono text-[#CEA491]/60">
+                            <span className="text-[#AD6A4C]">{sub.paradigm}</span>
+                            <span>·</span>
                             <span className={diffColor}>{sub.difficulty}</span>
-                          </td>
+                            <span>·</span>
+                            <span>{sub.platform}</span>
+                            <span>·</span>
+                            <span>{sub.timeAgo}</span>
+                          </div>
+                        </div>
 
-                          {/* Platform (Hidden on mobile, visible sm+) */}
-                          <td className="hidden sm:table-cell py-3.5 px-4 text-[var(--muted)]">
-                            {sub.platform}
-                          </td>
+                        {/* Desktop Paradigm Tag */}
+                        <div className="hidden sm:block text-xs font-mono text-[#CEA491]/65 w-44 truncate">
+                          {sub.paradigm}
+                        </div>
 
-                          {/* Relative Time (Hidden on mobile, visible sm+) */}
-                          <td className="hidden sm:table-cell py-3.5 pl-4 text-right text-[var(--muted)] tabular-nums">
-                            {formatRelativeTime(sub.timestamp, nowMs)}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                        {/* Desktop Difficulty */}
+                        <div className="hidden sm:block text-xs font-mono w-14 text-center">
+                          <span className={diffColor}>{sub.difficulty}</span>
+                        </div>
+
+                        {/* Desktop Platform & Time */}
+                        <div className="hidden sm:flex items-center justify-end gap-2 text-xs font-mono text-[#CEA491]/70 w-32 text-right">
+                          <span>{sub.platform}</span>
+                          <span>·</span>
+                          <span className="text-[#FDFCFB]/80">{sub.timeAgo}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
+    );
+  }

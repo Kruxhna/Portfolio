@@ -25,8 +25,10 @@ export interface DsaParadigmItem {
 export interface DsaSubmissionItem {
   id: string;
   problem: string;
+  paradigm: string;
   difficulty: "easy" | "med" | "hard";
   platform: string;
+  timeAgo: string;
   timestamp: string; // ISO 8601 timestamp
   url: string;
 }
@@ -87,43 +89,61 @@ export const DSA_DATA = {
     { name: "Dynamic Programming", count: "65+" },
     { name: "Graphs & Trees", count: "80+" },
     { name: "Binary Search", count: "45+" },
-    { name: "Backtracking", count: "30+" },
     { name: "Heaps & Sliding Window", count: "50+" },
+    { name: "Divide & Conquer", count: "30+" },
     { name: "Bit Manipulation", count: "35+" },
   ] as DsaParadigmItem[],
 
   // Block D: Recent Submissions (Ledger)
   submissions: [
     {
-      id: "two-sum",
-      problem: "Two Sum",
-      difficulty: "easy",
+      id: "min-interval",
+      problem: "Minimum Interval to Include Each Query",
+      paradigm: "Heaps & Sliding Window",
+      difficulty: "hard",
       platform: "LeetCode",
-      timestamp: "2026-10-13T13:30:00Z", // ~2h ago
-      url: "https://leetcode.com/problems/two-sum/",
+      timeAgo: "16h ago",
+      timestamp: "2026-10-13T19:30:00Z",
+      url: "https://leetcode.com/problems/minimum-interval-to-include-each-query/",
+    },
+    {
+      id: "reverse-pairs",
+      problem: "Reverse Pairs",
+      paradigm: "Divide & Conquer",
+      difficulty: "hard",
+      platform: "LeetCode",
+      timeAgo: "19h ago",
+      timestamp: "2026-10-13T16:30:00Z",
+      url: "https://leetcode.com/problems/reverse-pairs/",
     },
     {
       id: "dijkstra",
-      problem: "Dijkstra's Algorithm",
+      problem: "Dijkstra's Shortest Path",
+      paradigm: "Graphs & Trees",
       difficulty: "med",
       platform: "GFG",
-      timestamp: "2026-10-13T10:30:00Z", // ~5h ago
+      timeAgo: "1d ago",
+      timestamp: "2026-10-12T10:30:00Z",
       url: "https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/",
     },
     {
-      id: "n-queens",
-      problem: "N-Queens",
-      difficulty: "hard",
+      id: "max-product",
+      problem: "Maximum Product Subarray",
+      paradigm: "Dynamic Programming",
+      difficulty: "med",
       platform: "LeetCode",
-      timestamp: "2026-10-12T13:30:00Z", // ~1d ago
-      url: "https://leetcode.com/problems/n-queens/",
+      timeAgo: "2d ago",
+      timestamp: "2026-10-11T13:30:00Z",
+      url: "https://leetcode.com/problems/maximum-product-subarray/",
     },
     {
       id: "subarray-sum",
       problem: "Subarray Sum Equals K",
+      paradigm: "Heaps & Sliding Window",
       difficulty: "med",
       platform: "CodeChef",
-      timestamp: "2026-10-11T13:30:00Z", // ~2d ago
+      timeAgo: "3d ago",
+      timestamp: "2026-10-10T13:30:00Z",
       url: "https://leetcode.com/problems/subarray-sum-equals-k/",
     },
   ] as DsaSubmissionItem[],
