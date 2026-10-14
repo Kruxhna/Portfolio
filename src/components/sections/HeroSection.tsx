@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Letter3DViewer } from "@/components/ui/Letter3DViewer";
 
-const ACCENT_COLOR = "#3ecf8e";
+const ACCENT_COLOR = "#AD6A4C";
 
 const ALIAS_LIST = [
   "rset", "Kruxhna", "krush", "0xKrush", "aiml-k", "5<4t", "kru",
@@ -185,7 +185,7 @@ export function HeroSection() {
       <section
         ref={sectionRef}
         id="about"
-        className="relative w-full bg-[#0f1115] select-none"
+        className="relative w-full bg-transparent select-none"
         style={{ height: "100dvh", overflow: "hidden" }}
       >
         {/*
@@ -213,44 +213,44 @@ export function HeroSection() {
 
               {/* Eyebrow — delay 0.05s */}
               <p
-                className="hero-animate hero-fade-up font-mono uppercase text-[#6b7280] mb-3"
+                className="hero-animate hero-fade-up font-mono uppercase text-[rgba(222,193,180,0.55)] tracking-widest mb-3"
                 style={{
                   fontSize: 11,
-                  letterSpacing: "0.12em",
+                  letterSpacing: "0.14em",
                   animationDelay: "0.05s",
                 }}
               >
                 STUDENT DEVELOPER · INDIA
               </p>
 
-              {/* Headline — delay 0.18s; line-by-line stagger via clip-mask */}
+              {/* Headline — delay 0.18s */}
               <h2
-                className="hero-animate hero-fade-up text-[#eeeef2] font-sans font-normal select-text"
+                className="hero-animate hero-fade-up text-[#DEC1B4] font-sans font-normal select-text"
                 style={{
-                  fontSize: "clamp(40px, 3.4vw, 64px)",
+                  fontSize: "clamp(36px, 3.2vw, 58px)",
                   lineHeight: 1.25,
                   fontWeight: 450,
                   animationDelay: "0.18s",
                 }}
               >
                 I{" "}
-                <span className="font-mono font-normal" style={{ color: ACCENT_COLOR }}>
+                <span className="font-mono font-medium" style={{ color: "#AD6A4C" }}>
                   profile
                 </span>
                 ,{" "}
-                <span className="font-mono font-normal" style={{ color: ACCENT_COLOR }}>
+                <span className="font-mono font-medium" style={{ color: "#AD6A4C" }}>
                   optimize
                 </span>{" "}
                 and{" "}
-                <span className="font-mono font-normal" style={{ color: ACCENT_COLOR }}>
+                <span className="font-mono font-medium" style={{ color: "#AD6A4C" }}>
                   scale
                 </span>{" "}
                 engines that turn{" "}
                 <span
-                  className="font-mono font-normal headline-accent-underline"
+                  className="font-serif italic font-normal headline-accent-underline"
                   style={{
-                    color: "#eeeef2",
-                    textDecorationColor: ACCENT_COLOR,
+                    color: "#EEDED7",
+                    textDecorationColor: "#BF866D",
                   }}
                 >
                   heavy math
@@ -258,14 +258,14 @@ export function HeroSection() {
                 into millisecond latency.
               </h2>
 
-              {/* Alias — delay 0.38s */}
+              {/* Handwritten Footnote (aka rset + Curved Arrow) — delay 0.38s */}
               <div
                 data-cursor="magnetic"
-                className="hero-animate hero-fade-up mt-1 inline-flex items-center gap-2 font-mono cursor-pointer group transition-opacity hover:opacity-70 select-none"
+                className="hero-animate hero-fade-up mt-1 inline-flex items-center gap-2 font-mono cursor-pointer group transition-opacity hover:opacity-75 select-none"
                 style={{
                   marginLeft: "clamp(200px, 18vw, 320px)",
-                  fontSize: "clamp(16px, 1.25vw, 20px)",
-                  color: ACCENT_COLOR,
+                  fontSize: "clamp(15px, 1.2vw, 19px)",
+                  color: "#AD6A4C",
                   animationDelay: "0.38s",
                 }}
                 onClick={scrambleToNext}
@@ -277,7 +277,7 @@ export function HeroSection() {
                 <span>aka {displayedAlias}</span>
                 <svg
                   className="w-5 h-5 translate-y-0.5 transition-transform group-hover:translate-x-0.5"
-                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24" fill="none" stroke="#AD6A4C"
                   strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
                 >
                   <path d="M4 6c0 6 5 11 14 11" />
@@ -296,7 +296,7 @@ export function HeroSection() {
                 animationDelay: "0.30s",
               }}
             >
-              <Letter3DViewer accentColor={ACCENT_COLOR} />
+              <Letter3DViewer accentColor="#AD6A4C" />
             </div>
 
           </div>
@@ -304,23 +304,22 @@ export function HeroSection() {
           {/* ── WORDMARK ZONE ────────────────────────────────────────────── */}
           <div
             className="w-full shrink-0 flex flex-col justify-end"
-            style={{ paddingBottom: "clamp(2rem, 5vh, 4rem)" }}
+            style={{ paddingBottom: "clamp(1.5rem, 4vh, 3rem)" }}
           >
             {/*
               "krushna" wordmark — split into one <span> per letter.
-              aria-label on the h1 for screen readers; spans aria-hidden.
-              clip: overflow-visible so letters don't get cut during variable-font animation.
-              font-kerning: none keeps spacing stable while axes change.
+              Color: Rodeo Dust (#DEC1B4)
+              leading-[0.82], clamp(4.2rem, 12vw, 13.5rem)
             */}
             <h1
               ref={wordmarkRef}
               data-cursor="invert"
               aria-label="krushna"
-              className="hero-animate font-sans font-black whitespace-nowrap overflow-visible leading-none text-[#eeeef2]"
+              className="hero-animate font-sans font-black whitespace-nowrap overflow-visible text-[#DEC1B4]"
               style={{
-                fontSize: "clamp(8rem, min(31vw, 33vh), 36rem)",
+                fontSize: "clamp(4.2rem, 12vw, 13.5rem)",
                 letterSpacing: "-0.045em",
-                lineHeight: 0.85,
+                lineHeight: 0.82,
                 textShadow: "none",
                 fontKerning: "none",
                 animationName: "none", // letters animate individually below
@@ -346,7 +345,7 @@ export function HeroSection() {
             <div
               className="hero-animate hero-divider w-full h-px mt-3"
               style={{
-                background: "rgba(255,255,255,0.08)",
+                background: "rgba(206, 164, 145, 0.14)",
                 animationDelay: "0.72s",
               }}
             />

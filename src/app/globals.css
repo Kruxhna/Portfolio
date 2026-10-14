@@ -1,28 +1,101 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bg-black: var(--bg-black);
+  --color-bg-obsidian: var(--bg-obsidian);
+  --color-rodeo-900: var(--rodeo-900);
+  --color-rodeo-700: var(--rodeo-700);
+  --color-rodeo-500: var(--rodeo-500);
+  --color-rodeo-400: var(--rodeo-400);
+  --color-rodeo-200: var(--rodeo-200);
+  --color-rodeo-100: var(--rodeo-100);
+  --color-rodeo-50: var(--rodeo-50);
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-surface-hover: var(--bg-surface-hover);
+  --color-bg-glass: var(--bg-glass);
+  --color-text-display: var(--text-display);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-hover: var(--border-hover);
+}
+
 @layer base {
   :root {
-    --bg-primary: #0f1115;
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-code: #71717a;
-    --accent-emerald: #10b981;
-    --accent-cyan: #38bdf8;
-    --accent-indigo: #6366f1;
-    --card-bg: #111115;
-    --card-border: #27272a;
+    /* Rodeo Dust Monochromatic Palette (1008-10B) + Pure Black */
+    --bg-black: #000000;
+    --bg-obsidian: #0A0807;
+    --rodeo-900: #AD6A4C;
+    --rodeo-700: #BF866D;
+    --rodeo-500: #CEA491;
+    --rodeo-400: #DEC1B4;
+    --rodeo-200: #EEDED7;
+    --rodeo-100: #FDFCFB;
+    --rodeo-50: #FFFFFF;
 
-    /* Hero Design Tokens */
-    --bg: #0f1115;
-    --fg: #fafafa;
-    --muted: #71717a;
-    --line: rgba(255, 255, 255, 0.08);
-    --accent: #3ecf8e;
+    /* Semantic Token Mappings (Dark Theme Default) */
+    --bg-primary: #000000;
+    --bg-elevated: #0A0807;
+    --bg-surface-hover: #14100D;
+    --bg-glass: rgba(10, 8, 7, 0.72);
+    --text-display: #DEC1B4;
+    --text-primary: #EEDED7;
+    --text-secondary: #DEC1B4;
+    --text-muted: rgba(222, 193, 180, 0.55);
+    --accent-primary: #AD6A4C;
+    --accent-hover: #BF866D;
+    --accent-subtle: rgba(173, 106, 76, 0.15);
+    --border-subtle: rgba(206, 164, 145, 0.14);
+    --border-hover: rgba(173, 106, 76, 0.48);
+
+    /* Convenient Core Aliases */
+    --bg: #000000;
+    --fg: #EEDED7;
+    --muted: rgba(222, 193, 180, 0.55);
+    --line: rgba(206, 164, 145, 0.14);
+    --accent: #AD6A4C;
+    --card-bg: #0A0807;
+    --card-border: rgba(206, 164, 145, 0.14);
+  }
+
+  /* Light Theme (When THEME: LIGHT / AUTO is toggled) */
+  .theme-light, [data-theme="light"] {
+    --bg-primary: #EEDED7;
+    --bg-elevated: #DEC1B4;
+    --bg-surface-hover: #CEA491;
+    --bg-glass: rgba(238, 222, 215, 0.78);
+    --text-display: #000000;
+    --text-primary: #000000;
+    --text-secondary: #0A0807;
+    --text-muted: rgba(0, 0, 0, 0.58);
+    --accent-primary: #AD6A4C;
+    --accent-hover: #8F5237;
+    --accent-subtle: rgba(173, 106, 76, 0.15);
+    --border-subtle: rgba(0, 0, 0, 0.14);
+    --border-hover: rgba(173, 106, 76, 0.45);
+
+    --bg: #EEDED7;
+    --fg: #000000;
+    --muted: rgba(0, 0, 0, 0.58);
+    --line: rgba(0, 0, 0, 0.14);
+    --accent: #AD6A4C;
+    --card-bg: #DEC1B4;
+    --card-border: rgba(0, 0, 0, 0.14);
+  }
+
+  ::selection {
+    background-color: #AD6A4C;
+    color: #000000;
   }
 
   body {
-    background-color: #0f1115;
-    color: #fafafa;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     overflow-x: hidden;
   }
@@ -34,15 +107,15 @@
 
 /* Subtle dot-grid background overlay */
 .bg-grid-dots {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(206, 164, 145, 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .bg-grid-lines {
   background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(206, 164, 145, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(206, 164, 145, 0.04) 1px, transparent 1px);
 }
 
 /* Subtle film grain texture */
@@ -57,35 +130,30 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f1115;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #AD6A4C;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #DEC1B4;
 }
 
 /* Glassmorphism and Card Aesthetics */
 .card-surface {
-  background-color: rgba(17, 17, 21, 0.85);
-  border: 1px solid rgba(39, 39, 42, 0.8);
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-surface:hover {
-  border-color: rgba(56, 189, 248, 0.3);
-  box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.06);
-}
-
-.card-surface-emerald:hover {
-  border-color: rgba(16, 185, 129, 0.35);
-  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.08);
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 30px rgba(173, 106, 76, 0.08);
 }
 
 /* ─── Hero entrance animations ───────────────────────────────────────────────

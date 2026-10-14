@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "default" | "emerald" | "cyan" | "indigo" | "outline" | "mono";
+  variant?: "default" | "emerald" | "cyan" | "indigo" | "outline" | "mono" | "accent";
   size?: "sm" | "md";
 }
 
@@ -14,12 +14,13 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const variantStyles = {
-    default: "bg-[#18181b] text-[#A1A1AA] border-[#27272A]",
-    emerald: "bg-[#10B981]/10 text-[#10B981] border-[#10B981]/30",
-    cyan: "bg-[#38BDF8]/10 text-[#38BDF8] border-[#38BDF8]/30",
-    indigo: "bg-[#6366F1]/10 text-[#6366F1] border-[#6366F1]/30",
-    outline: "bg-transparent text-[#71717A] border-[#27272A]",
-    mono: "bg-[#111115] text-[#FAFAFA] border-[#27272A] font-mono",
+    default: "bg-[#120E0B] text-[#DEC1B4] border-[rgba(206,164,145,0.18)]",
+    emerald: "bg-[rgba(173,106,76,0.15)] text-[#AD6A4C] border-[rgba(173,106,76,0.35)]",
+    cyan: "bg-[rgba(173,106,76,0.15)] text-[#AD6A4C] border-[rgba(173,106,76,0.35)]",
+    indigo: "bg-[rgba(173,106,76,0.15)] text-[#AD6A4C] border-[rgba(173,106,76,0.35)]",
+    accent: "bg-[rgba(173,106,76,0.15)] text-[#AD6A4C] border-[rgba(173,106,76,0.35)]",
+    outline: "bg-transparent text-[rgba(222,193,180,0.55)] border-[rgba(206,164,145,0.18)]",
+    mono: "bg-[#0A0807] text-[#DEC1B4] border-[rgba(206,164,145,0.18)] font-mono",
   };
 
   const sizeStyles = {

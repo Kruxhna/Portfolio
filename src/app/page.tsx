@@ -18,7 +18,7 @@ export default function Home() {
   const [commandMenuOpen, setCommandMenuOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-[#0f1115] text-[#FAFAFA] antialiased selection:bg-[#4fa89b]/25 selection:text-[#4fa89b]">
+    <div className="relative min-h-screen bg-transparent text-[var(--text-primary)] antialiased">
 
       {/* Background Decor Layer (Dot Grid, Film Grain, Ambient Glows) */}
       <BackgroundDecor />

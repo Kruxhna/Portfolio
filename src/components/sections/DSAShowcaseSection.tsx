@@ -13,6 +13,11 @@ export function DSAShowcaseSection() {
   const [hasEntered, setHasEntered] = useState(false);
   const [counts, setCounts] = useState<{ [key: string]: number }>({});
   const [isReducedMotion, setIsReducedMotion] = useState(false);
+  const [nowMs, setNowMs] = useState<number | null>(null);
+
+  useEffect(() => {
+    setNowMs(Date.now());
+  }, []);
 
   // Check prefers-reduced-motion
   useEffect(() => {
@@ -99,7 +104,7 @@ export function DSAShowcaseSection() {
       ref={sectionRef}
       id="dsa"
       aria-labelledby="dsa-title"
-      className="relative w-full bg-[var(--bg)] scroll-mt-24 select-none"
+      className="relative w-full bg-transparent scroll-mt-24 select-none"
       style={{
         paddingTop: "clamp(64px, 10vw, 128px)",
         paddingBottom: "clamp(64px, 10vw, 128px)",
@@ -125,7 +130,7 @@ export function DSAShowcaseSection() {
             {/* 2. Title: algorithmic rigor */}
             <h2
               id="dsa-title"
-              className="text-[#fafafa] font-normal leading-[0.95] tracking-tighter"
+              className="text-[#DEC1B4] font-normal leading-[0.95] tracking-tighter"
               style={{
                 fontFamily: "var(--font-roboto-flex), var(--font-inter), sans-serif",
                 fontVariationSettings: '"wght" 850, "wdth" 120',
@@ -151,7 +156,7 @@ export function DSAShowcaseSection() {
                 href={DSA_DATA.profileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="nav-link-underline text-[#fafafa] hover:text-white transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3ecf8e] focus-visible:outline-offset-[3px] inline-flex items-center gap-1"
+                className="nav-link-underline text-[#DEC1B4] hover:text-[#AD6A4C] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#AD6A4C] focus-visible:outline-offset-[3px] inline-flex items-center gap-1"
               >
                 {DSA_DATA.profileLinkText}
               </a>
@@ -175,7 +180,7 @@ export function DSAShowcaseSection() {
                 {DSA_DATA.stats.map((stat) => (
                   <div key={stat.id} className="flex flex-col">
                     <dd
-                      className="text-[#fafafa] tracking-tight leading-none tabular-nums font-normal"
+                      className="text-[#DEC1B4] tracking-tight leading-none tabular-nums font-normal"
                       style={{
                         fontFamily:
                           "var(--font-roboto-flex), var(--font-inter), sans-serif",
@@ -192,7 +197,7 @@ export function DSAShowcaseSection() {
                         {stat.suffix || ""}
                       </span>
                     </dd>
-                    <dt className="mt-2.5 font-mono text-[12px] text-[var(--muted)] lowercase tracking-normal">
+                    <dt className="mt-2.5 font-mono text-[12px] text-[#AD6A4C] lowercase tracking-normal">
                       {stat.label}
                     </dt>
                   </div>
@@ -220,7 +225,7 @@ export function DSAShowcaseSection() {
                     <div>
                       {/* Name + Status Indicator */}
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[13px] text-[#fafafa] font-normal lowercase">
+                        <span className="font-mono text-[13px] text-[#DEC1B4] font-normal lowercase">
                           {platform.name}
                         </span>
                         <div className="flex items-center gap-1.5 font-mono text-[11px] lowercase">
@@ -228,15 +233,15 @@ export function DSAShowcaseSection() {
                             className="h-1.5 w-1.5 rounded-full"
                             style={{
                               backgroundColor: platform.isActive
-                                ? "var(--accent)"
-                                : "var(--muted)",
+                                ? "#AD6A4C"
+                                : "rgba(205, 180, 158, 0.4)",
                             }}
                           />
                           <span
                             style={{
                               color: platform.isActive
-                                ? "var(--accent)"
-                                : "var(--muted)",
+                                ? "#AD6A4C"
+                                : "rgba(205, 180, 158, 0.4)",
                             }}
                           >
                             {platform.isActive ? "active" : "synced"}
@@ -258,7 +263,7 @@ export function DSAShowcaseSection() {
                         href={platform.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="nav-link-underline font-mono text-[11px] text-[#fafafa] hover:text-white transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3ecf8e] focus-visible:outline-offset-[3px] inline-flex items-center gap-1"
+                        className="nav-link-underline font-mono text-[11px] text-[#DEC1B4] hover:text-[#AD6A4C] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#AD6A4C] focus-visible:outline-offset-[3px] inline-flex items-center gap-1"
                       >
                         profile ↗
                       </a>
@@ -282,7 +287,7 @@ export function DSAShowcaseSection() {
                   <li
                     key={p.name}
                     data-cursor="link"
-                    className="border border-[var(--line)] rounded-[4px] px-3 py-1.5 font-mono text-[12px] text-[var(--muted)] transition-colors duration-150 hover:border-[#fafafa] hover:text-[#fafafa] cursor-default"
+                    className="border border-[var(--line)] bg-[#0A0807] rounded-[4px] px-3 py-1.5 font-mono text-[12px] text-[#DEC1B4] transition-colors duration-150 hover:border-[#AD6A4C] hover:text-[#EEDED7] cursor-default"
                   >
                     {p.name} [{p.count}]
                   </li>
@@ -304,7 +309,7 @@ export function DSAShowcaseSection() {
                   href={DSA_DATA.profileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="nav-link-underline font-mono text-[11px] lowercase text-[var(--muted)] hover:text-[#fafafa] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3ecf8e] focus-visible:outline-offset-[3px]"
+                  className="nav-link-underline font-mono text-[11px] lowercase text-[var(--muted)] hover:text-[#AD6A4C] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#AD6A4C] focus-visible:outline-offset-[3px]"
                 >
                   view all ↗
                 </a>
@@ -323,44 +328,43 @@ export function DSAShowcaseSection() {
                   </thead>
                   <tbody className="divide-y divide-[var(--line)]">
                     {DSA_DATA.submissions.map((sub) => {
-                      // Difficulty opacity differentiation: easy 60%, med 80%, hard 100%
-                      const diffOpacity =
+                      const diffColor =
                         sub.difficulty === "easy"
-                          ? "opacity-60"
+                          ? "text-[#AD6A4C]"
                           : sub.difficulty === "med"
-                          ? "opacity-80"
-                          : "opacity-100 font-medium";
+                          ? "text-[#DEC1B4]"
+                          : "text-[#EEDED7] font-medium";
 
                       return (
                         <tr
                           key={sub.id}
-                          className="transition-colors duration-150 hover:bg-white/[0.03] group"
+                          className="transition-colors duration-150 hover:bg-[rgba(173,125,86,0.06)] group"
                         >
                           {/* Problem name */}
-                          <td className="py-3.5 pr-4 text-[#fafafa] font-normal">
+                          <td className="py-3.5 pr-4 text-[#EEDED7] font-normal">
                             <a
                               href={sub.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="nav-link-underline hover:text-white transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3ecf8e] focus-visible:outline-offset-[3px]"
+                              className="nav-link-underline hover:text-[#AD6A4C] transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#AD6A4C] focus-visible:outline-offset-[3px]"
                             >
                               {sub.problem}
                             </a>
                             {/* Mobile subtitle with platform & time */}
                             <div className="sm:hidden mt-1 text-[11px] text-[var(--muted)] flex items-center gap-2">
-                              <span className={diffOpacity}>{sub.difficulty}</span>
+                              <span className={diffColor}>{sub.difficulty}</span>
                               <span>·</span>
                               <span>{sub.platform}</span>
                               <span>·</span>
                               <span className="tabular-nums">
-                                {formatRelativeTime(sub.timestamp)}
+                                {formatRelativeTime(sub.timestamp, nowMs)}
                               </span>
                             </div>
                           </td>
 
                           {/* Difficulty (Hidden on very narrow mobile, visible sm+) */}
-                          <td className="hidden sm:table-cell py-3.5 px-4 text-[#fafafa]">
-                            <span className={diffOpacity}>{sub.difficulty}</span>
+                          <td className="hidden sm:table-cell py-3.5 px-4">
+                            <span className={diffColor}>{sub.difficulty}</span>
                           </td>
 
                           {/* Platform (Hidden on mobile, visible sm+) */}
@@ -370,7 +374,7 @@ export function DSAShowcaseSection() {
 
                           {/* Relative Time (Hidden on mobile, visible sm+) */}
                           <td className="hidden sm:table-cell py-3.5 pl-4 text-right text-[var(--muted)] tabular-nums">
-                            {formatRelativeTime(sub.timestamp)}
+                            {formatRelativeTime(sub.timestamp, nowMs)}
                           </td>
                         </tr>
                       );

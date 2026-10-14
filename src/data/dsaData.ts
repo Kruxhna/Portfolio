@@ -130,8 +130,11 @@ export const DSA_DATA = {
 };
 
 // Helper: format ISO timestamp into relative time string
-export function formatRelativeTime(isoString: string): string {
-  const diffMs = Date.now() - new Date(isoString).getTime();
+export function formatRelativeTime(isoString: string, nowMs?: number | null): string {
+  if (!nowMs) {
+    return "recent";
+  }
+  const diffMs = nowMs - new Date(isoString).getTime();
   const diffSec = Math.max(0, Math.floor(diffMs / 1000));
   const diffMin = Math.floor(diffSec / 60);
   const diffHour = Math.floor(diffMin / 60);

@@ -46,12 +46,12 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative mt-20 border-t border-[#27272A]/80 bg-[#09090b] py-14">
+    <footer className="relative mt-20 border-t border-[rgba(206,164,145,0.14)] bg-transparent py-14">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-xl border border-emerald-500/40 bg-[#111115]/95 px-4 py-3 text-xs font-mono text-[#FAFAFA] shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-4">
-          <span className="flex h-2 w-2 rounded-full bg-[#10B981] animate-pulse" />
-          <Check className="h-4 w-4 text-[#10B981]" />
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-xl border border-[rgba(173,106,76,0.35)] bg-[#0A0807]/95 px-4 py-3 text-xs font-mono text-[#EEDED7] shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-4">
+          <span className="flex h-2 w-2 rounded-full bg-[#AD6A4C] animate-pulse" />
+          <Check className="h-4 w-4 text-[#AD6A4C]" />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -62,56 +62,56 @@ export function Footer() {
           {/* Brand & Identity Column */}
           <div className="md:col-span-5 flex flex-col gap-3">
             <div className="flex items-center gap-3">
-              {/* Glowing Monogram Logo Anchor */}
+              {/* Monogram Logo Anchor */}
               <button
                 onClick={scrollToTop}
                 title="Scroll to top"
                 data-cursor="magnetic"
-                className="group relative flex h-9 w-9 items-center justify-center rounded-xl border border-[#27272A] bg-[#141418] font-mono text-sm font-bold text-[#FAFAFA] transition-all hover:border-[#38BDF8]/60 hover:shadow-lg hover:shadow-[#38BDF8]/20"
+                className="group relative flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(206,164,145,0.25)] bg-[#0A0807] font-mono text-sm font-bold text-[#AD6A4C] transition-all hover:border-[#AD6A4C]/60 hover:shadow-lg hover:shadow-[#AD6A4C]/15"
               >
                 <span>K</span>
-                <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#10B981] ring-2 ring-[#09090b]" />
+                <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#AD6A4C] ring-2 ring-black" />
               </button>
 
               <div>
-                <span className="font-bold text-base tracking-tight text-[#FAFAFA]">
+                <span className="font-bold text-base tracking-tight text-[#DEC1B4]">
                   {PERSONAL_INFO.name}
                 </span>
-                <span className="ml-2 font-mono text-[11px] text-[#71717A]">
+                <span className="ml-2 font-mono text-[11px] text-[rgba(222,193,180,0.55)]">
                   // AI & ML
                 </span>
               </div>
             </div>
 
-            <p className="mt-1 max-w-sm text-xs leading-relaxed text-[#A1A1AA]">
+            <p className="mt-1 max-w-sm text-xs leading-relaxed text-[#EEDED7]/80">
               Systems-level machine learning and high-performance computing undergraduate at the University of Mumbai (2024–2028). Specializing in distributed inference, CUDA, and algorithmic rigor.
             </p>
 
-            <div className="mt-2 flex items-center gap-2 text-xs font-mono text-[#71717A]">
-              <span className="flex h-2 w-2 rounded-full bg-[#10B981] animate-pulse" />
-              <span className="text-[#10B981] font-medium">Open to AI/ML Roles & Internships</span>
+            <div className="mt-2 flex items-center gap-2 text-xs font-mono text-[rgba(222,193,180,0.55)]">
+              <span className="flex h-2 w-2 rounded-full bg-[#AD6A4C] animate-pulse" />
+              <span className="text-[#AD6A4C] font-medium">Open to AI/ML Roles & Internships</span>
             </div>
           </div>
 
           {/* Monospace Navigation Column */}
           <div className="md:col-span-3 flex flex-col gap-3 font-mono">
-            <span className="text-xs uppercase tracking-wider text-[#71717A]">
+            <span className="text-xs uppercase tracking-wider text-[rgba(222,193,180,0.55)]">
               Navigation
             </span>
-            <div className="flex flex-col gap-2 text-xs text-[#A1A1AA]">
-              <Link href="#about" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
+            <div className="flex flex-col gap-2 text-xs text-[#DEC1B4]/70">
+              <Link href="#about" data-cursor="magnetic" className="hover:text-[#AD6A4C] transition-colors">
                 01. About
               </Link>
-              <Link href="#stats" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#stats" data-cursor="magnetic" className="hover:text-[#AD6A4C] transition-colors">
                 02. DSA / Stats
               </Link>
-              <Link href="#projects" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#projects" data-cursor="magnetic" className="hover:text-[#AD6A4C] transition-colors">
                 03. AI Projects
               </Link>
-              <Link href="#arsenal" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#arsenal" data-cursor="magnetic" className="hover:text-[#AD6A4C] transition-colors">
                 04. Arsenal
               </Link>
-              <Link href="#contact" data-cursor="magnetic" className="hover:text-[#FAFAFA] transition-colors">
+              <Link href="#contact" data-cursor="magnetic" className="hover:text-[#AD6A4C] transition-colors">
                 05. Contact
               </Link>
             </div>
@@ -119,7 +119,7 @@ export function Footer() {
 
           {/* Contact Actions Column */}
           <div className="md:col-span-4 flex flex-col gap-3">
-            <span className="font-mono text-xs uppercase tracking-wider text-[#71717A]">
+            <span className="font-mono text-xs uppercase tracking-wider text-[rgba(222,193,180,0.55)]">
               Direct Contact
             </span>
 
@@ -127,19 +127,19 @@ export function Footer() {
             <button
               onClick={handleCopyEmail}
               data-cursor="magnetic"
-              className="group flex items-center justify-between rounded-xl border border-[#27272A] bg-[#141418] px-3.5 py-2.5 text-xs font-mono text-[#A1A1AA] transition-all hover:border-[#10B981]/50 hover:bg-[#18181b] hover:text-[#FAFAFA]"
+              className="group flex items-center justify-between rounded-xl border border-[rgba(206,164,145,0.18)] bg-[#120E0B] px-3.5 py-2.5 text-xs font-mono text-[#DEC1B4] transition-all hover:border-[#AD6A4C]/50 hover:bg-[#14100D] hover:text-[#EEDED7]"
             >
               <span className="truncate">{PERSONAL_INFO.email}</span>
               <div className="flex shrink-0 items-center gap-1.5 ml-2">
                 {copied ? (
                   <>
-                    <Check className="h-3.5 w-3.5 text-[#10B981]" />
-                    <span className="text-[11px] text-[#10B981] font-semibold">Copied!</span>
+                    <Check className="h-3.5 w-3.5 text-[#AD6A4C]" />
+                    <span className="text-[11px] text-[#AD6A4C] font-semibold">Copied!</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="h-3.5 w-3.5 text-[#71717A] group-hover:text-[#10B981]" />
-                    <span className="text-[11px] text-[#71717A] group-hover:text-[#FAFAFA]">Copy</span>
+                    <Copy className="h-3.5 w-3.5 text-[rgba(222,193,180,0.55)] group-hover:text-[#AD6A4C]" />
+                    <span className="text-[11px] text-[rgba(222,193,180,0.55)] group-hover:text-[#EEDED7]">Copy</span>
                   </>
                 )}
               </div>
@@ -152,10 +152,10 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="magnetic"
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-[#27272A] bg-[#141418] py-2 text-[#A1A1AA] transition-all hover:border-[#0A66C2]/60 hover:text-[#FAFAFA] hover:bg-[#18181b]"
+                className="flex items-center justify-center gap-1.5 rounded-xl border border-[rgba(206,164,145,0.18)] bg-[#120E0B] py-2 text-[#DEC1B4] transition-all hover:border-[#AD6A4C]/60 hover:text-[#EEDED7] hover:bg-[#14100D]"
                 title="LinkedIn Profile"
               >
-                <LinkedinIcon className="h-3.5 w-3.5 text-[#0A66C2]" />
+                <LinkedinIcon className="h-3.5 w-3.5 text-[#AD6A4C]" />
                 <span className="text-[11px]">LinkedIn</span>
               </a>
 
@@ -164,10 +164,10 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="magnetic"
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-[#27272A] bg-[#141418] py-2 text-[#A1A1AA] transition-all hover:border-[#38BDF8]/60 hover:text-[#FAFAFA] hover:bg-[#18181b]"
+                className="flex items-center justify-center gap-1.5 rounded-xl border border-[rgba(206,164,145,0.18)] bg-[#120E0B] py-2 text-[#DEC1B4] transition-all hover:border-[#AD6A4C]/60 hover:text-[#EEDED7] hover:bg-[#14100D]"
                 title="GitHub Profile"
               >
-                <GithubIcon className="h-3.5 w-3.5 text-[#38BDF8]" />
+                <GithubIcon className="h-3.5 w-3.5 text-[#AD6A4C]" />
                 <span className="text-[11px]">GitHub</span>
               </a>
 
@@ -176,10 +176,10 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="magnetic"
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-[#27272A] bg-[#141418] py-2 text-[#A1A1AA] transition-all hover:border-[#F59E0B]/60 hover:text-[#FAFAFA] hover:bg-[#18181b]"
+                className="flex items-center justify-center gap-1.5 rounded-xl border border-[rgba(206,164,145,0.18)] bg-[#120E0B] py-2 text-[#DEC1B4] transition-all hover:border-[#AD6A4C]/60 hover:text-[#EEDED7] hover:bg-[#14100D]"
                 title="Codolio DSA Profile"
               >
-                <CodolioIcon className="h-3.5 w-3.5 text-[#F59E0B]" />
+                <CodolioIcon className="h-3.5 w-3.5 text-[#AD6A4C]" />
                 <span className="text-[11px]">Codolio</span>
               </a>
             </div>
@@ -187,18 +187,18 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar: Colophon & Live Local Time Indicator */}
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-[#27272A]/60 pt-8 sm:flex-row text-xs font-mono text-[#71717A]">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-[rgba(206,164,145,0.14)] pt-8 sm:flex-row text-xs font-mono text-[rgba(222,193,180,0.55)]">
           {/* Left: Exact Copyright & Attribution */}
           <div className="flex items-center gap-2 text-center sm:text-left">
-            <p className="text-[#A1A1AA]">
+            <p className="text-[#DEC1B4]/80">
               © 2025 KRUSHNA. Designed with precision.
             </p>
           </div>
 
           {/* Right: Live Local Time Indicator */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 rounded-full border border-[#27272A] bg-[#141418] px-3.5 py-1 text-[#A1A1AA]">
-              <span className="h-2 w-2 rounded-full bg-[#10B981] animate-pulse" />
+            <div className="flex items-center gap-2 rounded-full border border-[rgba(206,164,145,0.18)] bg-[#120E0B] px-3.5 py-1 text-[#DEC1B4]">
+              <span className="h-2 w-2 rounded-full bg-[#AD6A4C] animate-pulse" />
               <span>
                 {timeString ? `${timeString} ` : ""}IST (UTC +5:30) • Available for opportunities
               </span>
@@ -208,7 +208,7 @@ export function Footer() {
             <button
               onClick={scrollToTop}
               data-cursor="magnetic"
-              className="flex items-center gap-1 rounded-lg border border-[#27272A] bg-[#141418] px-2.5 py-1 text-[11px] text-[#71717A] hover:border-[#38BDF8]/40 hover:text-[#FAFAFA] transition-colors"
+              className="flex items-center gap-1 rounded-lg border border-[rgba(206,164,145,0.18)] bg-[#120E0B] px-2.5 py-1 text-[11px] text-[rgba(222,193,180,0.7)] hover:border-[#AD6A4C]/50 hover:text-[#EEDED7] transition-colors"
               title="Back to top"
             >
               <span>Top</span>

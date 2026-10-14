@@ -495,7 +495,7 @@ export function CustomCursor() {
 
   const isLink = activeState === "link" || activeState === "magnetic";
   const isInvert = activeState === "invert";
-  const isHidden = !isVisible || activeState === "text" || activeState === "none";
+  const isHidden = !isVisible || !hasMovedRef.current || activeState === "text" || activeState === "none";
 
   // Label text for capsule
   let capsuleLabel = "";
@@ -531,22 +531,22 @@ export function CustomCursor() {
 
           // Colors & Borders
           backgroundColor: isDrag
-            ? "var(--accent)"
+            ? "#AD6A4C"
             : isCapsule
-            ? "rgba(15, 17, 21, 0.92)"
+            ? "rgba(10, 8, 7, 0.94)"
             : isInvert
-            ? "#f5f5f0"
+            ? "#DEC1B4"
             : isLink
-            ? "#fafafa"
+            ? "#DEC1B4"
             : "transparent",
 
           border: isDrag
             ? "1px solid transparent"
             : isCapsule
-            ? "1px solid var(--line)"
+            ? "1px solid rgba(206, 164, 145, 0.25)"
             : isLink || isInvert
             ? "1px solid transparent"
-            : "1px solid rgba(250, 250, 250, 0.35)",
+            : "1px solid rgba(206, 164, 145, 0.4)",
 
           // Mix Blend Mode: difference for wordmark and links; normal for capsule and default
           mixBlendMode: isInvert || isLink ? "difference" : "normal",
@@ -556,17 +556,17 @@ export function CustomCursor() {
             "width 200ms cubic-bezier(0.22, 1, 0.36, 1), height 200ms cubic-bezier(0.22, 1, 0.36, 1), border-radius 200ms cubic-bezier(0.22, 1, 0.36, 1), background-color 200ms cubic-bezier(0.22, 1, 0.36, 1), border-color 200ms cubic-bezier(0.22, 1, 0.36, 1), padding 200ms cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
-        {/* Drag Capsule Content (Mint Accent Variant) */}
+        {/* Drag Capsule Content (French Beige Accent Variant) */}
         {isDrag && (
-          <div className="flex items-center gap-1.5 font-mono text-[11px] font-semibold tracking-wider text-[#0f1115] uppercase">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#0f1115]" />
+          <div className="flex items-center gap-1.5 font-mono text-[11px] font-semibold tracking-wider text-[#000000] uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#000000]" />
             <span>{capsuleLabel}</span>
           </div>
         )}
 
         {/* View / Scrub Capsule Content (Monochrome Razor-Sharp Variant) */}
         {(isView || isScrub || isScrubY) && (
-          <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--fg)] whitespace-nowrap">
+          <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#DEC1B4] whitespace-nowrap">
             {capsuleLabel}
           </span>
         )}
@@ -579,7 +579,7 @@ export function CustomCursor() {
         style={{
           width: isInvert ? "4px" : "3px",
           height: isInvert ? "4px" : "3px",
-          backgroundColor: isInvert ? "#000000" : "var(--fg)",
+          backgroundColor: isInvert ? "#000000" : "#AD6A4C",
           opacity: isCapsule || isLink ? 0 : 1,
           transition: "opacity 150ms ease, width 150ms ease, height 150ms ease",
         }}
@@ -589,7 +589,7 @@ export function CustomCursor() {
       {showTagLabel && (
         <div
           ref={tagRef}
-          className="pointer-events-none fixed top-0 left-0 will-change-transform font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--muted)] whitespace-nowrap select-none"
+          className="pointer-events-none fixed top-0 left-0 will-change-transform font-mono text-[10px] uppercase tracking-[0.12em] text-[rgba(222,193,180,0.55)] whitespace-nowrap select-none"
           style={{
             transition: "opacity 150ms ease",
           }}

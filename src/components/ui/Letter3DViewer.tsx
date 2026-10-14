@@ -14,7 +14,7 @@ function damp(current: number, target: number, speed: number, dt: number): numbe
   return current + (target - current) * (1 - Math.exp(-speed * dt));
 }
 
-export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps) {
+export function Letter3DViewer({ accentColor = "#AD6A4C" }: Letter3DViewerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef  = useRef<HTMLDivElement>(null);
 
@@ -60,32 +60,36 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
     renderer.toneMappingExposure = 1.1;
     canvas.appendChild(renderer.domElement);
 
-    // ── 4. Lighting & Environment ─────────────────────────────────────────────
+    // ── 4. Lighting & Environment Setup ──────────────────────────────────────
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader();
     const roomEnv = new RoomEnvironment();
     scene.environment = pmremGenerator.fromScene(roomEnv, 0.04).texture;
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    // Ambient: Rodeo Dust (#DEC1B4) at 0.7 intensity
+    const ambientLight = new THREE.AmbientLight(0xDEC1B4, 0.7);
+    scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    keyLight.position.set(-3, 4, 3);
+    // Key Directional Light (top-left [4, 6, 5]): Warm cream (#FFF5EB) at 2.0 intensity
+    const keyLight = new THREE.DirectionalLight(0xFFF5EB, 2.0);
+    keyLight.position.set(4, 6, 5);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    fillLight.position.set(3, -1, 2);
-    scene.add(fillLight);
+    // Rim/Fill Directional Light (bottom-left [-4, -3, 2]): Deep Terracotta (#AD6A4C) at 0.8 intensity
+    const rimLight = new THREE.DirectionalLight(0xAD6A4C, 0.8);
+    rimLight.position.set(-4, -3, 2);
+    scene.add(rimLight);
 
-    // ── 5. Material: smooth satin — no clearcoat, no noise/normal crinkles ───
+    // ── 5. Tactile Warm Bronze / Ceramic Material ────────────────────────────
     const mat = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(accentColor),
-      roughness: 0.28,      // smooth-satin: slightly lower than before
-      metalness: 0.05,
+      roughness: 0.22,
+      metalness: 0.15,
+      clearcoat: 0.4,
+      clearcoatRoughness: 0.18,
       transmission: 0,
       transparent: false,
       opacity: 1.0,
-      clearcoat: 0,
-      // No normalMap → no wrinkles
     });
     materialRef.current = mat;
 
@@ -109,13 +113,13 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
           }
         });
 
-        // Center & scale so model fills 84% of frustum height
+        // Center & scale so model occupies ~60-65% of viewport height
         const box    = new THREE.Box3().setFromObject(root);
         const center = box.getCenter(new THREE.Vector3());
         const size   = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
         const halfH  = Math.tan(THREE.MathUtils.degToRad(42 / 2)) * 2.8;
-        const targetFit = halfH * 2 * 0.84;
+        const targetFit = halfH * 2 * 0.78;
         const scale = targetFit / (maxDim || 1);
 
         root.position.sub(center);
@@ -366,10 +370,10 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
     >
       {/* Loading spinner */}
       {isLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 font-mono text-[11px] text-[#6b7280]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 font-mono text-[11px] text-[rgba(222,193,180,0.55)]">
           <div
-            className="h-6 w-6 rounded-full border-2 border-[#27272a] animate-spin"
-            style={{ borderTopColor: accentColor }}
+            className="h-6 w-6 rounded-full border-2 border-[rgba(206,164,145,0.18)] animate-spin"
+            style={{ borderTopColor: "#AD6A4C" }}
           />
           <span>Loading…</span>
         </div>
@@ -377,8 +381,26 @@ export function Letter3DViewer({ accentColor = "#3ecf8e" }: Letter3DViewerProps)
 
       {/* Error fallback */}
       {loadError && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 font-mono text-[11px] text-rose-400">
+        <div className="absolute inset-0 flex items-center justify-center z-10 font-mono text-[11px] text-[#AD6A4C]">
           Unable to display 3D model
+        </div>
+      )}
+
+      {/* Floating Interactive Pill (• drag · click) */}
+      {!isLoading && !loadError && (
+        <div
+          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center gap-2 rounded-full px-3.5 py-1.5 font-mono text-[11px] backdrop-blur-md select-none transition-opacity duration-300"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            border: "1px solid rgba(173, 106, 76, 0.45)",
+            color: "#DEC1B4",
+          }}
+        >
+          <span
+            className="h-1.5 w-1.5 rounded-full shrink-0"
+            style={{ backgroundColor: "#AD6A4C" }}
+          />
+          <span className="tracking-wider uppercase">drag · click</span>
         </div>
       )}
 

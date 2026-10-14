@@ -56,7 +56,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} ${robotoFlex.variable} dark scroll-smooth`}
     >
-      <body className="min-h-screen bg-[#0f1115] text-[#FAFAFA] font-sans antialiased selection:bg-[#4fa89b]/25 selection:text-[#4fa89b]">
+      <body className="min-h-screen bg-black text-[var(--text-primary)] font-sans antialiased">
         <CustomCursor />
         {children}
       </body>
