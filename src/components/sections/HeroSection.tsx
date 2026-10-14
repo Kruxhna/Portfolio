@@ -1,6 +1,15 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValue,
+  animate,
+  type MotionValue,
+} from "framer-motion";
 import { Letter3DViewer } from "@/components/ui/Letter3DViewer";
 
 const ACCENT_COLOR = "#AD6A4C";
@@ -12,6 +21,152 @@ const ALIAS_LIST = [
 const GLYPH_CHARS = "abcdefghijklmnopqrstuvwxyz#%4!@*";
 
 const WORDMARK = "krushna".split("");
+
+// deterministic per-character scatter vectors (targets at 900px scroll & click burst impulses)
+interface ScatterVector {
+  targetX: number;
+  targetY: number;
+  targetRotate: number;
+  burstX: number;
+  burstY: number;
+  burstRotate: number;
+}
+
+const SCATTER_VECTORS: ScatterVector[] = [
+  // 0: 'k' - Pulls up-left toward the top-left navbar logo and tilts counter-clockwise
+  { targetX: -65, targetY: -150, targetRotate: -38, burstX: -95, burstY: -70, burstRotate: -40 },
+  // 1: 'r' - Drops down-left across the Hero/Work divider, hovering near the left edge of "things"
+  { targetX: -35, targetY: 470, targetRotate: -22, burstX: -55, burstY: 90, burstRotate: -25 },
+  // 2: 'u' - Travels down with the scroll to float directly over the "things i made" headline
+  { targetX: 85, targetY: 630, targetRotate: 32, burstX: 45, burstY: -90, burstRotate: 30 },
+  // 3: 's' - Drifts diagonally down-center over the middle of "things i made"
+  { targetX: 195, targetY: 545, targetRotate: -28, burstX: 85, burstY: 80, burstRotate: -35 },
+  // 4: 'h' - Floats over the upper-center space between "things" and the right column
+  { targetX: 300, targetY: 410, targetRotate: 24, burstX: 115, burstY: -80, burstRotate: 25 },
+  // 5: 'n' - Drifts wide right and down into the (01) WORK section
+  { targetX: 400, targetY: 590, targetRotate: -19, burstX: 145, burstY: 90, burstRotate: -30 },
+  // 6: 'a' - Shoots toward the upper-right of the (01) WORK section with a clockwise tilt
+  { targetX: 500, targetY: 360, targetRotate: 35, burstX: 185, burstY: -65, burstRotate: 40 },
+];
+
+interface ScatterLetterProps {
+  letter: string;
+  index: number;
+  scrollY: MotionValue<number>;
+  isScattered: boolean;
+  reducedMotion: boolean;
+  innerRef: (el: HTMLSpanElement | null) => void;
+  onRegisterBurst: (fn: () => void) => void;
+  onLetterClick: () => void;
+}
+
+function ScatterLetter({
+  letter,
+  index,
+  scrollY,
+  isScattered,
+  reducedMotion,
+  innerRef,
+  onRegisterBurst,
+  onLetterClick,
+}: ScatterLetterProps) {
+  const vector = SCATTER_VECTORS[index] || {
+    targetX: (index - 3) * 70,
+    targetY: 400,
+    targetRotate: (index % 2 === 0 ? 1 : -1) * 25,
+    burstX: (index - 3) * 45,
+    burstY: -50,
+    burstRotate: (index % 2 === 0 ? 1 : -1) * 30,
+  };
+
+  const springConfig = { stiffness: 85, damping: 20, mass: 0.8 };
+
+  // Scroll-driven transforms mapped across [0, 900px]
+  const targetX = reducedMotion ? 0 : vector.targetX;
+  const targetY = reducedMotion ? 0 : vector.targetY;
+  const targetRot = reducedMotion ? 0 : vector.targetRotate;
+
+  const rawScrollX = useTransform(scrollY, [0, 900], [0, targetX]);
+  const rawScrollY = useTransform(scrollY, [0, 900], [0, targetY]);
+  const rawScrollRotate = useTransform(scrollY, [0, 900], [0, targetRot]);
+
+  const springScrollX = useSpring(rawScrollX, springConfig);
+  const springScrollY = useSpring(rawScrollY, springConfig);
+  const springScrollRotate = useSpring(rawScrollRotate, springConfig);
+
+  // Click burst impulse values
+  const clickX = useMotionValue(0);
+  const clickY = useMotionValue(0);
+  const clickRotate = useMotionValue(0);
+
+  const triggerBurst = useCallback(() => {
+    if (reducedMotion) return;
+    clickX.set(vector.burstX);
+    clickY.set(vector.burstY);
+    clickRotate.set(vector.burstRotate);
+
+    animate(clickX, 0, {
+      type: "spring",
+      stiffness: 95,
+      damping: 14,
+      mass: 0.6,
+    });
+    animate(clickY, 0, {
+      type: "spring",
+      stiffness: 95,
+      damping: 14,
+      mass: 0.6,
+    });
+    animate(clickRotate, 0, {
+      type: "spring",
+      stiffness: 95,
+      damping: 14,
+      mass: 0.6,
+    });
+  }, [reducedMotion, vector, clickX, clickY, clickRotate]);
+
+  useEffect(() => {
+    onRegisterBurst(triggerBurst);
+  }, [onRegisterBurst, triggerBurst]);
+
+  // Combined transforms (scroll physics + click impulse)
+  const totalX = useTransform([springScrollX, clickX], ([sx, cx]) => Number(sx) + Number(cx));
+  const totalY = useTransform([springScrollY, clickY], ([sy, cy]) => Number(sy) + Number(cy));
+  const totalRotate = useTransform([springScrollRotate, clickRotate], ([sr, cr]) => Number(sr) + Number(cr));
+
+  return (
+    <motion.span
+      className={`inline-block relative select-none ${
+        isScattered ? "pointer-events-none" : "pointer-events-auto cursor-pointer"
+      }`}
+      onClick={(e) => {
+        if (!isScattered) {
+          e.stopPropagation();
+          onLetterClick();
+        }
+      }}
+      style={{
+        x: totalX,
+        y: totalY,
+        rotate: totalRotate,
+        transformStyle: "preserve-3d",
+        willChange: "transform",
+      }}
+    >
+      {/* Inner span: preserves entrance animation and fontVariationSettings */}
+      <span
+        ref={innerRef}
+        aria-hidden="true"
+        className="hero-letter wordmark-letter inline-block"
+        style={{
+          animationDelay: `${0.48 + index * 0.05}s`,
+        }}
+      >
+        {letter}
+      </span>
+    </motion.span>
+  );
+}
 
 // smoothstep: maps t in [0,1] → smooth 0..1
 function smoothstep(x: number): number {
@@ -180,13 +335,39 @@ export function HeroSection() {
     };
   }, []);
 
+  // ── scroll & physics scatter state ─────────────────────────────────────────
+  const { scrollY } = useScroll();
+  const [isScattered, setIsScattered] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const burstFnsRef = useRef<(() => void)[]>([]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = scrollY.on("change", (latest) => {
+      setIsScattered(latest > 40);
+    });
+    return () => unsubscribe();
+  }, [scrollY]);
+
+  const handleWordmarkClick = useCallback(() => {
+    if (isScattered) return;
+    burstFnsRef.current.forEach((fn) => fn?.());
+  }, [isScattered]);
+
   return (
     <>
       <section
         ref={sectionRef}
         id="about"
-        className="relative w-full bg-transparent select-none"
-        style={{ height: "100dvh", overflow: "hidden" }}
+        className="relative w-full bg-transparent select-none overflow-visible"
+        style={{ height: "100dvh" }}
       >
         {/*
           Outer: full-height flex column, 2.5vw side padding.
@@ -195,7 +376,7 @@ export function HeroSection() {
             2. Wordmark zone: shrink-0, pinned to bottom
         */}
         <div
-          className="w-full h-full flex flex-col"
+          className="w-full h-full flex flex-col overflow-visible"
           style={{ padding: "0 2.5vw" }}
         >
 
@@ -303,11 +484,11 @@ export function HeroSection() {
 
           {/* ── WORDMARK ZONE ────────────────────────────────────────────── */}
           <div
-            className="w-full shrink-0 flex flex-col justify-end"
+            className="w-full shrink-0 flex flex-col justify-end relative z-30 overflow-visible"
             style={{ paddingBottom: "clamp(1.5rem, 4vh, 3rem)" }}
           >
             {/*
-              "krushna" wordmark — split into one <span> per letter.
+              "krushna" wordmark — split into one <span> per letter with scroll/click scatter.
               Color: Rodeo Dust (#DEC1B4)
               leading-[0.82], clamp(4.2rem, 12vw, 13.5rem)
             */}
@@ -315,7 +496,10 @@ export function HeroSection() {
               ref={wordmarkRef}
               data-cursor="invert"
               aria-label="krushna"
-              className="hero-animate font-sans font-black whitespace-nowrap overflow-visible text-[#DEC1B4]"
+              onClick={handleWordmarkClick}
+              className={`hero-animate font-sans font-black whitespace-nowrap overflow-visible text-[#DEC1B4] relative z-30 select-none ${
+                isScattered ? "pointer-events-none" : "pointer-events-auto cursor-pointer"
+              }`}
               style={{
                 fontSize: "clamp(4.2rem, 12vw, 13.5rem)",
                 letterSpacing: "-0.045em",
@@ -327,23 +511,27 @@ export function HeroSection() {
               }}
             >
               {WORDMARK.map((letter, i) => (
-                <span
+                <ScatterLetter
                   key={i}
-                  ref={(el) => { letterSpanRefs.current[i] = el; }}
-                  aria-hidden="true"
-                  className="hero-letter wordmark-letter"
-                  style={{
-                    animationDelay: `${0.48 + i * 0.05}s`,
+                  letter={letter}
+                  index={i}
+                  scrollY={scrollY}
+                  isScattered={isScattered}
+                  reducedMotion={reducedMotion}
+                  innerRef={(el) => {
+                    letterSpanRefs.current[i] = el;
                   }}
-                >
-                  {letter}
-                </span>
+                  onRegisterBurst={(fn) => {
+                    burstFnsRef.current[i] = fn;
+                  }}
+                  onLetterClick={handleWordmarkClick}
+                />
               ))}
             </h1>
 
             {/* 1px divider — delay 0.72s, expands left→right */}
             <div
-              className="hero-animate hero-divider w-full h-px mt-3"
+              className="hero-animate hero-divider w-full h-px mt-3 relative z-10"
               style={{
                 background: "rgba(206, 164, 145, 0.14)",
                 animationDelay: "0.72s",

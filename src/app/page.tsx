@@ -27,7 +27,7 @@ export default function Home() {
       <Navbar onOpenCommandMenu={() => setCommandMenuOpen(true)} />
 
       {/* Main Content Sections */}
-      <main className="relative z-10 w-full overflow-hidden">
+      <main className="relative z-10 w-full overflow-x-clip">
         {/* Full-bleed Hero Section covering the full screen ratio */}
         <HeroSection />
 
