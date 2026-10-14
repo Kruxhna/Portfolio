@@ -14,6 +14,8 @@ export interface Project {
   demoUrl?: string;
   featured: boolean;
   visualType: "network-mesh" | "spectrogram" | "dag-pipeline" | "mobile-ui";
+  problem?: string;
+  fix?: string;
 }
 
 export interface SkillCategory {
@@ -141,6 +143,10 @@ export const PROJECTS: Project[] = [
     demoUrl: "#lab",
     featured: true,
     visualType: "network-mesh",
+    problem:
+      "Running 70B+ parameter LLMs locally on consumer hardware bottlenecks on PCIe bandwidth and VRAM ceilings (12GB–16GB), causing catastrophic memory fragmentation, inter-process serialization stalls, and single-worker OOM crashes.",
+    fix:
+      "Orchestrated an asynchronous cross-node RPC tensor and pipeline parallelism daemon with zero-copy GGUF loaders and shared-memory IPC ring buffers over Tailscale. Compute kernels dynamically balance 4-bit / 8-bit dynamic quantization against network packet latency, delivering real-time tokens across distributed consumer GPUs.",
   },
   {
     id: "smart-scan-ew",
@@ -173,6 +179,10 @@ export const PROJECTS: Project[] = [
     demoUrl: "#lab",
     featured: true,
     visualType: "spectrogram",
+    problem:
+      "Agile radar emitters constantly hop unpredictably across wideband gigahertz spectrums. Traditional linear raster sweeps miss over 38% of high-priority pulse trains due to fixed dwell timing and receiver blind spots.",
+    fix:
+      "Engineered a real-time FFT spectral centroid clustering pipeline coupled with a priority-queue dwell time scheduler. The algorithm computes emission recurrence probabilities on-the-fly and concentrates antenna receiver dwell precisely when agile hopping pulses emerge, achieving a 98.4% probability of intercept.",
   },
   {
     id: "ml-pipeline-benchmarks",
@@ -205,6 +215,10 @@ export const PROJECTS: Project[] = [
     demoUrl: "#lab",
     featured: true,
     visualType: "dag-pipeline",
+    problem:
+      "Ad-hoc machine learning feature engineering easily introduces subtle target leakage across train/validation splits, distorting cross-validation metrics and degrading real-world inference stability.",
+    fix:
+      "Architected custom Scikit-Learn DAG transformers with strict fit-transform barriers, nested 5-fold cross-validation, and an automated hyperparameter evaluation engine spanning XGBoost, LightGBM, and linear baselines. Packaged with a real-time diagnostic suite reporting SHAP feature attributions and residual variance.",
   },
   {
     id: "gate-learn-mobile",
@@ -237,6 +251,10 @@ export const PROJECTS: Project[] = [
     demoUrl: "#lab",
     featured: true,
     visualType: "mobile-ui",
+    problem:
+      "Mastering complex Theoretical Computer Science and Discrete Mathematics concepts requires constant active recall; standard flashcards fail to model human memory decay curves for multi-step algorithmic proofs.",
+    fix:
+      "Designed an adaptive question dispatch engine powered by an SM-2 spaced repetition variant that dynamically adjusts review intervals based on response latency and recall difficulty. Built an offline-first React Native client with local SQLite caching that syncs state deltas in under 24ms.",
   },
 ];
 

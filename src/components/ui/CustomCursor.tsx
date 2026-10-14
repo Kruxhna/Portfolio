@@ -526,12 +526,14 @@ export function CustomCursor() {
           // Size & Shape
           width: isCapsule ? "auto" : isInvert || isLink ? "44px" : "28px",
           height: isCapsule ? "auto" : isInvert || isLink ? "44px" : "28px",
-          borderRadius: isDrag ? "9999px" : isCapsule ? "4px" : "50%",
-          padding: isDrag ? "5px 10px" : isCapsule ? "6px 10px" : "0px",
+          borderRadius: isDrag || (isView && capsuleLabel.startsWith("*")) ? "9999px" : isCapsule ? "4px" : "50%",
+          padding: isDrag || (isView && capsuleLabel.startsWith("*")) ? "5px 12px" : isCapsule ? "6px 10px" : "0px",
 
           // Colors & Borders
           backgroundColor: isDrag
             ? "#AD6A4C"
+            : isView && capsuleLabel.startsWith("*")
+            ? "rgba(10, 8, 7, 0.95)"
             : isCapsule
             ? "rgba(10, 8, 7, 0.94)"
             : isInvert
@@ -542,6 +544,8 @@ export function CustomCursor() {
 
           border: isDrag
             ? "1px solid transparent"
+            : isView && capsuleLabel.startsWith("*")
+            ? "1px solid rgba(173, 106, 76, 0.5)"
             : isCapsule
             ? "1px solid rgba(206, 164, 145, 0.25)"
             : isLink || isInvert
@@ -564,9 +568,15 @@ export function CustomCursor() {
           </div>
         )}
 
-        {/* View / Scrub Capsule Content (Monochrome Razor-Sharp Variant) */}
+        {/* View / Scrub Capsule Content (Monochrome / Italic Variant) */}
         {(isView || isScrub || isScrubY) && (
-          <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#DEC1B4] whitespace-nowrap">
+          <span
+            className={`font-mono text-[11px] whitespace-nowrap ${
+              capsuleLabel.startsWith("*")
+                ? "italic text-[#EEDED7] font-normal tracking-wide"
+                : "uppercase tracking-[0.12em] text-[#DEC1B4]"
+            }`}
+          >
             {capsuleLabel}
           </span>
         )}

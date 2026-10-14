@@ -69,7 +69,7 @@ export function Navbar({
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    const sectionIds = ["about", "dsa", "projects", "arsenal", "contact"];
+    const sectionIds = ["about", "dsa", "work", "projects", "arsenal", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -162,13 +162,16 @@ export function Navbar({
         {/* Center: Desktop Navigation Links (Default rgba(222, 193, 180, 0.55), Active/Hover #DEC1B4 with #AD6A4C indicator) */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8 font-mono text-[11px] uppercase tracking-widest">
           {[
-            { id: "projects", label: "WORK" },
+            { id: "work", label: "WORK" },
             { id: "about", label: "ABOUT" },
             { id: "arsenal", label: "TOOLBOX" },
             { id: "dsa", label: "DSA" },
             { id: "contact", label: "CONTACT" },
           ].map((item) => {
-            const isActive = activeSection === item.id;
+            const isWorkActive =
+              (item.id === "work" || item.id === "projects") &&
+              (activeSection === "work" || activeSection === "projects");
+            const isActive = isWorkActive || activeSection === item.id;
             return (
               <a
                 key={item.id}
@@ -258,27 +261,33 @@ export function Navbar({
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-[rgba(205,180,158,0.12)] bg-[#0A0807]/95 px-6 py-4 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 font-mono text-xs uppercase tracking-wider space-y-3">
           {[
-            { id: "projects", label: "WORK" },
+            { id: "work", label: "WORK" },
             { id: "about", label: "ABOUT" },
             { id: "arsenal", label: "TOOLBOX" },
             { id: "dsa", label: "DSA" },
             { id: "contact", label: "CONTACT" },
-          ].map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              onClick={(e) => handleNavClick(item.id, e)}
-              className={cn(
-                "block py-1 transition-colors",
-                activeSection === item.id
-                  ? "text-[#DEC1B4] font-medium"
-                  : "text-[rgba(222,193,180,0.55)] hover:text-[#DEC1B4]"
-              )}
-            >
-              {activeSection === item.id && <span className="inline-block mr-2 text-[#AD6A4C]">•</span>}
-              {item.label}
-            </a>
-          ))}
+          ].map((item) => {
+            const isWorkActive =
+              (item.id === "work" || item.id === "projects") &&
+              (activeSection === "work" || activeSection === "projects");
+            const isActive = isWorkActive || activeSection === item.id;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => handleNavClick(item.id, e)}
+                className={cn(
+                  "block py-1 transition-colors",
+                  isActive
+                    ? "text-[#DEC1B4] font-medium"
+                    : "text-[rgba(222,193,180,0.55)] hover:text-[#DEC1B4]"
+                )}
+              >
+                {isActive && <span className="inline-block mr-2 text-[#AD6A4C]">•</span>}
+                {item.label}
+              </a>
+            );
+          })}
         </div>
       )}
     </header>
