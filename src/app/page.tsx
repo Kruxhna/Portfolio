@@ -32,8 +32,8 @@ export default function Home() {
         {/* Full-Width Featured Work Section (id="work") */}
         <ProjectsSection />
 
-        {/* Expansive Downstream Sections */}
-        <div className="mx-auto w-full max-w-[1400px] px-6 sm:px-10 lg:px-16 xl:px-20">
+        {/* Expansive Downstream Sections Aligned with Hero, DSA and Work (max-w-[1720px]) */}
+        <div className="mx-auto w-full max-w-[1720px] px-6 sm:px-10 lg:px-12">
           <LabSection />
           <ArsenalSection />
           <ResearchSection />

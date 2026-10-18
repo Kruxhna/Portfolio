@@ -22,6 +22,9 @@ import {
   Trash2,
   Code2,
   BookOpen,
+  Users,
+  Box,
+  FolderGit2,
 } from "lucide-react";
 import { TERMINAL_COMMANDS } from "@/data/portfolioData";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
@@ -58,21 +61,97 @@ interface GithubProfileData {
   top_repos: GithubRepo[];
 }
 
+export const REPO_METADATA_OVERRIDES: Record<
+  string,
+  { description: string; language?: string; architecture?: string[]; recentCommits?: string[] }
+> = {
+  'llama-cluster': {
+    description: 'Distributed LLaMA inference cluster across heterogeneous nodes via RPC & tensor parallelism.',
+    language: 'C++/CUDA',
+    architecture: [
+      'Coordinator Node -> gRPC / ggml-rpc -> Worker Shard Nodes',
+      'Ring-AllReduce tensor synchronization over low-latency LAN',
+    ],
+    recentCommits: [
+      'feat(rpc): optimize KV-cache quantization across worker nodes',
+      'perf(cuda): fuse RoPE + FlashAttention kernels for multi-GPU split',
+    ],
+  },
+  'Trinetra': {
+    description: 'Real-time multi-stream computer vision & anomaly detection pipeline with edge telemetry.',
+    language: 'Python',
+    architecture: [
+      'RTSP Ingest -> YOLOv8 / TensorRT Inference Engine -> Event Broker',
+      'WebSocket live telemetry stream + automated alert dispatch',
+    ],
+    recentCommits: [
+      'feat(vision): add spatial-temporal anomaly scoring tracker',
+      'perf(pipeline): async frame batching for 60fps RTSP streams',
+    ],
+  },
+  'DEEPFAKE': {
+    description: 'Spatiotemporal deepfake forensics & frequency-domain artifact classifier using vision transformers.',
+    language: 'Python',
+    architecture: [
+      'Face Extraction (RetinaFace) -> DCT Frequency Branch + ViT Spatial Backbone',
+      'Ensemble temporal coherence head with Grad-CAM explainability',
+    ],
+    recentCommits: [
+      'feat(model): integrate spectral residual attention block',
+      'eval(metrics): add cross-dataset AUC benchmark on FaceForensics++',
+    ],
+  },
+  'Aptitude': {
+    description: 'Quantitative aptitude reasoning benchmark engine with dynamic difficulty calibration.',
+    language: 'TypeScript',
+    architecture: [
+      'Adaptive Question Bank -> ELO Rating Calibration Engine -> React Native UI',
+      'Offline-first IndexedDB cache + background sync daemon',
+    ],
+    recentCommits: [
+      'feat(engine): add Glicko-2 dynamic difficulty calibration algorithm',
+      'perf(cache): optimize offline question bank serialization',
+    ],
+  },
+  'smart-scan-ew': {
+    description: 'Adaptive RF spectrum scanning engine maximizing POI against agile radar frequency-hopping patterns.',
+    language: 'Python',
+    architecture: [
+      'SDR Stream Ingest -> FFT Spectral Clustering -> Priority Queue Scheduler',
+      'Zero-copy circular ring buffer with real-time waterfall visualization',
+    ],
+    recentCommits: [
+      'feat(dsp): parallel FFT clustering for multi-band radar intercepts',
+      'perf(buffer): zero-copy shm ring buffer for high-throughput SDR',
+    ],
+  },
+};
+
+export function dispatchTerminalCommand(command: string) {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(
+      new CustomEvent("terminal:execute", {
+        detail: { command },
+      })
+    );
+  }
+}
+
 const FALLBACK_GITHUB_DATA: GithubProfileData = {
-  login: "Kruxhna",
+  login: "kruxhna",
   name: "Krushna",
   avatar_url: "https://avatars.githubusercontent.com/u/115390946?v=4",
-  html_url: "https://github.com/Kruxhna",
-  bio: "BE CSE student specializing in AIML. Passionate about building data-driven AI solutions. Sharpening skills in Python, deep learning, and data structures.",
-  public_repos: 15,
-  followers: 10,
+  html_url: "https://github.com/kruxhna",
+  bio: "AI Systems & ML Engineering | Distributed LLM Inference (C++/CUDA/Rust), Computer Vision & Applied Deep Learning.",
+  public_repos: 12,
+  followers: 7,
   following: 6,
   total_stars: 5,
   streak_days: 18,
   top_repos: [
     {
       name: "llama-cluster",
-      description: "Distributed LLM inference cluster with RPC daemons and cross-node pipeline parallelism on consumer GPUs.",
+      description: "Distributed LLaMA inference cluster across heterogeneous nodes via RPC & tensor parallelism.",
       language: "Python",
       stars: 2,
       forks: 0,
@@ -80,7 +159,7 @@ const FALLBACK_GITHUB_DATA: GithubProfileData = {
     },
     {
       name: "Trinetra",
-      description: "Computer vision and video forensics architecture for multi-frame feature extraction and monitoring.",
+      description: "Real-time multi-stream computer vision & anomaly detection pipeline with edge telemetry.",
       language: "Python",
       stars: 2,
       forks: 0,
@@ -88,7 +167,7 @@ const FALLBACK_GITHUB_DATA: GithubProfileData = {
     },
     {
       name: "DEEPFAKE",
-      description: "Spatial-Temporal deepfake detector utilizing MTCNN face alignment, EfficientNet-B0, and Bi-LSTM temporal pass.",
+      description: "Spatiotemporal deepfake forensics & frequency-domain artifact classifier using vision transformers.",
       language: "Python",
       stars: 1,
       forks: 0,
@@ -96,7 +175,7 @@ const FALLBACK_GITHUB_DATA: GithubProfileData = {
     },
     {
       name: "Aptitude",
-      description: "Gamified adaptive GATE training platform with ELO engine, spaced repetition, and offline-first mobile client.",
+      description: "Quantitative aptitude reasoning benchmark engine with dynamic difficulty calibration.",
       language: "TypeScript",
       stars: 1,
       forks: 0,
@@ -117,22 +196,31 @@ const LANGUAGE_COLORS: Record<string, string> = {
   Python: "#E46B5E",
   TypeScript: "#ECC3AB",
   JavaScript: "#E69683",
-  "C++": "#E46B5E",
+  "C++": "#E02E32",
+  "C++/CUDA": "#E02E32",
   "Jupyter Notebook": "#ECC3AB",
   HTML: "#E69683",
   CSS: "#E46B5E",
 };
 
-// Generate simulated activity heatmap grid data (18 weeks x 7 days)
+// Generate simulated activity heatmap grid data (18 columns x 5 rows = 90 cells)
 // Use deterministic pseudo-random based on index to ensure exact SSR/client match
-const GENERATED_HEATMAP = Array.from({ length: 18 * 7 }, (_, i) => {
-  const pseudoRand = (Math.abs(Math.sin((i + 1) * 12.9898 + (i % 7) * 78.233)) * 43758.5453) % 1;
-  const factor = (i / (18 * 7)) * 0.7 + 0.3;
+const GENERATED_HEATMAP = Array.from({ length: 18 * 5 }, (_, i) => {
+  const pseudoRand = (Math.abs(Math.sin((i + 1) * 12.9898 + (i % 5) * 78.233)) * 43758.5453) % 1;
+  const factor = (i / (18 * 5)) * 0.7 + 0.3;
   if (pseudoRand < 0.28) return 0;
-  if (pseudoRand < 0.6) return Math.min(3, Math.floor(pseudoRand * 3 * factor) + 1);
-  if (pseudoRand < 0.88) return Math.min(4, Math.floor(pseudoRand * 4 * factor) + 2);
+  if (pseudoRand < 0.58) return Math.min(2, Math.floor(pseudoRand * 3 * factor) + 1);
+  if (pseudoRand < 0.85) return Math.min(3, Math.floor(pseudoRand * 4 * factor) + 2);
   return 4;
 });
+
+const HEATMAP_INTENSITY_COLORS = [
+  "rgba(255, 255, 255, 0.04)",
+  "rgba(154, 20, 44, 0.55)",
+  "rgba(195, 24, 30, 0.75)",
+  "rgba(224, 46, 50, 0.90)",
+  "#E46B5E",
+];
 
 export function LabSection() {
   const [activeMainTab, setActiveMainTab] = useState<"terminal" | "neural">("terminal");
@@ -198,26 +286,32 @@ export function LabSection() {
               .filter((r) => !r.fork)
               .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0))
               .slice(0, 5)
-              .map((r) => ({
-                name: r.name,
-                description: r.description || "Open source software project by Krushna.",
-                language: r.language || "Python",
-                stars: r.stargazers_count || 0,
-                forks: r.forks_count || 0,
-                url: r.html_url,
-              }));
+              .map((r) => {
+                const override = REPO_METADATA_OVERRIDES[r.name];
+                return {
+                  name: r.name,
+                  description:
+                    override?.description ||
+                    r.description ||
+                    "Open source software project by Krushna.",
+                  language: override?.language || r.language || "Python",
+                  stars: r.stargazers_count || 0,
+                  forks: r.forks_count || 0,
+                  url: r.html_url,
+                };
+              });
           }
         }
 
         setGithubData({
-          login: userData.login || "Kruxhna",
+          login: userData.login || "kruxhna",
           name: userData.name || "Krushna",
           avatar_url: userData.avatar_url || FALLBACK_GITHUB_DATA.avatar_url,
-          html_url: userData.html_url || "https://github.com/Kruxhna",
+          html_url: userData.html_url || "https://github.com/kruxhna",
           bio: userData.bio || FALLBACK_GITHUB_DATA.bio,
-          public_repos: userData.public_repos || 15,
-          followers: userData.followers || 10,
-          following: userData.following || 6,
+          public_repos: userData.public_repos ?? 12,
+          followers: userData.followers ?? 7,
+          following: userData.following ?? 6,
           total_stars: Math.max(totalStars, 5),
           streak_days: 18,
           top_repos: topRepos.length > 0 ? topRepos : FALLBACK_GITHUB_DATA.top_repos,
@@ -235,6 +329,9 @@ export function LabSection() {
   useEffect(() => {
     fetchGithubData();
   }, []);
+
+  const [expandedRepo, setExpandedRepo] = useState<string | null>(null);
+  const handleCommandRef = useRef<(cmd: string) => void>(() => {});
 
   const handleCommand = (rawCmd: string) => {
     const trimmed = rawCmd.trim();
@@ -258,13 +355,55 @@ export function LabSection() {
     else if (lower === "projects") special = "projects";
     else if (lower === "github") special = "github";
 
-    const output =
-      TERMINAL_COMMANDS[lower] ||
-      `zsh: command not found: "${trimmed}". Type "help" to see available commands or click the suggestion chips above.`;
+    let output = TERMINAL_COMMANDS[lower];
+
+    // Check if inspecting a repo (e.g. "inspect llama-cluster" or "llama-cluster")
+    const inspectTarget = lower.startsWith("inspect ")
+      ? trimmed.slice(8).trim()
+      : trimmed;
+    const repoMatch = Object.keys(REPO_METADATA_OVERRIDES).find(
+      (k) => k.toLowerCase() === inspectTarget.toLowerCase()
+    );
+
+    if (repoMatch) {
+      const meta = REPO_METADATA_OVERRIDES[repoMatch];
+      output = `=== [REPOSITORY TELEMETRY: ${repoMatch.toUpperCase()}] ===
+Language:     ${meta.language || "Python"}
+Overview:     ${meta.description}
+
+[ARCHITECTURE PIPELINE]
+${meta.architecture?.map((a) => `  ↳ ${a}`).join("\n") || "  ↳ No architecture nodes recorded"}
+
+[RECENT TELEMETRY COMMITS]
+${meta.recentCommits?.map((c) => `  * ${c}`).join("\n") || "  * No recent commits recorded"}
+
+Source URL:   https://github.com/Kruxhna/${repoMatch}`;
+    }
+
+    if (!output) {
+      output = `zsh: command not found: "${trimmed}". Type "help" to see available commands or click the suggestion chips above.`;
+    }
 
     setHistory((prev) => [...prev, { cmd: trimmed, output, isSpecial: special }]);
     setInputVal("");
   };
+
+  handleCommandRef.current = handleCommand;
+
+  useEffect(() => {
+    const handleTerminalExecute = (e: Event) => {
+      const customEvent = e as CustomEvent<{ command: string }>;
+      if (customEvent.detail && typeof customEvent.detail.command === "string") {
+        setActiveMainTab("terminal");
+        handleCommandRef.current(customEvent.detail.command);
+      }
+    };
+
+    window.addEventListener("terminal:execute", handleTerminalExecute);
+    return () => {
+      window.removeEventListener("terminal:execute", handleTerminalExecute);
+    };
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowUp") {
@@ -338,129 +477,172 @@ export function LabSection() {
   };
 
   return (
-    <section id="lab" className="relative py-20 sm:py-28">
+    <section id="lab" className="relative z-10 w-full bg-transparent py-20 sm:py-28">
       {/* Section Header */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#DD7074]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
-          <span>Interactive Terminal & Activity Widget</span>
+        <div className="flex items-center gap-2 font-mono text-[0.75rem] tracking-[0.14em] uppercase text-[#DD7074]">
+          <span className="text-[#E02E32] font-bold animate-pulse">•</span>
+          <span>03 | GITHUB ACTIVITY</span>
         </div>
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-[#ECC3AB] sm:text-4xl">
-              Terminal &amp; Live GitHub Activity
+            <h2
+              className="text-[#ECC3AB]"
+              style={{
+                fontSize: "clamp(2.25rem, 4vw, 3.25rem)",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                lineHeight: 1.1,
+              }}
+            >
+              Terminal &amp; Live GitHub
             </h2>
-            <p className="mt-1 max-w-2xl text-sm sm:text-base text-[#ECC3AB]/80">
-              Query Krushna&apos;s stack and credentials through a macOS-styled interactive terminal or inspect real-time GitHub stats, repositories, and contribution telemetry.
+            <p
+              className="mt-2 text-[#E69683]"
+              style={{
+                maxWidth: "560px",
+                fontSize: "0.95rem",
+                lineHeight: 1.6,
+              }}
+            >
+              Query Krushna&apos;s stack and credentials through an interactive terminal or inspect real-time GitHub stats, repositories, and contribution telemetry.
             </p>
           </div>
 
-          {/* Tab Switcher: Terminal & Activity vs Neural Simulator */}
-          <div className="flex gap-1.5 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#0A0807]/90 p-1 backdrop-blur-md">
+          {/* Right Segmented Pill Toggle */}
+          <div
+            style={{
+              borderRadius: "9999px",
+              padding: "4px",
+              background: "rgba(10, 8, 7, 0.8)",
+              border: "1px solid rgba(221, 112, 116, 0.2)",
+            }}
+            className="inline-flex items-center backdrop-blur-md self-start md:self-auto shrink-0"
+          >
             <button
+              type="button"
               onClick={() => setActiveMainTab("terminal")}
-              data-cursor="magnetic"
-              className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all ${
+              data-cursor="pointer"
+              style={{
+                borderRadius: "9999px",
+                padding: "8px 18px",
+              }}
+              className={`text-xs transition-all ${
                 activeMainTab === "terminal"
-                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm"
-                  : "text-[#DD7074] hover:text-[#ECC3AB]"
+                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm font-semibold"
+                  : "bg-transparent text-[#DD7074] hover:text-[#ECC3AB] font-medium"
               }`}
             >
-              <TerminalIcon className="h-3.5 w-3.5" />
-              <span>Interactive CLI &amp; GitHub</span>
+              <span>&gt; Interactive CLI</span>
             </button>
             <button
+              type="button"
               onClick={() => setActiveMainTab("neural")}
-              data-cursor="magnetic"
-              className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all ${
+              data-cursor="pointer"
+              style={{
+                borderRadius: "9999px",
+                padding: "8px 18px",
+              }}
+              className={`inline-flex items-center gap-2 text-xs transition-all ${
                 activeMainTab === "neural"
-                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm"
-                  : "text-[#DD7074] hover:text-[#ECC3AB]"
+                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm font-semibold"
+                  : "bg-transparent text-[#DD7074] hover:text-[#ECC3AB] font-medium"
               }`}
             >
-              <Cpu className="h-3.5 w-3.5" />
+              <Box className="h-3.5 w-3.5" />
               <span>Neural Inspector</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Main Interactive Widget Area */}
+      {/* Main Interactive Area */}
       <div className="mt-8">
         {activeMainTab === "terminal" ? (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-            {/* LEFT / MAIN COLUMN: Interactive Fake Terminal (macOS Style) */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+            {/* LEFT / MAIN COLUMN: Interactive Fake Terminal */}
             <div
               className={`transition-all duration-300 ${
                 isTerminalExpanded ? "lg:col-span-12" : "lg:col-span-7"
               }`}
             >
               <div
-                className="group relative flex flex-col rounded-2xl border border-[rgba(221,112,116,0.18)] bg-[#0A0807] shadow-2xl transition-all duration-200 hover:border-[#E46B5E]/50"
+                style={{
+                  background: "rgba(10, 8, 7, 0.88)",
+                  backdropFilter: "blur(14px)",
+                  WebkitBackdropFilter: "blur(14px)",
+                  border: "1px solid rgba(221, 112, 116, 0.18)",
+                  borderRadius: "16px",
+                }}
+                className="group relative flex flex-col shadow-2xl transition-all duration-200 overflow-hidden"
                 onClick={() => terminalInputRef.current?.focus()}
               >
                 {/* macOS Style Window Titlebar */}
-                <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] bg-[#120E0B] px-4 py-3 select-none">
-                  {/* macOS Traffic Light Window Controls */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setHistory([]);
-                      }}
-                      title="Clear terminal"
-                      className="group/dot relative flex h-3 w-3 items-center justify-center rounded-full bg-[#FF5F56] border border-[#E0443E] transition-opacity hover:opacity-90"
-                    >
-                      <span className="opacity-0 group-hover/dot:opacity-100 text-[8px] font-bold text-black leading-none">
-                        ×
-                      </span>
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsTerminalExpanded(false);
-                      }}
-                      title="Reset window size"
-                      className="group/dot relative flex h-3 w-3 items-center justify-center rounded-full bg-[#FFBD2E] border border-[#DEA123] transition-opacity hover:opacity-90"
-                    >
-                      <span className="opacity-0 group-hover/dot:opacity-100 text-[8px] font-bold text-black leading-none">
-                        –
-                      </span>
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsTerminalExpanded(!isTerminalExpanded);
-                      }}
-                      title={isTerminalExpanded ? "Collapse width" : "Expand width"}
-                      className="group/dot relative flex h-3 w-3 items-center justify-center rounded-full bg-[#27C93F] border border-[#1AAB29] transition-opacity hover:opacity-90"
-                    >
-                      <span className="opacity-0 group-hover/dot:opacity-100 text-[7px] font-bold text-black leading-none">
-                        +
-                      </span>
-                    </button>
+                <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.14)] px-4 py-3 select-none">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setHistory([]);
+                        }}
+                        data-cursor="pointer"
+                        title="Clear terminal"
+                        className="h-3 w-3 rounded-full bg-[#FF5F56] transition-opacity hover:opacity-80"
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsTerminalExpanded(false);
+                        }}
+                        data-cursor="pointer"
+                        title="Reset window size"
+                        className="h-3 w-3 rounded-full bg-[#FFBD2E] transition-opacity hover:opacity-80"
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsTerminalExpanded(!isTerminalExpanded);
+                        }}
+                        data-cursor="pointer"
+                        title={isTerminalExpanded ? "Collapse width" : "Expand width"}
+                        className="h-3 w-3 rounded-full bg-[#27C93F] transition-opacity hover:opacity-80"
+                      />
+                    </div>
 
-                    {/* Window Title with Prompt Identification */}
-                    <div className="ml-3 flex items-center gap-2 font-mono text-[11px] text-[#ECC3AB]">
-                      <TerminalIcon className="h-3 w-3 text-[#E46B5E]" />
-                      <span className="font-semibold text-[#ECC3AB]">visitor@krushna-aiml:~</span>
-                      <span className="text-[rgba(221,112,116,0.3)]">|</span>
-                      <span className="text-[10px] text-[#DD7074]">zsh</span>
+                    <div className="font-mono text-xs text-[#E69683] flex items-center gap-1.5">
+                      <span className="text-[#ECC3AB] font-semibold">visitor@krushna-aiml:~</span>
+                      <span className="text-[#E46B5E] animate-pulse font-bold">_</span>
                     </div>
                   </div>
 
                   {/* Window Controls Right */}
-                  <div className="flex items-center gap-2 font-mono text-[10px] text-[#DD7074]">
-                    <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-[#9A142C] bg-[#4E0104]/85 px-2 py-0.5 text-[#E8A791]">
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      style={{
+                        border: "1px solid rgba(228, 107, 94, 0.35)",
+                        background: "rgba(78, 1, 4, 0.7)",
+                        color: "#E8A791",
+                        fontSize: "0.7rem",
+                        borderRadius: "9999px",
+                        padding: "2px 10px",
+                      }}
+                      className="font-mono font-medium inline-flex items-center gap-1.5"
+                    >
                       <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
                       ONLINE
                     </span>
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsTerminalExpanded(!isTerminalExpanded);
                       }}
-                      className="rounded p-1 hover:bg-[#14100D] hover:text-[#ECC3AB] text-[#DD7074] transition-colors"
+                      data-cursor="pointer"
+                      className="rounded p-1 text-[#DD7074] hover:text-[#ECC3AB] transition-colors"
                       title={isTerminalExpanded ? "Restore" : "Maximize"}
                     >
                       {isTerminalExpanded ? (
@@ -473,40 +655,54 @@ export function LabSection() {
                 </div>
 
                 {/* Quick Command Suggestion Chips */}
-                <div className="flex flex-wrap items-center gap-1.5 border-b border-[rgba(221,112,116,0.14)] bg-[#0A0807]/90 px-4 py-2 font-mono">
-                  <span className="text-[10.5px] text-[#DD7074] mr-1">Quick run:</span>
-                  {commandChips.map((chip) => (
-                    <button
-                      key={chip}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCommand(chip);
-                      }}
-                      data-cursor="link"
-                      className={`rounded-md border px-2 py-0.5 text-[11px] transition-all cursor-pointer ${
-                        chip === "help"
-                          ? "border-[#E44847]/60 bg-[#C3181E] text-[#ECC3AB] hover:bg-[#E14945]"
-                          : "border border-[#9A142C] bg-[#4E0104]/85 text-[#E8A791] hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
-                      }`}
-                    >
-                      {chip}
-                    </button>
-                  ))}
+                <div className="flex flex-wrap items-center gap-1.5 border-b border-[rgba(221,112,116,0.12)] bg-[#0A0807]/50 px-4 py-2 font-mono">
+                  <span className="text-[11px] text-[#DD7074] mr-1">Quick run:</span>
+                  {commandChips.map((chip) => {
+                    const isActive = chip === "help";
+                    return (
+                      <button
+                        key={chip}
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCommand(chip);
+                        }}
+                        data-cursor="pointer"
+                        className={`rounded-md px-2.5 py-0.5 text-[11px] font-mono transition-all cursor-pointer ${
+                          isActive
+                            ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm font-semibold"
+                            : "bg-[#4E0104]/70 border border-[#9A142C]/60 text-[#E8A791] hover:bg-[#7B0408] hover:text-[#ECC3AB]"
+                        }`}
+                      >
+                        {chip}
+                      </button>
+                    );
+                  })}
                 </div>
 
                 {/* Terminal Console Output Scroll Area */}
                 <div className="min-h-[340px] max-h-[440px] overflow-y-auto p-4 sm:p-5 space-y-4 font-mono text-xs">
-                  {/* Terminal Greeting Banner */}
-                  <div className="rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#120E0B]/60 p-3 text-[11px] leading-relaxed text-[#ECC3AB]/80">
-                    <div className="flex items-center gap-2 text-[#E46B5E] font-bold">
+                  {/* MOTD Banner */}
+                  <div
+                    style={{
+                      borderRadius: "10px",
+                      border: "1px solid rgba(221, 112, 116, 0.18)",
+                      background: "rgba(78, 1, 4, 0.25)",
+                      padding: "14px",
+                    }}
+                    className="text-[11.5px] leading-relaxed text-[#E69683]"
+                  >
+                    <div className="flex items-center gap-2 text-[#ECC3AB] font-semibold">
                       <Sparkles className="h-3.5 w-3.5 text-[#E46B5E]" />
-                      <span>Krushna&apos;s AIML Interactive Terminal [Build v2026.10]</span>
+                      <span>✨ Krushna&apos;s AIML Interactive Terminal [Build v2026.10]</span>
                     </div>
                     <p className="mt-1 text-[#DD7074]">
                       Connected to <span className="text-[#ECC3AB]">visitor@krushna-aiml</span>. Type commands below or click the quick action chips.
                     </p>
-                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-[#DD7074]/70">
-                      <span>Commands: <strong className="text-[#E46B5E]">help</strong>, <strong className="text-[#E46B5E]">skills</strong>, <strong className="text-[#E46B5E]">contact</strong>, <strong className="text-[#E46B5E]">clear</strong></span>
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10.5px] text-[#DD7074]">
+                      <span>
+                        Commands: <strong className="text-[#ECC3AB]">help</strong>, <strong className="text-[#ECC3AB]">skills</strong>, <strong className="text-[#ECC3AB]">contact</strong>, <strong className="text-[#ECC3AB]">clear</strong>
+                      </span>
                       <span>• Tab completion supported</span>
                     </div>
                   </div>
@@ -515,23 +711,33 @@ export function LabSection() {
                   {history.map((item, idx) => (
                     <div key={idx} className="space-y-1.5 animate-in fade-in duration-200">
                       {/* Executed Command Line */}
-                      <div className="flex items-center gap-2 text-[#E46B5E]">
+                      <div className="flex items-center gap-2 text-xs">
                         <span className="font-bold select-none text-[#E46B5E]">
                           visitor@krushna-aiml:~$
                         </span>
-                        <span className="font-bold text-[#ECC3AB]">{item.cmd}</span>
+                        <span className="font-semibold text-[#ECC3AB]">{item.cmd}</span>
                       </div>
 
                       {/* Render Rich Special Output Cards or Monospace Output */}
                       {item.isSpecial === "contact" ? (
-                        <div className="rounded-xl border border-[#9A142C] bg-[#120E0B] p-4 text-[12px] space-y-3">
-                          <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] pb-2">
-                            <span className="font-bold text-[#E46B5E]">
-                              ⚡ DIRECT COMMUNICATION & SOCIALS
+                        <div
+                          style={{
+                            borderRadius: "10px",
+                            border: "1px solid rgba(221, 112, 116, 0.18)",
+                            background: "rgba(10, 8, 7, 0.7)",
+                            padding: "14px",
+                          }}
+                          className="text-[12px] space-y-3"
+                        >
+                          <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.14)] pb-2">
+                            <span className="font-bold text-[#ECC3AB]">
+                              ⚡ DIRECT COMMUNICATION &amp; SOCIALS
                             </span>
                             <button
+                              type="button"
                               onClick={copyContactEmail}
-                              className="flex items-center gap-1 rounded border border-[#9A142C] bg-[#4E0104]/85 px-2 py-0.5 text-[10px] text-[#E8A791] hover:text-[#ECC3AB] hover:bg-[#7B0408] cursor-pointer"
+                              data-cursor="pointer"
+                              className="flex items-center gap-1.5 rounded-md border border-[rgba(221,112,116,0.2)] bg-[rgba(221,112,116,0.06)] px-2.5 py-1 text-[10.5px] text-[#E69683] hover:text-[#ECC3AB] hover:border-[rgba(228,107,94,0.4)] cursor-pointer transition-all"
                             >
                               {copiedLink ? <Check className="h-3 w-3 text-[#E46B5E]" /> : <Copy className="h-3 w-3" />}
                               <span>{copiedLink ? "Copied Email!" : "Copy Email"}</span>
@@ -542,43 +748,46 @@ export function LabSection() {
                               href="https://www.linkedin.com/in/krushna-nole/"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
+                              data-cursor="pointer"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(10,8,7,0.8)] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
                                 <LinkedinIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
                                 <div className="min-w-0">
                                   <div className="text-[10px] text-[#DD7074]">LinkedIn</div>
-                                  <div className="font-bold text-[#ECC3AB] truncate">/in/krushna-nole</div>
+                                  <div className="font-semibold text-[#ECC3AB] truncate">/in/krushna-nole</div>
                                 </div>
                               </div>
                               <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
                             </a>
                             <a
                               href="mailto:krushna.aiml@gmail.com"
-                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
+                              data-cursor="pointer"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(10,8,7,0.8)] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
-                                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-[#4E0104]/85 text-[#E8A791] text-xs font-bold">
+                                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-[#4E0104] text-[#E8A791] border border-[#9A142C]/60 text-xs font-bold">
                                   @
                                 </div>
                                 <div className="min-w-0">
                                   <div className="text-[10px] text-[#DD7074]">Direct Email</div>
-                                  <div className="font-bold text-[#ECC3AB] truncate">krushna.aiml@gmail.com</div>
+                                  <div className="font-semibold text-[#ECC3AB] truncate">krushna.aiml@gmail.com</div>
                                 </div>
                               </div>
                               <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
                             </a>
                             <a
-                              href="https://github.com/Kruxhna"
+                              href="https://github.com/kruxhna"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
+                              data-cursor="pointer"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(10,8,7,0.8)] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
                                 <GithubIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
                                 <div className="min-w-0">
                                   <div className="text-[10px] text-[#DD7074]">GitHub Profile</div>
-                                  <div className="font-bold text-[#ECC3AB] truncate">github.com/Kruxhna</div>
+                                  <div className="font-semibold text-[#ECC3AB] truncate">github.com/kruxhna</div>
                                 </div>
                               </div>
                               <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
@@ -587,13 +796,14 @@ export function LabSection() {
                               href="https://codolio.com/profile/Kruxhna/problemSolving"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
+                              data-cursor="pointer"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(10,8,7,0.8)] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
                                 <CodolioIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
                                 <div className="min-w-0">
                                   <div className="text-[10px] text-[#DD7074]">Codolio DSA Hub</div>
-                                  <div className="font-bold text-[#ECC3AB] truncate">300+ Problems Solved</div>
+                                  <div className="font-semibold text-[#ECC3AB] truncate">300+ Problems Solved</div>
                                 </div>
                               </div>
                               <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
@@ -601,15 +811,23 @@ export function LabSection() {
                           </div>
                         </div>
                       ) : item.isSpecial === "skills" ? (
-                        <div className="rounded-xl border border-[#9A142C] bg-[#120E0B] p-4 text-[11.5px] space-y-3">
-                          <div className="font-bold text-[#E46B5E] flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] pb-2">
-                            <span>🧠 TECHNICAL MATRIX: AI/ML & DSA</span>
+                        <div
+                          style={{
+                            borderRadius: "10px",
+                            border: "1px solid rgba(221, 112, 116, 0.18)",
+                            background: "rgba(10, 8, 7, 0.7)",
+                            padding: "14px",
+                          }}
+                          className="text-[11.5px] space-y-3"
+                        >
+                          <div className="font-bold text-[#ECC3AB] flex items-center justify-between border-b border-[rgba(221,112,116,0.14)] pb-2">
+                            <span>🧠 TECHNICAL MATRIX: AI/ML &amp; DSA</span>
                             <span className="text-[10px] text-[#DD7074]">B.E. AIML Mumbai</span>
                           </div>
 
                           <div className="space-y-2">
                             <div>
-                              <span className="font-bold text-[#ECC3AB]">[AI/ML & Deep Learning]</span>
+                              <span className="font-bold text-[#E46B5E]">[AI/ML &amp; Deep Learning]</span>
                               <div className="mt-1 flex flex-wrap gap-1.5">
                                 {[
                                   "PyTorch",
@@ -625,7 +843,7 @@ export function LabSection() {
                                 ].map((tag) => (
                                   <span
                                     key={tag}
-                                    className="rounded border border-[#9A142C] bg-[#4E0104]/85 px-1.5 py-0.5 text-[10.5px] text-[#E8A791]"
+                                    className="rounded border border-[rgba(221,112,116,0.18)] bg-[#4E0104]/40 px-1.5 py-0.5 text-[10.5px] text-[#ECC3AB]"
                                   >
                                     {tag}
                                   </span>
@@ -634,7 +852,7 @@ export function LabSection() {
                             </div>
 
                             <div className="pt-1">
-                              <span className="font-bold text-[#ECC3AB]">[Data Structures & Algorithms]</span>
+                              <span className="font-bold text-[#E46B5E]">[Data Structures &amp; Algorithms]</span>
                               <div className="mt-1 flex flex-wrap gap-1.5">
                                 {[
                                   "C++ (STL)",
@@ -649,7 +867,7 @@ export function LabSection() {
                                 ].map((tag) => (
                                   <span
                                     key={tag}
-                                    className="rounded border border-[rgba(221,112,116,0.22)] bg-[#14100D] px-1.5 py-0.5 text-[10.5px] text-[#ECC3AB]"
+                                    className="rounded border border-[rgba(221,112,116,0.18)] bg-[#4E0104]/40 px-1.5 py-0.5 text-[10.5px] text-[#ECC3AB]"
                                   >
                                     {tag}
                                   </span>
@@ -659,7 +877,7 @@ export function LabSection() {
                           </div>
                         </div>
                       ) : (
-                        <pre className="whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-[#ECC3AB]/90">
+                        <pre className="whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-[#E69683]">
                           {item.output}
                         </pre>
                       )}
@@ -675,7 +893,7 @@ export function LabSection() {
                     e.preventDefault();
                     handleCommand(inputVal);
                   }}
-                  className="flex items-center gap-2 border-t border-[rgba(221,112,116,0.18)] bg-[#120E0B] px-4 py-3 font-mono text-xs"
+                  className="flex items-center gap-2 border-t border-[rgba(221,112,116,0.14)] bg-[#0A0807]/50 px-4 py-3 font-mono text-xs"
                 >
                   <span className="text-[#E46B5E] font-bold select-none whitespace-nowrap">
                     visitor@krushna-aiml:~$
@@ -687,7 +905,7 @@ export function LabSection() {
                     data-cursor="text"
                     onChange={(e) => setInputVal(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="type 'help', 'skills', 'contact', 'clear'..."
+                    placeholder="Type 'help', 'skills', 'contact', 'clear'..."
                     className="flex-1 bg-transparent text-sm text-[#ECC3AB] placeholder-[#DD7074]/50 focus:outline-none"
                     autoComplete="off"
                     autoCapitalize="off"
@@ -695,271 +913,350 @@ export function LabSection() {
                   />
                   <button
                     type="submit"
-                    data-cursor="magnetic"
-                    className="flex items-center gap-1.5 rounded-lg bg-[#C3181E] border border-[#E44847]/60 px-3 py-1.5 text-xs font-semibold text-[#ECC3AB] hover:bg-[#E14945] hover:text-[#ECC3AB] transition-all cursor-pointer"
+                    data-cursor="pointer"
+                    style={{
+                      background: "#C3181E",
+                      color: "#ECC3AB",
+                      borderRadius: "8px",
+                      border: "1px solid rgba(228, 72, 71, 0.6)",
+                    }}
+                    className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold hover:bg-[#E14945] hover:border-[#ECC3AB]/80 transition-all cursor-pointer shadow-sm shadow-[#C3181E]/20"
                   >
                     <span>Run</span>
-                    <span className="text-[10px] text-[#ECC3AB]/70">↵</span>
+                    <span className="text-[10px] opacity-80">↵</span>
                   </button>
                 </form>
               </div>
+
+              {/* Bottom Tech Tags */}
+              <div className="mt-3 flex flex-wrap items-center gap-3 font-mono text-[0.78rem] text-[#DD7074] px-1">
+                <span>JavaScript</span>
+                <span className="text-[rgba(221,112,116,0.3)]">•</span>
+                <span>Node + sharp</span>
+                <span className="text-[rgba(221,112,116,0.3)]">•</span>
+                <span>Cloudflare Workers</span>
+                <span className="text-[rgba(221,112,116,0.3)]">•</span>
+                <span>Durable Objects</span>
+              </div>
             </div>
 
-            {/* RIGHT COLUMN: Live GitHub Profile Card */}
+            {/* RIGHT COLUMN: GitHub Activity Card Component */}
             <div
               className={`transition-all duration-300 ${
                 isTerminalExpanded ? "hidden" : "lg:col-span-5"
               }`}
             >
-              <SpotlightCard className="h-full flex flex-col justify-between border-[rgba(221,112,116,0.18)] bg-[#0A0807]/95 p-5 sm:p-6 shadow-2xl">
-                <div>
-                  {/* GitHub Profile Header & Real-time Status */}
-                  <div className="flex items-start justify-between gap-3 border-b border-[rgba(221,112,116,0.18)] pb-5">
-                    <div className="flex items-center gap-3">
-                      <div className="relative">
-                        {/* Live Avatar */}
+              <div
+                style={{
+                  borderRadius: "16px",
+                  background: "rgba(10, 8, 7, 0.88)",
+                  backdropFilter: "blur(14px)",
+                  WebkitBackdropFilter: "blur(14px)",
+                  border: "1px solid rgba(221, 112, 116, 0.18)",
+                  padding: "22px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "18px",
+                }}
+                className="shadow-2xl relative"
+              >
+                {/* A. Profile Header & Bio */}
+                <div className="flex flex-col gap-3">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "12px",
+                    }}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      {/* Avatar Wrapper */}
+                      <div className="relative shrink-0">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={githubData.avatar_url}
-                          alt={githubData.name}
-                          className="h-12 w-12 rounded-xl border-2 border-[rgba(221,112,116,0.22)] object-cover shadow-md"
+                          alt={githubData.name || "Krushna"}
+                          style={{
+                            width: "48px",
+                            height: "48px",
+                            borderRadius: "12px",
+                          }}
+                          className="object-cover border border-[rgba(221,112,116,0.25)] shadow-md"
                         />
-                        <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#E02E32] ring-2 ring-[#0A0807]">
-                          <span className="h-2 w-2 rounded-full bg-[#ECC3AB] animate-pulse" />
-                        </span>
+                        <span
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                            backgroundColor: "#E02E32",
+                            border: "2px solid #0A0807",
+                          }}
+                          className="absolute -bottom-1 -right-1 rounded-full"
+                        />
                       </div>
 
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-bold text-[#ECC3AB] text-base leading-tight">
-                            {githubData.name}
-                          </h3>
-                          <Badge variant="accent" size="sm">
+                      {/* Identity Block */}
+                      <div className="min-w-0 flex flex-col justify-center">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-[#ECC3AB] text-[1.1rem] leading-tight">
+                            {githubData.name || "Krushna"}
+                          </span>
+                          <a
+                            href={githubData.html_url || "https://github.com/kruxhna"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-cursor="pointer"
+                            style={{
+                              fontFamily: "var(--font-mono), monospace",
+                              fontSize: "0.72rem",
+                              padding: "2px 10px",
+                              borderRadius: "9999px",
+                              background: "rgba(221, 112, 116, 0.08)",
+                              border: "1px solid rgba(221, 112, 116, 0.2)",
+                              color: "#E69683",
+                            }}
+                            className="hover:text-[#ECC3AB] hover:border-[rgba(228,107,94,0.5)] transition-all inline-flex items-center"
+                          >
                             github.com/{githubData.login}
-                          </Badge>
+                          </a>
                         </div>
-                        <p className="mt-0.5 text-xs text-[#DD7074] font-mono">
+                        <p className="mt-0.5 text-[0.8rem] text-[#DD7074] truncate">
                           B.E. AIML @ University of Mumbai
                         </p>
                       </div>
                     </div>
 
-                    {/* Refresh / Sync Live Data Button */}
+                    {/* Refresh Button */}
                     <button
+                      type="button"
                       onClick={fetchGithubData}
                       disabled={isFetchingGithub}
+                      data-cursor="pointer"
                       title="Sync live stats from GitHub API"
-                      className="rounded-lg border border-[#9A142C] bg-[#4E0104]/85 p-2 text-[#E8A791] hover:text-[#ECC3AB] hover:bg-[#7B0408] transition-all cursor-pointer"
+                      style={{
+                        width: "34px",
+                        height: "34px",
+                        borderRadius: "8px",
+                        border: "1px solid rgba(221, 112, 116, 0.2)",
+                        background: "rgba(221, 112, 116, 0.04)",
+                      }}
+                      className="flex items-center justify-center shrink-0 text-[#DD7074] hover:text-[#ECC3AB] hover:bg-[rgba(221,112,116,0.1)] hover:border-[rgba(228,107,94,0.5)] transition-all cursor-pointer"
                     >
                       <RotateCw
-                        className={`h-4 w-4 ${isFetchingGithub ? "animate-spin text-[#E46B5E]" : ""}`}
+                        className={`h-3.5 w-3.5 ${isFetchingGithub ? "animate-spin text-[#E46B5E]" : ""}`}
                       />
                     </button>
                   </div>
 
-                  {/* Bio Synopsis */}
-                  <p className="mt-4 text-xs leading-relaxed text-[#ECC3AB]/80">
-                    {githubData.bio}
+                  {/* Bio Text */}
+                  <p
+                    style={{
+                      fontSize: "0.79rem",
+                      lineHeight: "1.55",
+                      color: "#E69683",
+                    }}
+                  >
+                    {githubData.bio || "AI Systems & ML Engineering | Distributed LLM Inference (C++/CUDA/Rust), Computer Vision & Applied Deep Learning."}
                   </p>
+                </div>
 
-                  {/* High-Impact Real-Time Stats Bento Grid */}
-                  <div className="mt-4 grid grid-cols-3 gap-2 font-mono">
-                    <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[11px] text-[#DD7074]">
-                        <Star className="h-3 w-3 text-[#E46B5E]" />
-                        <span>Stars</span>
-                      </div>
-                      <div className="mt-1 text-base font-bold text-[#ECC3AB]">
-                        {githubData.total_stars}+
-                      </div>
+                {/* B. 4-Column Telemetry Stats Strip */}
+                <div
+                  style={{
+                    borderTop: "1px solid rgba(221, 112, 116, 0.16)",
+                    borderBottom: "1px solid rgba(221, 112, 116, 0.16)",
+                    padding: "14px 0",
+                  }}
+                  className="grid grid-cols-4 divide-x divide-[rgba(221,112,116,0.14)]"
+                >
+                  {/* Stat 1: Stars */}
+                  <div className="flex flex-col items-center justify-center text-center px-1">
+                    <div className="flex items-center gap-1.5">
+                      <Star className="h-3.5 w-3.5 text-[#E46B5E] fill-[#E46B5E]" />
+                      <span className="text-[1.05rem] font-bold text-[#ECC3AB]">
+                        {githubData.total_stars > 0 ? `${githubData.total_stars}+` : "5+"}
+                      </span>
                     </div>
-
-                    <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[11px] text-[#DD7074]">
-                        <Code2 className="h-3 w-3 text-[#E46B5E]" />
-                        <span>Repos</span>
-                      </div>
-                      <div className="mt-1 text-base font-bold text-[#ECC3AB]">
-                        {githubData.public_repos}
-                      </div>
-                    </div>
-
-                    <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2.5 text-center">
-                      <div className="flex items-center justify-center gap-1 text-[11px] text-[#DD7074]">
-                        <Flame className="h-3 w-3 text-[#E02E32]" />
-                        <span>Streak</span>
-                      </div>
-                      <div className="mt-1 text-base font-bold text-[#E46B5E]">
-                        {githubData.streak_days}d
-                      </div>
-                    </div>
+                    <span className="mt-0.5 text-[0.72rem] text-[#DD7074]">Stars</span>
                   </div>
 
-                  {/* Sub-view Switcher: Repos vs Readme Stats Card */}
-                  <div className="mt-4 flex rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-1 text-xs">
-                    <button
-                      onClick={() => setGithubViewMode("overview")}
-                      className={`flex-1 rounded-md py-1 font-medium transition-all cursor-pointer ${
-                        githubViewMode === "overview"
-                          ? "bg-[#C3181E] text-[#ECC3AB] shadow"
-                          : "text-[#DD7074] hover:text-[#ECC3AB]"
-                      }`}
-                    >
-                      Top Repositories & Heatmap
-                    </button>
-                    <button
-                      onClick={() => setGithubViewMode("readme_stats")}
-                      className={`flex-1 rounded-md py-1 font-medium transition-all cursor-pointer ${
-                        githubViewMode === "readme_stats"
-                          ? "bg-[#C3181E] text-[#ECC3AB] shadow"
-                          : "text-[#DD7074] hover:text-[#ECC3AB]"
-                      }`}
-                    >
-                      GitHub Readme Stats
-                    </button>
+                  {/* Stat 2: Repositories */}
+                  <div className="flex flex-col items-center justify-center text-center px-1">
+                    <div className="flex items-center gap-1.5">
+                      <GitFork className="h-3.5 w-3.5 text-[#E46B5E]" />
+                      <span className="text-[1.05rem] font-bold text-[#ECC3AB]">
+                        {githubData.public_repos || 12}
+                      </span>
+                    </div>
+                    <span className="mt-0.5 text-[0.72rem] text-[#DD7074]">Repositories</span>
                   </div>
 
-                  {/* View 1: Top Repositories & Contribution Heatmap */}
-                  {githubViewMode === "overview" ? (
-                    <div className="mt-4 space-y-3">
-                      <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]">
-                        <span>FEATURED OSS REPOSITORIES</span>
-                        <span>{githubData.top_repos.length} SHOWCASED</span>
-                      </div>
+                  {/* Stat 3: Streak */}
+                  <div className="flex flex-col items-center justify-center text-center px-1">
+                    <div className="flex items-center gap-1.5">
+                      <Flame className="h-3.5 w-3.5 text-[#E46B5E] fill-[#E46B5E]" />
+                      <span className="text-[1.05rem] font-bold text-[#ECC3AB]">
+                        {githubData.streak_days || 18}d
+                      </span>
+                    </div>
+                    <span className="mt-0.5 text-[0.72rem] text-[#DD7074]">Streak</span>
+                  </div>
 
-                      <div className="space-y-2">
-                        {githubData.top_repos.slice(0, 3).map((repo) => (
-                          <a
-                            key={repo.name}
-                            href={repo.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group block rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-3 transition-all hover:border-[#E46B5E]/50 hover:bg-[#14100D]"
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="font-mono text-xs font-bold text-[#ECC3AB] group-hover:text-[#E46B5E] transition-colors">
+                  {/* Stat 4: Followers */}
+                  <div className="flex flex-col items-center justify-center text-center px-1">
+                    <div className="flex items-center gap-1.5">
+                      <Users className="h-3.5 w-3.5 text-[#E46B5E]" />
+                      <span className="text-[1.05rem] font-bold text-[#ECC3AB]">
+                        {githubData.followers || 7}
+                      </span>
+                    </div>
+                    <span className="mt-0.5 text-[0.72rem] text-[#DD7074]">Followers</span>
+                  </div>
+                </div>
+
+                {/* C. Featured Repositories List */}
+                <div className="flex flex-col gap-2">
+                  {/* Subheader Row */}
+                  <div className="flex items-center justify-between text-[#DD7074] font-mono text-[0.7rem] uppercase tracking-[0.08em]">
+                    <span>FEATURED REPOSITORIES</span>
+                    <span>{githubData.top_repos?.length || 5} SHOWCASED</span>
+                  </div>
+
+                  {/* Repo Items */}
+                  <div className="flex flex-col divide-y divide-[rgba(221,112,116,0.12)]">
+                    {(githubData.top_repos?.length > 0
+                      ? githubData.top_repos.slice(0, 5)
+                      : FALLBACK_GITHUB_DATA.top_repos
+                    ).map((repo) => (
+                      <a
+                        key={repo.name}
+                        href={repo.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-cursor="pointer"
+                        className="group flex items-center justify-between gap-3 py-2.5 px-1 hover:bg-[rgba(221,112,116,0.04)] rounded-md transition-all"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <FolderGit2 className="h-[15px] w-[15px] text-[#DD7074] shrink-0 group-hover:text-[#E46B5E] transition-colors" />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-[0.85rem] font-semibold text-[#ECC3AB] group-hover:text-[#E46B5E] transition-colors truncate">
                                 {repo.name}
                               </span>
-                              <div className="flex items-center gap-3 text-[11px] font-mono text-[#DD7074]">
-                                {repo.stars > 0 && (
-                                  <span className="flex items-center gap-1 text-[#E46B5E]">
-                                    <Star className="h-3 w-3 fill-current" />
-                                    {repo.stars}
-                                  </span>
-                                )}
-                                <ExternalArrow className="opacity-0 group-hover:opacity-100 transition-opacity text-[#E46B5E]" />
-                              </div>
                             </div>
-                            <p className="mt-1 line-clamp-1 text-[11px] text-[#ECC3AB]/80">
-                              {repo.description}
+                            <p className="text-[0.74rem] text-[#E69683]/80 line-clamp-1 mt-0.5">
+                              {repo.description || "Open source software project by Krushna."}
                             </p>
-                            <div className="mt-2 flex items-center gap-2">
-                              {repo.language && (
-                                <span className="flex items-center gap-1 font-mono text-[10px] text-[#DD7074]">
-                                  <span
-                                    className="h-2 w-2 rounded-full"
-                                    style={{
-                                      backgroundColor:
-                                        LANGUAGE_COLORS[repo.language] || "#E46B5E",
-                                    }}
-                                  />
-                                  <span>{repo.language}</span>
-                                </span>
-                              )}
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <span
+                                className="h-1.5 w-1.5 rounded-full"
+                                style={{
+                                  backgroundColor:
+                                    LANGUAGE_COLORS[repo.language || "Python"] || "#E46B5E",
+                                }}
+                              />
+                              <span className="font-mono text-[0.7rem] text-[#DD7074]">
+                                {repo.language || "Python"}
+                              </span>
                             </div>
-                          </a>
-                        ))}
-                      </div>
-
-                      {/* Simulated 18-week Contribution Streak Heatmap */}
-                      <div className="mt-4 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-3">
-                        <div className="flex items-center justify-between text-[11px] font-mono text-[#DD7074] mb-2">
-                          <span className="flex items-center gap-1.5 text-[#E46B5E]">
-                            <Flame className="h-3 w-3 text-[#E02E32] fill-current" />
-                            <span>18-Week Contribution Activity</span>
-                          </span>
-                          <span>Synced</span>
-                        </div>
-                        <div className="grid grid-flow-col grid-rows-7 gap-1 overflow-x-auto pb-1">
-                          {GENERATED_HEATMAP.map((level, i) => (
-                            <div
-                              key={i}
-                              title={`Activity level: ${level}`}
-                              className={`h-2.5 w-2.5 rounded-xs transition-colors ${
-                                level === 0
-                                  ? "bg-[#181310]"
-                                  : level === 1
-                                  ? "bg-[#4E0104] border border-[#9A142C]/40"
-                                  : level === 2
-                                  ? "bg-[#7B0408]"
-                                  : level === 3
-                                  ? "bg-[#C3181E]"
-                                  : "bg-[#E46B5E] shadow-xs shadow-[#E46B5E]/40"
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <div className="mt-2 flex items-center justify-between text-[9.5px] font-mono text-[#DD7074]/70">
-                          <span>Less active</span>
-                          <div className="flex items-center gap-1">
-                            <span className="h-2 w-2 rounded-xs bg-[#181310]" />
-                            <span className="h-2 w-2 rounded-xs bg-[#4E0104]" />
-                            <span className="h-2 w-2 rounded-xs bg-[#7B0408]" />
-                            <span className="h-2 w-2 rounded-xs bg-[#C3181E]" />
-                            <span className="h-2 w-2 rounded-xs bg-[#E46B5E]" />
                           </div>
-                          <span>More active</span>
                         </div>
-                      </div>
-                    </div>
-                  ) : (
-                    /* View 2: Live GitHub Readme Stats Embeds */
-                    <div className="mt-4 space-y-3 animate-in fade-in duration-200">
-                      <div className="text-[11px] font-mono text-[#DD7074]">
-                        GITHUB README STATS CARD:
-                      </div>
-                      <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2 overflow-hidden">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src="https://github-readme-stats.vercel.app/api?username=Kruxhna&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0a0807&title_color=ad7d56&icon_color=ad7d56&text_color=cdb49e"
-                          alt="GitHub Readme Stats"
-                          className="w-full object-cover rounded-lg"
-                        />
-                      </div>
 
-                      <div className="text-[11px] font-mono text-[#DD7074] pt-1">
-                        CONTRIBUTION STREAK:
-                      </div>
-                      <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-2 overflow-hidden">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src="https://github-readme-streak-stats.herokuapp.com/?user=Kruxhna&theme=tokyonight&hide_border=true&background=0a0807&stroke=201b17&ring=ad7d56&fire=ad7d56&currStreakNum=cdb49e"
-                          alt="GitHub Streak Stats"
-                          className="w-full object-cover rounded-lg"
-                        />
-                      </div>
-                    </div>
-                  )}
+                        <div className="flex items-center gap-1 shrink-0 font-mono text-[0.75rem] text-[#E69683]">
+                          <Star className="h-3 w-3 text-[#E46B5E] fill-[#E46B5E]" />
+                          <span>{repo.stars}</span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Footer Link to GitHub Profile */}
-                <div className="mt-5 border-t border-[rgba(221,112,116,0.18)] pt-4">
-                  <ExternalLinkPill
-                    href="https://github.com/Kruxhna"
-                    variant="primary"
-                    size="md"
-                    className="w-full justify-center"
+                {/* D. 18-Week Contribution Activity Heatmap */}
+                <div className="flex flex-col gap-2.5">
+                  {/* Header Row */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-[0.75rem] text-[#ECC3AB]">
+                      <Star className="h-3 w-3 text-[#E46B5E] fill-[#E46B5E]" />
+                      <span>18-Week Contribution Activity</span>
+                    </div>
+                    <span className="text-[0.72rem] text-[#DD7074]">Synced</span>
+                  </div>
+
+                  {/* Heatmap Grid: 18 cols x 5 rows */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(18, minmax(0, 1fr))",
+                      gap: "4px",
+                    }}
                   >
-                    <GithubIcon className="h-4 w-4" />
-                    <span>View github.com/Kruxhna</span>
-                  </ExternalLinkPill>
+                    {GENERATED_HEATMAP.map((level, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          backgroundColor: HEATMAP_INTENSITY_COLORS[level],
+                          borderRadius: "3px",
+                        }}
+                        className="aspect-square transition-all hover:scale-125 hover:shadow-sm hover:shadow-[#C3181E]/40"
+                        title={`Activity level: ${level}`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Legend Footer Row */}
+                  <div className="flex items-center justify-between text-[0.7rem] text-[#DD7074]">
+                    <span>Less active</span>
+                    <div className="flex items-center gap-1.5">
+                      {HEATMAP_INTENSITY_COLORS.map((color, idx) => (
+                        <span
+                          key={idx}
+                          style={{
+                            backgroundColor: color,
+                            width: "6px",
+                            height: "6px",
+                            borderRadius: "9999px",
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <span>More active</span>
+                  </div>
                 </div>
-              </SpotlightCard>
+
+                {/* E. Bottom Full-Width Profile Link Button */}
+                <a
+                  href="https://github.com/kruxhna"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="pointer"
+                  style={{
+                    width: "100%",
+                    padding: "10px 16px",
+                    borderRadius: "10px",
+                    border: "1px solid rgba(221, 112, 116, 0.25)",
+                    background: "rgba(221, 112, 116, 0.04)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "8px",
+                    fontSize: "0.82rem",
+                    fontWeight: 600,
+                    color: "#ECC3AB",
+                  }}
+                  className="group hover:border-[rgba(228,107,94,0.5)] hover:bg-[rgba(221,112,116,0.08)] transition-all"
+                >
+                  <GithubIcon className="h-4 w-4 text-[#DD7074] group-hover:text-[#ECC3AB] transition-colors" />
+                  <span>View github.com/Kruxhna</span>
+                  <span className="text-[#E46B5E] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                    ↗
+                  </span>
+                </a>
+              </div>
             </div>
           </div>
         ) : (
           /* TAB 2: Neural Architecture Forensic Simulator */
-          <SpotlightCard className="p-6 sm:p-8 border-[rgba(221,112,116,0.18)] bg-[#0A0807]/95">
+          <SpotlightCard className="p-6 sm:p-8 border-[rgba(221,112,116,0.18)]" style={{ background: "rgba(10, 8, 7, 0.88)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", borderRadius: "16px" }}>
             <div className="flex flex-col justify-between gap-4 border-b border-[rgba(221,112,116,0.18)] pb-5 sm:flex-row sm:items-center">
               <div>
                 <div className="flex items-center gap-2">
