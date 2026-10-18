@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import {
   GraduationCap,
   Cpu,
-  ArrowUpRight,
   Calendar,
   CheckCircle2,
 } from "lucide-react";
 import { ABOUT_JOURNEY, ACADEMIC_CREDENTIALS } from "@/data/portfolioData";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { Badge } from "@/components/ui/Badge";
+import { ExternalLinkPill } from "@/components/ui/ExternalLinkPill";
 
 export function ExperienceSection() {
   const [activeMilestoneIndex, setActiveMilestoneIndex] = useState<number>(0);
@@ -21,13 +21,13 @@ export function ExperienceSection() {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#DD7074]">
           <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
-          <span>05 // TRAJECTORY &amp; ETHOS</span>
+          <span>05 // TRAJECTORY & ETHOS</span>
         </div>
 
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-[#ECC3AB] sm:text-4xl">
-              About Me &amp; Journey
+              About Me & Journey
             </h2>
             <p className="mt-1 max-w-xl text-sm sm:text-base text-[#E69683]/80">
               Systems-level machine learning engineer with rigorous theoretical foundations in algorithms and automata theory.
@@ -65,7 +65,7 @@ export function ExperienceSection() {
 
             <div className="mt-5 space-y-3">
               <div>
-                <span className="text-xs font-mono text-[#DD7074] uppercase">Degree &amp; Program</span>
+                <span className="text-xs font-mono text-[#DD7074] uppercase">Degree & Program</span>
                 <h3 className="mt-0.5 text-lg font-bold text-[#ECC3AB]">
                   {ACADEMIC_CREDENTIALS.degree}
                 </h3>
@@ -89,7 +89,7 @@ export function ExperienceSection() {
           </div>
 
           <div className="mt-6 pt-4 border-t border-[rgba(221,112,116,0.18)] font-mono text-[11px] text-[#DD7074] flex items-center justify-between">
-            <span>Specialization: AI, ML &amp; Systems</span>
+            <span>Specialization: AI, ML & Systems</span>
             <span className="text-[#E46B5E]">4-Year Degree Track</span>
           </div>
         </SpotlightCard>
@@ -105,7 +105,7 @@ export function ExperienceSection() {
                   <Cpu className="h-4 w-4" />
                 </div>
                 <span className="font-mono text-xs uppercase tracking-wider text-[#DD7074]">
-                  Systems Focus &amp; Core Passions
+                  Systems Focus & Core Passions
                 </span>
               </div>
               <span className="font-mono text-[11px] text-[#E46B5E]">HPC + Theory</span>
@@ -123,7 +123,7 @@ export function ExperienceSection() {
 
               <div className="pt-2 border-t border-[rgba(221,112,116,0.18)]">
                 <h4 className="text-xs font-mono text-[#E46B5E] uppercase tracking-wider">
-                  // Passion: Distributed Scale &amp; GATE Preparation
+                  // Passion: Distributed Scale & GATE Preparation
                 </h4>
                 <p className="mt-1.5 text-xs sm:text-sm text-[#ECC3AB]/85 leading-relaxed">
                   {ABOUT_JOURNEY.passion}
@@ -135,7 +135,7 @@ export function ExperienceSection() {
           <div className="mt-6 pt-4 border-t border-[rgba(221,112,116,0.18)] flex flex-wrap items-center gap-2 text-[11px] font-mono text-[#DD7074]">
             <span className="text-[#ECC3AB] font-medium">Core Targets:</span>
             <span className="rounded bg-[#14100D] border border-[rgba(221,112,116,0.18)] px-2 py-0.5 text-[#E46B5E]">
-              GATE Data Science &amp; AI (DA)
+              GATE Data Science & AI (DA)
             </span>
             <span className="rounded bg-[#14100D] border border-[rgba(221,112,116,0.18)] px-2 py-0.5 text-[#ECC3AB]">
               GATE Computer Science (CS)
@@ -148,7 +148,7 @@ export function ExperienceSection() {
       <div className="mt-12">
         <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#DD7074] mb-6">
           <Calendar className="h-4 w-4 text-[#E46B5E]" />
-          <span>Interactive Milestones &amp; Evolution</span>
+          <span>Interactive Milestones & Evolution</span>
         </div>
 
         <div className="space-y-6">
@@ -202,16 +202,15 @@ export function ExperienceSection() {
                     {milestone.links && milestone.links.length > 0 && (
                       <div className="mt-5 flex flex-wrap items-center gap-2 pt-2 border-t border-[rgba(221,112,116,0.18)]">
                         {milestone.links.map((link, lIdx) => (
-                          <a
+                          <ExternalLinkPill
                             key={lIdx}
                             href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-[#9A142C] bg-[#4E0104]/85 px-3 py-1 font-mono text-xs text-[#E8A791] transition-colors hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
+                            variant="secondary"
+                            size="sm"
+                            data-cursor="magnetic"
                           >
-                            <span>{link.label}</span>
-                            <ArrowUpRight className="h-3 w-3 text-[#DD7074]" />
-                          </a>
+                            {link.label}
+                          </ExternalLinkPill>
                         ))}
                       </div>
                     )}

@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUpRight, X, Clock } from "lucide-react";
+import { X, Clock } from "lucide-react";
 import { RESEARCH_ARTICLES, ResearchArticle } from "@/data/portfolioData";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { Badge } from "@/components/ui/Badge";
+import { ExternalArrow } from "@/components/ui/ExternalLinkPill";
 
 export function ResearchSection() {
   const [selectedArticle, setSelectedArticle] = useState<ResearchArticle | null>(null);
@@ -75,7 +76,7 @@ export function ResearchSection() {
                   Read Note
                 </span>
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(221,112,116,0.22)] bg-[#14100D] text-[#ECC3AB] transition-transform group-hover:scale-110 group-hover:text-[#E46B5E] group-hover:border-[#E46B5E]">
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ExternalArrow />
                 </span>
               </div>
             </div>

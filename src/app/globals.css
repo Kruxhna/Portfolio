@@ -313,3 +313,138 @@
     text-decoration-color: currentColor !important;
   }
 }
+
+/* ─── ExternalLinkPill ──────────────────────────────────────────────────────
+   Inspired by egorz.com link pills. Dual-arrow slot-machine relay animation.
+   Palette: crimson/peach from kruxhna/portfolio theme tokens.
+────────────────────────────────────────────────────────────────────────────── */
+
+.external-link-pill {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 10;
+
+  /* Shape */
+  border-radius: 9999px;
+  white-space: nowrap;
+  user-select: none;
+  text-decoration: none;
+
+  /* Typography */
+  font-family: var(--font-mono), 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+
+  /* Smooth all variant transitions */
+  transition:
+    background-color 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color     250ms cubic-bezier(0.22, 1, 0.36, 1),
+    color            250ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow       250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Sizes ── */
+.elp-sm {
+  padding: 7px 14px;
+  font-size: 0.8125rem; /* 13px */
+}
+.elp-md {
+  padding: 10px 20px;
+  font-size: 0.9rem;    /* 14.4px */
+}
+
+/* ── Primary (solid crimson) ── */
+.elp-primary {
+  background-color: #C3181E;
+  color: #ECC3AB;
+  border: 1px solid rgba(228, 72, 71, 0.6);
+}
+.elp-primary:hover,
+.elp-primary:focus-visible {
+  background-color: #E14945;
+  color: #ECC3AB;
+  border-color: rgba(236, 195, 171, 0.8);
+  box-shadow: 0 4px 20px -4px rgba(195, 24, 30, 0.5);
+}
+
+/* ── Secondary (ghost / glass) ── */
+.elp-secondary {
+  background-color: rgba(10, 8, 7, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ECC3AB;
+  border: 1px solid rgba(221, 112, 116, 0.16);
+}
+.elp-secondary:hover,
+.elp-secondary:focus-visible {
+  background-color: rgba(221, 112, 116, 0.08);
+  color: #F3E3DC;
+  border-color: rgba(221, 112, 116, 0.38);
+  box-shadow: 0 4px 16px -6px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Focus ring ── */
+.external-link-pill:focus-visible {
+  outline: 2px solid #C3181E;
+  outline-offset: 3px;
+}
+
+/* ── Arrow mask container ── */
+.elp-arrow-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* ── Both arrows share base transition ── */
+.elp-arrow {
+  position: absolute;
+  inset: 0;
+  width: 14px;
+  height: 14px;
+  transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Primary arrow: starts centered → exits top-right on hover */
+.elp-arrow-primary {
+  transform: translate3d(0%, 0%, 0);
+}
+.external-link-pill:hover .elp-arrow-primary,
+.external-link-pill:focus-visible .elp-arrow-primary,
+.group:hover .elp-arrow-primary,
+.group:focus-visible .elp-arrow-primary {
+  transform: translate3d(100%, -100%, 0);
+}
+
+/* Clone arrow: starts bottom-left → slides into center on hover */
+.elp-arrow-clone {
+  transform: translate3d(-100%, 100%, 0);
+}
+.external-link-pill:hover .elp-arrow-clone,
+.external-link-pill:focus-visible .elp-arrow-clone,
+.group:hover .elp-arrow-clone,
+.group:focus-visible .elp-arrow-clone {
+  transform: translate3d(0%, 0%, 0);
+}
+
+/* ── Reduced motion: disable arrow transform, keep color transitions ── */
+@media (prefers-reduced-motion: reduce) {
+  .elp-arrow-primary,
+  .elp-arrow-clone {
+    transition: none !important;
+    transform: none !important;
+  }
+  .elp-arrow-clone {
+    display: none;
+  }
+}

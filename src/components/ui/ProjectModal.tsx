@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { X, ExternalLink, Activity, CheckCircle2, Layers } from "lucide-react";
+import { X, Activity, CheckCircle2, Layers } from "lucide-react";
 import { GithubIcon } from "@/components/ui/Icons";
 import { Project } from "@/data/portfolioData";
 import { Badge } from "@/components/ui/Badge";
+import { ExternalLinkPill } from "@/components/ui/ExternalLinkPill";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -136,27 +137,27 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         {/* Action Buttons */}
         <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-[rgba(221,112,116,0.18)] pt-5">
           {project.githubUrl && (
-            <a
+            <ExternalLinkPill
               href={project.githubUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 rounded-xl border border-[#9A142C] bg-[#4E0104]/85 px-4 py-2 text-xs sm:text-sm font-medium text-[#E8A791] transition-colors hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
+              variant="secondary"
+              size="sm"
             >
               <GithubIcon className="h-4 w-4" />
               <span>Source Repository</span>
-              <ExternalLink className="h-3.5 w-3.5 text-[#DD7074]" />
-            </a>
+            </ExternalLinkPill>
           )}
 
           {project.demoUrl && (
-            <a
+            <ExternalLinkPill
               href={project.demoUrl}
+              variant="primary"
+              size="sm"
               onClick={onClose}
-              className="flex items-center gap-2 rounded-xl bg-[#C3181E] border border-[#E44847]/60 px-4 py-2 text-xs sm:text-sm font-medium text-[#ECC3AB] transition-colors hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10]"
+              showArrow={false}
             >
               <Activity className="h-4 w-4" />
               <span>Inspect in Lab Playground</span>
-            </a>
+            </ExternalLinkPill>
           )}
         </div>
       </div>

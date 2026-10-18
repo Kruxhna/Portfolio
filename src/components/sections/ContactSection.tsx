@@ -6,7 +6,6 @@ import {
   Copy,
   Check,
   Send,
-  ArrowUpRight,
   MessageSquare,
   Sparkles,
   Clock,
@@ -15,6 +14,8 @@ import {
 import { GithubIcon, LinkedinIcon, CodolioIcon } from "@/components/ui/Icons";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
+import { ExternalLinkPill } from "@/components/ui/ExternalLinkPill";
+
 
 export function ContactSection() {
   const [copied, setCopied] = useState(false);
@@ -124,14 +125,15 @@ export function ContactSection() {
               )}
             </button>
 
-            <a
+            <ExternalLinkPill
               href={`mailto:${PERSONAL_INFO.email}`}
+              variant="secondary"
+              size="sm"
               data-cursor="magnetic"
-              className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-[#9A142C] bg-[#4E0104]/85 py-2 text-[11px] font-mono text-[#E8A791] hover:text-[#ECC3AB] hover:bg-[#7B0408] hover:border-[#D94F67] transition-colors"
+              className="w-full justify-center"
             >
-              <span>Open Mail Client</span>
-              <ArrowUpRight className="h-3 w-3" />
-            </a>
+              Open Mail Client
+            </ExternalLinkPill>
           </div>
         </SpotlightCard>
 
@@ -158,17 +160,16 @@ export function ContactSection() {
           </div>
 
           <div className="mt-6">
-            <a
+            <ExternalLinkPill
               href="https://www.linkedin.com/in/krushna-nole/"
-              target="_blank"
-              rel="noopener noreferrer"
+              variant="primary"
+              size="md"
               data-cursor="magnetic"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#C3181E] border border-[#E44847]/60 text-[#ECC3AB] py-2.5 text-xs font-semibold hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10] transition-all cursor-pointer"
+              className="w-full justify-center"
             >
               <LinkedinIcon className="h-4 w-4" />
-              <span>Connect on LinkedIn</span>
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
+              Connect on LinkedIn
+            </ExternalLinkPill>
           </div>
         </SpotlightCard>
 
@@ -195,17 +196,16 @@ export function ContactSection() {
           </div>
 
           <div className="mt-6">
-            <a
+            <ExternalLinkPill
               href="https://github.com/Kruxhna"
-              target="_blank"
-              rel="noopener noreferrer"
+              variant="primary"
+              size="md"
               data-cursor="magnetic"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#C3181E] border border-[#E44847]/60 text-[#ECC3AB] py-2.5 text-xs font-semibold hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10] transition-all cursor-pointer"
+              className="w-full justify-center"
             >
               <GithubIcon className="h-4 w-4" />
-              <span>Visit @Kruxhna</span>
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
+              Visit @Kruxhna
+            </ExternalLinkPill>
           </div>
         </SpotlightCard>
 
@@ -232,17 +232,16 @@ export function ContactSection() {
           </div>
 
           <div className="mt-6">
-            <a
+            <ExternalLinkPill
               href="https://codolio.com/profile/Kruxhna/problemSolving"
-              target="_blank"
-              rel="noopener noreferrer"
+              variant="primary"
+              size="md"
               data-cursor="magnetic"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#C3181E] border border-[#E44847]/60 text-[#ECC3AB] py-2.5 text-xs font-semibold hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10] transition-all cursor-pointer"
+              className="w-full justify-center"
             >
               <CodolioIcon className="h-4 w-4" />
-              <span>View Codolio Profile</span>
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
+              View Codolio Profile
+            </ExternalLinkPill>
           </div>
         </SpotlightCard>
       </div>

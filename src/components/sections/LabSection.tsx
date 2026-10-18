@@ -22,11 +22,11 @@ import {
   Trash2,
   Code2,
   BookOpen,
-  ArrowUpRight,
 } from "lucide-react";
 import { TERMINAL_COMMANDS } from "@/data/portfolioData";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { Badge } from "@/components/ui/Badge";
+import { ExternalLinkPill, ExternalArrow } from "@/components/ui/ExternalLinkPill";
 import { GithubIcon, LinkedinIcon, CodolioIcon } from "@/components/ui/Icons";
 
 interface HistoryItem {
@@ -542,49 +542,61 @@ export function LabSection() {
                               href="https://www.linkedin.com/in/krushna-nole/"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
                             >
-                              <LinkedinIcon className="h-4 w-4 text-[#E46B5E]" />
-                              <div>
-                                <div className="text-[10px] text-[#DD7074]">LinkedIn</div>
-                                <div className="font-bold text-[#ECC3AB]">/in/krushna-nole ↗</div>
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <LinkedinIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
+                                <div className="min-w-0">
+                                  <div className="text-[10px] text-[#DD7074]">LinkedIn</div>
+                                  <div className="font-bold text-[#ECC3AB] truncate">/in/krushna-nole</div>
+                                </div>
                               </div>
+                              <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
                             </a>
                             <a
                               href="mailto:krushna.aiml@gmail.com"
-                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
                             >
-                              <div className="flex h-4 w-4 items-center justify-center rounded bg-[#4E0104]/85 text-[#E8A791] text-xs font-bold">
-                                @
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-[#4E0104]/85 text-[#E8A791] text-xs font-bold">
+                                  @
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="text-[10px] text-[#DD7074]">Direct Email</div>
+                                  <div className="font-bold text-[#ECC3AB] truncate">krushna.aiml@gmail.com</div>
+                                </div>
                               </div>
-                              <div>
-                                <div className="text-[10px] text-[#DD7074]">Direct Email</div>
-                                <div className="font-bold text-[#ECC3AB]">krushna.aiml@gmail.com</div>
-                              </div>
+                              <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
                             </a>
                             <a
                               href="https://github.com/Kruxhna"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
                             >
-                              <GithubIcon className="h-4 w-4 text-[#E46B5E]" />
-                              <div>
-                                <div className="text-[10px] text-[#DD7074]">GitHub Profile</div>
-                                <div className="font-bold text-[#ECC3AB]">github.com/Kruxhna ↗</div>
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <GithubIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
+                                <div className="min-w-0">
+                                  <div className="text-[10px] text-[#DD7074]">GitHub Profile</div>
+                                  <div className="font-bold text-[#ECC3AB] truncate">github.com/Kruxhna</div>
+                                </div>
                               </div>
+                              <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
                             </a>
                             <a
                               href="https://codolio.com/profile/Kruxhna/problemSolving"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E] hover:text-[#ECC3AB] transition-all"
                             >
-                              <CodolioIcon className="h-4 w-4 text-[#E46B5E]" />
-                              <div>
-                                <div className="text-[10px] text-[#DD7074]">Codolio DSA Hub</div>
-                                <div className="font-bold text-[#ECC3AB]">300+ Problems Solved ↗</div>
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <CodolioIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
+                                <div className="min-w-0">
+                                  <div className="text-[10px] text-[#DD7074]">Codolio DSA Hub</div>
+                                  <div className="font-bold text-[#ECC3AB] truncate">300+ Problems Solved</div>
+                                </div>
                               </div>
+                              <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
                             </a>
                           </div>
                         </div>
@@ -835,7 +847,7 @@ export function LabSection() {
                                     {repo.stars}
                                   </span>
                                 )}
-                                <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity text-[#E46B5E]" />
+                                <ExternalArrow className="opacity-0 group-hover:opacity-100 transition-opacity text-[#E46B5E]" />
                               </div>
                             </div>
                             <p className="mt-1 line-clamp-1 text-[11px] text-[#ECC3AB]/80">
@@ -932,15 +944,15 @@ export function LabSection() {
 
                 {/* Footer Link to GitHub Profile */}
                 <div className="mt-5 border-t border-[rgba(221,112,116,0.18)] pt-4">
-                  <a
+                  <ExternalLinkPill
                     href="https://github.com/Kruxhna"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#C3181E] border border-[#E44847]/60 py-2.5 text-xs font-semibold text-[#ECC3AB] hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10] transition-all cursor-pointer"
+                    variant="primary"
+                    size="md"
+                    className="w-full justify-center"
                   >
                     <GithubIcon className="h-4 w-4" />
-                    <span>View https://github.com/Kruxhna ↗</span>
-                  </a>
+                    <span>View github.com/Kruxhna</span>
+                  </ExternalLinkPill>
                 </div>
               </SpotlightCard>
             </div>

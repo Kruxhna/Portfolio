@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Menu, X, Command } from "lucide-react";
+import { Menu, X, Command } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {

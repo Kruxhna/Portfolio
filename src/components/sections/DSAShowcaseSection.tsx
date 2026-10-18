@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Flame } from "lucide-react";
+import { Flame } from "lucide-react";
 import { DSA_DATA } from "@/data/dsaData";
+import { ExternalLinkPill, ExternalArrow } from "@/components/ui/ExternalLinkPill";
+
 
 // Ease-out cubic for smooth count-up
 function easeOutCubic(t: number): number {
@@ -168,18 +170,17 @@ export function DSAShowcaseSection() {
               </p>
 
               {/* 5. External Profile Link Row */}
-              <div className="mt-6 flex flex-wrap items-center font-mono text-xs">
-                <a
+              <div className="mt-6 flex flex-wrap items-center gap-3 font-mono text-xs">
+                <ExternalLinkPill
                   href={DSA_DATA.profileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  variant="secondary"
+                  size="sm"
                   data-cursor="magnetic"
                   data-cursor-label="*open ↗*"
-                  className="text-[#ECC3AB] hover:text-[#E46B5E] transition-colors inline-flex items-center gap-1 cursor-pointer font-medium"
                 >
-                  <span>{DSA_DATA.profileLinkText}</span>
-                </a>
-                <span className="text-[#DD7074] ml-2">
+                  {DSA_DATA.profileLinkText}
+                </ExternalLinkPill>
+                <span className="text-[#DD7074]">
                   / {DSA_DATA.lastSyncedDate}
                 </span>
               </div>
@@ -332,17 +333,15 @@ export function DSAShowcaseSection() {
 
                     {/* Action link */}
                     <div className="mt-5 pt-3 border-t border-[#DD7074]/15">
-                      <a
+                      <ExternalLinkPill
                         href={platform.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        variant="secondary"
+                        size="sm"
                         data-cursor="magnetic"
                         data-cursor-label="*open ↗*"
-                        className="font-mono text-xs text-[#E8A791] hover:text-[#ECC3AB] transition-colors inline-flex items-center gap-1 cursor-pointer"
                       >
-                        <span>profile</span>
-                        <ArrowUpRight className="h-3.5 w-3.5" />
-                      </a>
+                        profile
+                      </ExternalLinkPill>
                     </div>
                   </div>
                 ))}
@@ -356,16 +355,15 @@ export function DSAShowcaseSection() {
                 <span className="font-mono text-xs uppercase tracking-widest text-[#DD7074] font-semibold">
                   RECENT SUBMISSIONS
                 </span>
-                <a
+                <ExternalLinkPill
                   href={DSA_DATA.profileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  variant="secondary"
+                  size="sm"
                   data-cursor="magnetic"
                   data-cursor-label="*open ↗*"
-                  className="font-mono text-xs text-[#E8A791] hover:text-[#ECC3AB] transition-colors cursor-pointer inline-flex items-center gap-1"
                 >
-                  <span>view all ↗</span>
-                </a>
+                  view all
+                </ExternalLinkPill>
               </div>
 
               {/* Submissions List Table */}
@@ -400,9 +398,10 @@ export function DSAShowcaseSection() {
                             target="_blank"
                             rel="noopener noreferrer"
                             data-cursor="magnetic"
-                            className="font-mono text-xs sm:text-[13px] text-[#ECC3AB] hover:text-[#E46B5E] transition-colors truncate block"
+                            className="group/link inline-flex items-center gap-1.5 font-mono text-xs sm:text-[13px] text-[#ECC3AB] hover:text-[#E46B5E] transition-colors truncate max-w-full"
                           >
-                            {sub.problem}
+                            <span className="truncate">{sub.problem}</span>
+                            <ExternalArrow className="opacity-0 group-hover/link:opacity-100 transition-opacity text-[#E46B5E] shrink-0" />
                           </a>
                           {/* Mobile-only tag */}
                           <div className="sm:hidden mt-1 flex items-center gap-2 text-[10px] font-mono text-[#DD7074]">

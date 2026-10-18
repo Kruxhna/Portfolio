@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
 import {
   AeroMeshTwoTierSandbox,
   SmartScanTwoTierSandbox,
   GateLearnStackedDeckSandbox,
 } from "@/components/ui/ProjectMicroSandboxes";
+import { ExternalLinkPill, ExternalArrow } from "@/components/ui/ExternalLinkPill";
+
 
 type CategoryFilter =
   | "all"
@@ -262,43 +263,31 @@ export function ProjectsSection() {
                       ))}
                     </div>
 
-                    {/* Capsule Pill Action Row + Floating *open ↗* Cursor Follower */}
+                    {/* Capsule Pill Action Row */}
                     <div className="flex flex-wrap items-center gap-3">
                       {/* Primary Solid Capsule Pill */}
-                      <a
+                      <ExternalLinkPill
                         href={project.primaryPill.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        variant="primary"
+                        size="sm"
                         data-cursor="view"
                         data-cursor-label="*open ↗*"
-                        className="group rounded-full bg-[#C3181E] border border-[#E44847]/60 px-5 py-2.5 text-xs font-mono font-medium text-[#ECC3AB] inline-flex items-center gap-2 hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10] transition-all cursor-pointer shadow-md shadow-[#C3181E]/20"
                       >
-                        <span>{project.primaryPill.label}</span>
-                        {/* Slot Machine Diagonal Arrow Animation */}
-                        <span className="relative inline-block overflow-hidden h-3 w-3 shrink-0">
-                          <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full" />
-                          <ArrowUpRight className="absolute inset-0 h-3 w-3 transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0" />
-                        </span>
-                      </a>
+                        {project.primaryPill.label}
+                      </ExternalLinkPill>
 
                       {/* Secondary Ghost Pills */}
                       {project.secondaryPills.map((pill, pIdx) => (
-                        <a
+                        <ExternalLinkPill
                           key={pIdx}
                           href={pill.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          variant="secondary"
+                          size="sm"
                           data-cursor="view"
                           data-cursor-label="*open ↗*"
-                          className="group rounded-full bg-[#4E0104]/85 border border-[#9A142C] px-5 py-2.5 text-xs font-mono text-[#E8A791] inline-flex items-center gap-2 hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67] transition-all cursor-pointer"
                         >
-                          <span>{pill.label}</span>
-                          {/* Slot Machine Diagonal Arrow Animation */}
-                          <span className="relative inline-block overflow-hidden h-3 w-3 shrink-0">
-                            <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full text-[#E8A791]" />
-                            <ArrowUpRight className="absolute inset-0 h-3 w-3 transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 text-[#ECC3AB]" />
-                          </span>
-                        </a>
+                          {pill.label}
+                        </ExternalLinkPill>
                       ))}
                     </div>
                   </div>
@@ -333,8 +322,8 @@ export function ProjectsSection() {
                 <span className="text-xl sm:text-2xl font-bold text-[#ECC3AB] group-hover:text-[#E46B5E] transition-colors">
                   Project Glassbox
                 </span>
-                <span className="relative inline-block overflow-hidden h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpRight className="h-3.5 w-3.5 text-[#E46B5E]" />
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#E46B5E] inline-flex items-center">
+                  <ExternalArrow />
                 </span>
               </div>
               <div className="md:col-span-6 text-sm text-[#E69683] leading-relaxed font-sans">
@@ -358,8 +347,8 @@ export function ProjectsSection() {
                 <span className="text-xl sm:text-2xl font-bold text-[#ECC3AB] group-hover:text-[#E46B5E] transition-colors">
                   Multi-Agent Research Suite
                 </span>
-                <span className="relative inline-block overflow-hidden h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpRight className="h-3.5 w-3.5 text-[#E46B5E]" />
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#E46B5E] inline-flex items-center">
+                  <ExternalArrow />
                 </span>
               </div>
               <div className="md:col-span-6 text-sm text-[#E69683] leading-relaxed font-sans">

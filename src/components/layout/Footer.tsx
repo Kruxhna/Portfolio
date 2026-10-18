@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Copy, Check, ArrowUp, ArrowUpRight, Mail } from "lucide-react";
+import { Copy, Check, ArrowUp } from "lucide-react";
 import { GithubIcon, LinkedinIcon, CodolioIcon } from "@/components/ui/Icons";
+import { ExternalLinkPill } from "@/components/ui/ExternalLinkPill";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 
 export function Footer() {
@@ -146,42 +147,42 @@ export function Footer() {
             </button>
 
             {/* Direct Links Strip (LinkedIn, GitHub, Codolio) */}
-            <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-xs">
-              <a
+            <div className="flex flex-wrap gap-2 pt-1 font-mono text-xs">
+              <ExternalLinkPill
                 href="https://www.linkedin.com/in/krushna-nole/"
-                target="_blank"
-                rel="noopener noreferrer"
+                variant="secondary"
+                size="sm"
                 data-cursor="magnetic"
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-[#9A142C] bg-[#4E0104]/85 py-2 text-[#E8A791] transition-all hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
+                className="flex-1 justify-center min-w-[90px]"
                 title="LinkedIn Profile"
               >
                 <LinkedinIcon className="h-3.5 w-3.5 text-[#E46B5E]" />
                 <span className="text-[11px]">LinkedIn</span>
-              </a>
+              </ExternalLinkPill>
 
-              <a
+              <ExternalLinkPill
                 href="https://github.com/Kruxhna"
-                target="_blank"
-                rel="noopener noreferrer"
+                variant="secondary"
+                size="sm"
                 data-cursor="magnetic"
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-[#9A142C] bg-[#4E0104]/85 py-2 text-[#E8A791] transition-all hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
+                className="flex-1 justify-center min-w-[90px]"
                 title="GitHub Profile"
               >
                 <GithubIcon className="h-3.5 w-3.5 text-[#E46B5E]" />
                 <span className="text-[11px]">GitHub</span>
-              </a>
+              </ExternalLinkPill>
 
-              <a
+              <ExternalLinkPill
                 href="https://codolio.com/profile/Kruxhna/problemSolving"
-                target="_blank"
-                rel="noopener noreferrer"
+                variant="secondary"
+                size="sm"
                 data-cursor="magnetic"
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-[#9A142C] bg-[#4E0104]/85 py-2 text-[#E8A791] transition-all hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
+                className="flex-1 justify-center min-w-[90px]"
                 title="Codolio DSA Profile"
               >
                 <CodolioIcon className="h-3.5 w-3.5 text-[#E46B5E]" />
                 <span className="text-[11px]">Codolio</span>
-              </a>
+              </ExternalLinkPill>
             </div>
           </div>
         </div>

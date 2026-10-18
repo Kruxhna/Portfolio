@@ -11,9 +11,9 @@ import {
   Mail,
   Copy,
   Check,
-  ExternalLink,
   X,
 } from "lucide-react";
+import { ExternalArrow } from "@/components/ui/ExternalLinkPill";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 
 interface CommandMenuProps {
@@ -124,13 +124,13 @@ export function CommandMenu({ isOpen, onClose, onRunTerminalCommand }: CommandMe
             target="_blank"
             rel="noreferrer"
             onClick={onClose}
-            className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#ECC3AB] hover:bg-[#4E0104]/85 hover:text-[#ECC3AB] cursor-pointer"
+            className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#ECC3AB] hover:bg-[#4E0104]/85 hover:text-[#ECC3AB] cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <FolderGit2 className="h-4 w-4 text-[#E46B5E]" />
               <span>GitHub Profile</span>
             </div>
-            <ExternalLink className="h-3.5 w-3.5 text-[#DD7074]" />
+            <ExternalArrow className="text-[#DD7074] group-hover:text-[#ECC3AB] transition-colors" />
           </a>
 
           {/* Navigation Group */}
