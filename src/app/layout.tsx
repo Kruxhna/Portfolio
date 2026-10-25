@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Roboto_Flex, Playfair_Display } from "next/font/google";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { FluidBackground } from "@/components/layout/FluidBackground";
@@ -62,7 +63,7 @@ export default function RootLayout({
     <html
       lang="en"
       style={{ backgroundColor: "#0A0807" }}
-      className={`${inter.variable} ${jetbrainsMono.variable} ${robotoFlex.variable} dark scroll-smooth`}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${robotoFlex.variable} ${playfair.variable} dark scroll-smooth`}
     >
       <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#C3181E] selection:text-[#ECC3AB]">
         {/* Site-wide WebGL2 Navier-Stokes Fluid Hover Reveal (Fixed Background at z-0) */}

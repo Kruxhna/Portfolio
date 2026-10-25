@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  --font-serif: var(--font-serif), serif;
   --color-font-primary: var(--font-primary);
   --color-font-secondary: var(--font-secondary);
   --color-font-muted: var(--font-muted);

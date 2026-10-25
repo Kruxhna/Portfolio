@@ -8,7 +8,7 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { DSAShowcaseSection } from "@/components/sections/DSAShowcaseSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { WhatIDoSection } from "@/components/sections/WhatIDoSection";
-import { LabSection } from "@/components/sections/LabSection";
+import { GitHubStorySection } from "@/components/sections/GitHubStorySection";
 import { ArsenalSection } from "@/components/sections/ArsenalSection";
 import { ResearchSection } from "@/components/sections/ResearchSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
@@ -37,7 +37,7 @@ export default function Home() {
         <div className="mx-auto w-full max-w-[1720px] px-6 sm:px-10 lg:px-12">
           {/* Scroll-Synced Capabilities: What I Do */}
           <WhatIDoSection />
-          <LabSection />
+          <GitHubStorySection />
           <ArsenalSection />
           <ResearchSection />
           <ExperienceSection />
