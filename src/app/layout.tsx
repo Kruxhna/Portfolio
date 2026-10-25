@@ -1,5 +1,4 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Roboto_Flex } from "next/font/google";
+import { Inter, JetBrains_Mono, Roboto_Flex, Playfair_Display } from "next/font/google";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { FluidBackground } from "@/components/layout/FluidBackground";
 import "./globals.css";
@@ -21,6 +20,13 @@ const robotoFlex = Roboto_Flex({
   subsets: ["latin"],
   display: "swap",
   axes: ["wdth"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {

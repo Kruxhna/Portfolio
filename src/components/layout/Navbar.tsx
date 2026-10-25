@@ -69,7 +69,7 @@ export function Navbar({
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    const sectionIds = ["about", "dsa", "work", "projects", "arsenal", "contact"];
+    const sectionIds = ["about", "what-i-do", "dsa", "work", "projects", "arsenal", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -171,7 +171,10 @@ export function Navbar({
             const isWorkActive =
               (item.id === "work" || item.id === "projects") &&
               (activeSection === "work" || activeSection === "projects");
-            const isActive = isWorkActive || activeSection === item.id;
+            const isAboutActive =
+              item.id === "about" &&
+              (activeSection === "about" || activeSection === "what-i-do");
+            const isActive = isWorkActive || isAboutActive || activeSection === item.id;
             return (
               <a
                 key={item.id}
