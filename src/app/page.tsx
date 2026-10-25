@@ -9,7 +9,7 @@ import { DSAShowcaseSection } from "@/components/sections/DSAShowcaseSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { WhatIDoSection } from "@/components/sections/WhatIDoSection";
 import { GitHubStorySection } from "@/components/sections/GitHubStorySection";
-import { ArsenalSection } from "@/components/sections/ArsenalSection";
+import { TechStackGrid } from "@/components/sections/TechStackGrid";
 import { ResearchSection } from "@/components/sections/ResearchSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ContactSection } from "@/components/sections/ContactSection";
@@ -38,7 +38,7 @@ export default function Home() {
           {/* Scroll-Synced Capabilities: What I Do */}
           <WhatIDoSection />
           <GitHubStorySection />
-          <ArsenalSection />
+          <TechStackGrid />
           <ResearchSection />
           <ExperienceSection />
           <ContactSection />

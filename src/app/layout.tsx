@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Roboto_Flex, Playfair_Display } from "next/font/google";
+import { Inter, JetBrains_Mono, Roboto_Flex, Playfair_Display, Alex_Brush } from "next/font/google";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { FluidBackground } from "@/components/layout/FluidBackground";
 import "./globals.css";
@@ -27,6 +27,13 @@ const playfair = Playfair_Display({
   variable: "--font-serif",
   subsets: ["latin"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+const alexBrush = Alex_Brush({
+  weight: "400",
+  variable: "--font-cursive",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -63,7 +70,7 @@ export default function RootLayout({
     <html
       lang="en"
       style={{ backgroundColor: "#0A0807" }}
-      className={`${inter.variable} ${jetbrainsMono.variable} ${robotoFlex.variable} ${playfair.variable} dark scroll-smooth`}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${robotoFlex.variable} ${playfair.variable} ${alexBrush.variable} dark scroll-smooth`}
     >
       <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#C3181E] selection:text-[#ECC3AB]">
         {/* Site-wide WebGL2 Navier-Stokes Fluid Hover Reveal (Fixed Background at z-0) */}

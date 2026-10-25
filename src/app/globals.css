@@ -2,6 +2,7 @@
 
 @theme {
   --font-serif: var(--font-serif), serif;
+  --font-cursive: var(--font-cursive), cursive;
   --color-font-primary: var(--font-primary);
   --color-font-secondary: var(--font-secondary);
   --color-font-muted: var(--font-muted);
@@ -136,6 +137,14 @@
 
   code, pre, .font-mono {
     font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .font-serif {
+    font-family: var(--font-serif), serif;
+  }
+
+  .font-cursive {
+    font-family: var(--font-cursive), cursive;
   }
 }
 
