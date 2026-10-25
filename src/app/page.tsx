@@ -10,7 +10,6 @@ import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { WhatIDoSection } from "@/components/sections/WhatIDoSection";
 import { GitHubStorySection } from "@/components/sections/GitHubStorySection";
 import { TechStackGrid } from "@/components/sections/TechStackGrid";
-import { ResearchSection } from "@/components/sections/ResearchSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 
@@ -39,7 +38,6 @@ export default function Home() {
           <WhatIDoSection />
           <GitHubStorySection />
           <TechStackGrid />
-          <ResearchSection />
           <ExperienceSection />
           <ContactSection />
         </div>

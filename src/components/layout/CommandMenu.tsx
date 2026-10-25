@@ -6,7 +6,6 @@ import {
   FolderGit2,
   Terminal,
   Cpu,
-  BookOpen,
   Calendar,
   Mail,
   Copy,
@@ -62,7 +61,6 @@ export function CommandMenu({ isOpen, onClose, onRunTerminalCommand }: CommandMe
     { label: "03. AI Projects & Work", href: "#projects", icon: FolderGit2, tag: "Projects" },
     { label: "04. Technical Arsenal", href: "#arsenal", icon: Cpu, tag: "Arsenal" },
     { label: "05. Get in Touch / Contact", href: "#contact", icon: Mail, tag: "Contact" },
-    { label: "Research Notes & Articles", href: "#research", icon: BookOpen, tag: "Writing" },
   ];
 
   const filteredNav = navItems.filter((item) =>
