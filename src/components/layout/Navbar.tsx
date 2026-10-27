@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Command } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 
 interface NavbarProps {
   onOpenCommandMenu?: () => void;
@@ -14,6 +15,7 @@ export function Navbar({
   onOpenCommandMenu,
   resumeUrl = "/resume.pdf",
 }: NavbarProps) {
+  const { scrollTo } = useSmoothScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [timeString, setTimeString] = useState<string>("");
@@ -65,7 +67,8 @@ export function Navbar({
   // Scroll listener for sticky backdrop + IntersectionObserver for accurate scroll-spy
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const scrolled = window.scrollY > 20;
+      setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -74,7 +77,7 @@ export function Navbar({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+            setActiveSection((prev) => (prev !== entry.target.id ? entry.target.id : prev));
           }
         });
       },
@@ -95,26 +98,21 @@ export function Navbar({
     };
   }, []);
 
-  // Smooth scroll with navbar offset
+  // Smooth scroll with navbar offset using Lenis inertial engine
   const handleNavClick = (sectionId: string, e: React.MouseEvent) => {
     e.preventDefault();
     setMobileMenuOpen(false);
     const el = document.getElementById(sectionId);
     if (el) {
-      const navOffset = 80;
-      const elementPosition = el.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: elementPosition - navOffset,
-        behavior: "smooth",
-      });
+      scrollTo(el, { offset: -80, duration: 1.2 });
       window.history.pushState(null, "", `#${sectionId}`);
     }
   };
 
-  // Smooth scroll to top
+  // Smooth scroll to top using Lenis inertial engine
   const scrollToTop = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollTo(0, { duration: 1.2 });
     if (window.location.hash) {
       window.history.pushState(null, "", window.location.pathname);
     }

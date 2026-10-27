@@ -21,9 +21,9 @@ export default function Home() {
       {/* Floating Pill Navigation */}
       <Navbar onOpenCommandMenu={() => setCommandMenuOpen(true)} />
 
-      {/* Main Content Sections */}
+      {/* Main Content Sections (Rendered cleanly without blur/fade animations) */}
       <main className="relative z-10 w-full overflow-x-clip">
-        {/* Full-bleed Hero Section covering the full screen ratio */}
+        {/* Full-bleed Hero Section */}
         <HeroSection />
 
         {/* Bento Dashboard Section: DSA / Problem Solving (id="dsa") */}
@@ -36,9 +36,17 @@ export default function Home() {
         <div className="mx-auto w-full max-w-[1720px] px-6 sm:px-10 lg:px-12">
           {/* Scroll-Synced Capabilities: What I Do */}
           <WhatIDoSection />
+
+          {/* GitHub Activity & Interactive Googly Eyes Matrix */}
           <GitHubStorySection />
+
+          {/* Technologies & Tooling Asymmetric Grid */}
           <TechStackGrid />
+
+          {/* Editorial Minimalist About Section */}
           <AboutSection />
+
+          {/* High-Contrast Bento Contact Section */}
           <ContactSection />
         </div>
       </main>

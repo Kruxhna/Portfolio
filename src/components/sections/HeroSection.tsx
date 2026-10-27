@@ -537,6 +537,26 @@ export function HeroSection() {
                 animationDelay: "0.72s",
               }}
             />
+
+            {/* Bottom Telemetry & Scroll-to-Explore Action */}
+            <div
+              className="hero-animate hero-fade-up flex items-center justify-between pt-3 text-[10px] font-mono tracking-widest uppercase text-[#DD7074] pointer-events-auto"
+              style={{ animationDelay: "0.85s" }}
+            >
+              <span className="hidden sm:inline text-[#DD7074]/60">
+                SYS://COORDINATES · INDIA · 2026
+              </span>
+              <a
+                href="#dsa"
+                data-cursor="magnetic"
+                className="group ml-auto flex items-center gap-2 hover:text-[#ECC3AB] transition-colors cursor-pointer"
+              >
+                <span>SCROLL TO EXPLORE</span>
+                <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-[rgba(221,112,116,0.35)] group-hover:border-[#E02E32] transition-colors">
+                  <span className="inline-block h-1 w-1 rounded-full bg-[#E02E32] group-hover:scale-125 transition-transform" />
+                </span>
+              </a>
+            </div>
           </div>
 
         </div>

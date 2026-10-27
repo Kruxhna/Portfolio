@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Roboto_Flex, Playfair_Display, Alex_Brush } from "next/font/google";
 import { CustomCursor } from "@/components/ui/CustomCursor";
-import { FluidBackground } from "@/components/layout/FluidBackground";
+import { PixelMatrixBackground } from "@/components/layout/PixelMatrixBackground";
+import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
+import { ScrollTelemetryHUD } from "@/components/ui/ScrollTelemetryHUD";
 import "./globals.css";
 
 const inter = Inter({
@@ -73,16 +75,19 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} ${robotoFlex.variable} ${playfair.variable} ${alexBrush.variable} dark scroll-smooth`}
     >
       <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#C3181E] selection:text-[#ECC3AB]">
-        {/* Site-wide WebGL2 Navier-Stokes Fluid Hover Reveal (Fixed Background at z-0) */}
-        <FluidBackground />
+        {/* Pixelated Matrix Voxel Image Transition (FRONT.png -> BACK.png across scroll) */}
+        <PixelMatrixBackground />
 
         {/* Global Unified Custom Cursor */}
         <CustomCursor />
 
-        {/* Main Content Stacking Context at z-10 */}
-        <div className="relative z-10 bg-transparent min-h-screen">
-          {children}
-        </div>
+        {/* Smooth Scroll Engine & Telemetry HUD */}
+        <SmoothScrollProvider>
+          <div className="relative z-10 bg-transparent min-h-screen">
+            {children}
+          </div>
+          <ScrollTelemetryHUD />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
