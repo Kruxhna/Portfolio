@@ -10,7 +10,7 @@ import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { WhatIDoSection } from "@/components/sections/WhatIDoSection";
 import { GitHubStorySection } from "@/components/sections/GitHubStorySection";
 import { TechStackGrid } from "@/components/sections/TechStackGrid";
-import { ExperienceSection } from "@/components/sections/ExperienceSection";
+import { AboutSection } from "@/components/sections/AboutSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
           <WhatIDoSection />
           <GitHubStorySection />
           <TechStackGrid />
-          <ExperienceSection />
+          <AboutSection />
           <ContactSection />
         </div>
       </main>

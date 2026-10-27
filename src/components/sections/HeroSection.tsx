@@ -365,7 +365,7 @@ export function HeroSection() {
     <>
       <section
         ref={sectionRef}
-        id="about"
+        id="hero"
         className="relative w-full bg-transparent select-none overflow-visible pointer-events-none"
         style={{ height: "100dvh" }}
       >

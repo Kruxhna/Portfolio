@@ -778,8 +778,7 @@ export function WhatIDoSection() {
       id="what-i-do"
       className="relative z-10 w-full bg-transparent text-[#ECC3AB] py-24 md:py-36"
     >
-      {/* Anchor for backward-compatible #about and #capabilities navigation */}
-      <span id="about" className="absolute -top-28 pointer-events-none" />
+      {/* Anchor for backward-compatible #capabilities navigation */}
       <span id="capabilities" className="absolute -top-28 pointer-events-none" />
 
       {/* Subtle ambient radial glow in background */}
