@@ -13,6 +13,7 @@ import { useLenis } from "lenis/react";
 import { ArrowUp, ArrowUpRight, MapPin, Sparkles, FileText, Mail, Send } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
+import { SandTextMonument } from "@/components/SandTextMonument";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -520,38 +521,26 @@ export function MirageFooterExperience() {
   const [monumentLang, setMonumentLang] = useState<"EN" | "HI">("EN");
   const { scrollTo } = useSmoothScroll();
 
-  const glyphs = useMemo(() => {
-    if (monumentLang === "HI") {
-      return ["कृ", "ष्", "ण"];
-    }
-    return ["K", "R", "U", "X", "H", "N", "A"];
-  }, [monumentLang]);
-
   // GSAP ScrollTrigger Orchestration
   useEffect(() => {
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      // 1. Monumental Display Glyph Mask-Rise
-      const glyphInners = monumentRef.current?.querySelectorAll(".glyph-inner");
-      if (glyphInners && glyphInners.length > 0) {
+      // 1. Monumental Display Reveal
+      if (monumentRef.current) {
         gsap.fromTo(
-          glyphInners,
+          monumentRef.current,
           {
-            yPercent: 110,
-            scaleY: 1.08,
-            transformOrigin: "bottom center",
+            opacity: 0.35,
           },
           {
-            yPercent: 0,
-            scaleY: 1,
-            stagger: 0.08,
-            ease: "expo.out",
+            opacity: 1,
+            ease: "power2.out",
             scrollTrigger: {
               trigger: monumentRef.current,
-              start: "top 85%",
-              end: "top 25%",
-              scrub: TEXT_ANIM_CONFIG.scrubSmoothness,
+              start: "top 90%",
+              end: "top 55%",
+              scrub: 0.8,
             },
           }
         );
@@ -656,7 +645,7 @@ export function MirageFooterExperience() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [glyphs]);
+  }, []);
 
   const scrollToTop = () => {
     scrollTo(0, { duration: 1.4 });
@@ -677,9 +666,9 @@ export function MirageFooterExperience() {
       {/* =================================================================== */}
       {/* 1. MONUMENTAL DISPLAY GLYPH MASK-RISE                               */}
       {/* =================================================================== */}
-      <div className="relative w-full pt-16 sm:pt-24 md:pt-32 pb-8 sm:pb-12 overflow-hidden">
+      <div className="relative w-full pt-10 sm:pt-14 md:pt-18 pb-4 sm:pb-6 overflow-hidden">
         {/* Language / Mode Switcher */}
-        <div className="mx-auto w-full max-w-[1720px] px-6 sm:px-10 lg:px-16 mb-6 flex items-center justify-between z-20 relative">
+        <div className="mx-auto w-full max-w-[1720px] px-6 sm:px-10 lg:px-16 mb-4 sm:mb-6 flex items-center justify-between z-20 relative">
           <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[#CEA491]/70 select-none">
             <span className="h-1.5 w-1.5 rounded-full bg-[#AD6A4C] animate-pulse" />
             <span>MONUMENTAL DISPLAY // 2026</span>
@@ -703,29 +692,14 @@ export function MirageFooterExperience() {
           </div>
         </div>
 
-        {/* Strict Bottom Clipping Container (overflow: hidden) */}
+        {/* Interactive Hover Sand-Particle Scatter & Mirage Turbulence Monument */}
         <div
           ref={monumentRef}
-          className="w-full overflow-hidden select-none px-4 sm:px-8 md:px-12"
+          className="w-full max-w-[1720px] mx-auto overflow-hidden select-none px-4 sm:px-8 md:px-12 flex items-center justify-center"
         >
-          <div className="w-full flex items-end justify-between font-sans font-black tracking-[-0.04em] text-[clamp(4.2rem,13.8vw,16.5rem)] leading-[0.88] text-[#DEC1B4]">
-            {glyphs.map((char, index) => (
-              <span
-                key={`${char}-${index}`}
-                className="glyph-mask inline-block overflow-hidden align-bottom"
-                style={{ verticalAlign: "bottom" }}
-              >
-                <span
-                  className="glyph-inner inline-block will-change-transform"
-                  style={{
-                    transformOrigin: "bottom center",
-                  }}
-                >
-                  {char}
-                </span>
-              </span>
-            ))}
-          </div>
+          <SandTextMonument
+            text={monumentLang === "HI" ? "कृष्ण" : "KRUXHNA"}
+          />
         </div>
       </div>
 
