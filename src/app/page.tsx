@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import { MirageFooterExperience } from "@/components/MirageFooterExperience";
 import { CommandMenu } from "@/components/layout/CommandMenu";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { DSAShowcaseSection } from "@/components/sections/DSAShowcaseSection";
@@ -51,8 +51,8 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Minimalist Developer Footer */}
-      <Footer />
+      {/* Interactive Monument & Mirage Footer Experience */}
+      <MirageFooterExperience />
 
       {/* Cmd + K Command Palette */}
       <CommandMenu
