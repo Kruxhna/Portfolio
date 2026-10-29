@@ -1,28 +1,24 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Roboto_Flex, Playfair_Display, Alex_Brush } from "next/font/google";
+import localFont from "next/font/local";
+import { Playfair_Display, Alex_Brush } from "next/font/google";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { PixelMatrixBackground } from "@/components/layout/PixelMatrixBackground";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 import { ScrollTelemetryHUD } from "@/components/ui/ScrollTelemetryHUD";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+const geistSans = localFont({
+  src: "./fonts/Geist-Variable.woff2",
+  variable: "--font-geist-sans",
   display: "swap",
+  weight: "100 900",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
+const geistMono = localFont({
+  src: "./fonts/GeistMono-Variable.woff2",
+  variable: "--font-geist-mono",
   display: "swap",
-});
-
-const robotoFlex = Roboto_Flex({
-  variable: "--font-roboto-flex",
-  subsets: ["latin"],
-  display: "swap",
-  axes: ["wdth"],
+  weight: "100 900",
 });
 
 const playfair = Playfair_Display({
@@ -72,7 +68,7 @@ export default function RootLayout({
     <html
       lang="en"
       style={{ backgroundColor: "#0A0807" }}
-      className={`${inter.variable} ${jetbrainsMono.variable} ${robotoFlex.variable} ${playfair.variable} ${alexBrush.variable} dark scroll-smooth`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${alexBrush.variable} dark scroll-smooth`}
     >
       <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#C3181E] selection:text-[#ECC3AB]">
         {/* Pixelated Matrix Voxel Image Transition (FRONT.png -> BACK.png across scroll) */}

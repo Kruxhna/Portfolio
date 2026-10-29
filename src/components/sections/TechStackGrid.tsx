@@ -265,7 +265,7 @@ export function TechStackGrid() {
             </div>
 
             {/* Heading: "Technologies" (Calligraphic Script) + "I work with" (Tight Sans) */}
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-[#ECC3AB] flex flex-wrap items-baseline gap-x-3.5 gap-y-1 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-sans font-medium tracking-[-0.035em] text-[#ECC3AB] flex flex-wrap items-baseline gap-x-3.5 gap-y-1 leading-[1.12]">
               <motion.span
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}

@@ -361,7 +361,7 @@ function GitHubStorySectionContent() {
         {/* A. SECTION HEADER (TOP ROW)                                       */}
         {/* ================================================================= */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 w-full mb-8">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-[#ECC3AB] flex flex-wrap items-center gap-x-3 gap-y-0 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-sans font-medium tracking-[-0.035em] text-[#ECC3AB] flex flex-wrap items-center gap-x-3 gap-y-0 leading-[1.12]">
             <span>Want to know about my</span>
             <span className="font-serif italic font-normal bg-gradient-to-r from-[#C3181E] via-[#E46B5E] to-[#ECC3AB] bg-clip-text text-transparent text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] pr-2 lowercase tracking-normal">
               story?

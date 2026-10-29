@@ -915,7 +915,7 @@ export function WhatIDoSection() {
                   </p>
 
                   {/* Card Title */}
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-bold text-[#ECC3AB] tracking-tight leading-[1.15] mb-5">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-sans font-medium text-[#ECC3AB] tracking-[-0.035em] leading-[1.12] mb-5">
                     {card.title}
                   </h3>
 

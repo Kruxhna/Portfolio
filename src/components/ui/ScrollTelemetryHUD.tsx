@@ -17,7 +17,7 @@ const SECTIONS = [
   { id: "what-i-do", tag: "03", name: "CAPABILITIES" },
   { id: "activity", tag: "04", name: "GITHUB ARCHIVE" },
   { id: "arsenal", tag: "05", name: "TOOLING & STACK" },
-  { id: "about", tag: "06", name: "ABOUT & ETHOS" },
+  { id: "about", tag: "06", name: "(02) ABOUT" },
   { id: "contact", tag: "07", name: "TRANSMISSION" },
 ];
 

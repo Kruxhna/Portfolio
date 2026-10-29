@@ -10,7 +10,7 @@ import {
 } from "framer-motion";
 
 // ============================================================================
-// TYPES & DATA DEFINITIONS
+// DATA DEFINITIONS
 // ============================================================================
 
 export interface LanguageSkill {
@@ -18,7 +18,6 @@ export interface LanguageSkill {
   name: string;
   sub?: string;
   level: string;
-  isStack?: boolean;
 }
 
 const LANGUAGES: LanguageSkill[] = [
@@ -30,7 +29,6 @@ const LANGUAGES: LanguageSkill[] = [
     name: "Python / C++ / Rust",
     sub: "systems & ML",
     level: "DAILY",
-    isStack: true,
   },
 ];
 
@@ -67,13 +65,13 @@ function ScrollWord({
   const start = index / total;
   const end = Math.min(1, start + 1 / total);
 
-  // useTransform is called at the component root, never inside a map loop
+  // useTransform called at component root
   const opacity = useTransform(progress, [start, end], [0.16, 1]);
   const y = useTransform(progress, [start, end], [4, 0]);
 
   if (shouldReduceMotion) {
     return (
-      <span className="inline-block mr-[0.26em] text-neutral-100 opacity-100">
+      <span className="inline-block mr-[0.25em] text-neutral-100 opacity-100">
         {word}
       </span>
     );
@@ -82,7 +80,7 @@ function ScrollWord({
   return (
     <motion.span
       style={{ opacity, y }}
-      className="inline-block mr-[0.26em] text-neutral-100 will-change-[opacity,transform]"
+      className="inline-block mr-[0.25em] text-neutral-100 will-change-[opacity,transform]"
     >
       {word}
     </motion.span>
@@ -94,19 +92,20 @@ function ScrollWord({
 // ============================================================================
 
 export function AboutSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const words = useMemo(() => BIO_STATEMENT.split(" "), []);
   const shouldReduceMotion = useReducedMotion();
 
   // Scroll tracking for word-by-word reveal scrub
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: sectionRef,
     offset: ["start 0.85", "end 0.45"],
   });
 
   return (
     <section
       id="about"
+      ref={sectionRef}
       aria-labelledby="about-heading"
       className="relative z-10 w-full bg-transparent py-24 sm:py-32 md:py-40 text-neutral-100 selection:bg-[#ef4444] selection:text-white"
     >
@@ -118,32 +117,22 @@ export function AboutSection() {
       {/* 1. TOP SECTION DIVIDER & META HEADER                                */}
       {/* =================================================================== */}
       <div className="w-full">
-        {/* Animated 1px Hairline Top Divider */}
-        <motion.div
-          initial={shouldReduceMotion ? { scaleX: 1 } : { scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full h-px bg-white/10 origin-left"
-        />
-
-        {/* Monospace Metadata Row */}
-        <div className="flex items-center justify-between gap-4 pt-4 mb-12 sm:mb-16 select-none font-mono text-xs uppercase tracking-[0.08em] text-neutral-400">
-          <h2 id="about-heading" className="flex items-center gap-1.5 font-normal">
-            <span className="text-[#ef4444] font-medium">(02)</span>
-            <span className="text-neutral-200">ABOUT</span>
-          </h2>
-          <span className="hidden sm:inline text-neutral-400">
-            THE PERSON BEHIND IT
-          </span>
+        {/* Full-width 1px top border */}
+        <div className="w-full border-t border-white/10 pt-4 mb-14">
+          <div className="flex items-center justify-between font-mono text-xs uppercase tracking-[0.08em] text-neutral-400 select-none">
+            <h2 id="about-heading" className="font-normal">
+              (02) ABOUT
+            </h2>
+            <span>THE PERSON BEHIND IT</span>
+          </div>
         </div>
       </div>
 
       {/* =================================================================== */}
-      {/* 2. HERO BIO STATEMENT (WORD-BY-WORD SCROLL SCRUB)                   */}
+      {/* 2. HERO BIO STATEMENT (GEIST SANS + WORD-BY-WORD SCROLL SCRUB)      */}
       {/* =================================================================== */}
-      <div ref={containerRef} className="w-full">
-        <p className="font-sans text-[clamp(1.85rem,4.2vw,3.6rem)] font-medium tracking-[-0.03em] leading-[1.14] max-w-[95%] text-neutral-100">
+      <div className="w-full">
+        <p className="font-sans font-medium text-[clamp(1.85rem,4.2vw,3.6rem)] tracking-[-0.035em] leading-[1.14] text-neutral-100 max-w-[96%]">
           {words.map((word, i) => (
             <ScrollWord
               key={`${word}-${i}`}
@@ -158,79 +147,55 @@ export function AboutSection() {
       </div>
 
       {/* =================================================================== */}
-      {/* 3. BOTTOM 2-COLUMN SUB-GRID (SPEAKS & OFF-SCREEN)                   */}
+      {/* 3. BOTTOM 2-COLUMN METADATA GRID                                    */}
       {/* =================================================================== */}
-      <div className="mt-16 sm:mt-20 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-        {/* ── LEFT COLUMN: SPEAKS (Languages & Stack) ── */}
+      <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+        {/* ── LEFT COLUMN: SPEAKS ── */}
         <div className="flex flex-col">
-          <div className="flex items-center justify-between mb-3">
-            <span className="font-mono text-xs uppercase tracking-[0.08em] text-neutral-400 select-none">
-              SPEAKS
-            </span>
-          </div>
+          <h3 className="font-mono text-xs uppercase tracking-[0.08em] text-neutral-400 mb-3 select-none">
+            SPEAKS
+          </h3>
 
-          <div className="flex flex-col border-y border-white/10 divide-y divide-white/10">
-            {LANGUAGES.map((lang, idx) => (
-              <motion.div
+          <div className="flex flex-col">
+            {LANGUAGES.map((lang) => (
+              <div
                 key={lang.id}
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-5%" }}
-                transition={{
-                  duration: 0.45,
-                  delay: idx * 0.06,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="group relative py-3.5 flex items-baseline justify-between transition-colors duration-150 cursor-default"
+                className="border-t border-white/10 py-3 flex items-baseline justify-between group"
               >
-                {/* Left: Language Name + optional sub-label */}
-                <div className="flex items-center gap-2 transition-transform duration-200 group-hover:translate-x-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#ef4444] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -ml-2" />
-                  <span className="font-sans text-[clamp(1.15rem,1.6vw,1.35rem)] font-medium text-neutral-100 tracking-[-0.01em]">
+                <div className="flex items-baseline">
+                  <span className="font-sans text-lg font-medium text-neutral-100">
                     {lang.name}
                   </span>
                   {lang.sub && (
-                    <span className="font-mono text-xs text-neutral-500 tracking-normal ml-1">
+                    <span className="text-sm text-neutral-500 ml-2 font-normal">
                       {lang.sub}
                     </span>
                   )}
                 </div>
 
-                {/* Right: Proficiency Monospace Tag */}
-                <span
-                  className={`font-mono text-xs tracking-wider transition-colors duration-200 select-none ${
-                    lang.isStack
-                      ? "text-[#ef4444] group-hover:text-white"
-                      : "text-neutral-400 group-hover:text-[#ef4444]"
-                  }`}
-                >
+                <span className="font-mono text-xs uppercase tracking-[0.08em] text-neutral-400 group-hover:text-white transition-colors select-none">
                   {lang.level}
                 </span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* ── RIGHT COLUMN: OFF-SCREEN (Interests & Creative pursuits) ── */}
+        {/* ── RIGHT COLUMN: OFF-SCREEN ── */}
         <div className="flex flex-col">
-          <div className="flex items-center justify-between mb-3">
-            <span className="font-mono text-xs uppercase tracking-[0.08em] text-neutral-400 select-none">
-              OFF-SCREEN
-            </span>
-          </div>
+          <h3 className="font-mono text-xs uppercase tracking-[0.08em] text-neutral-400 mb-3 select-none">
+            OFF-SCREEN
+          </h3>
 
-          {/* Top border hairline */}
-          <div className="border-t border-white/10 pt-3.5">
-            <p className="group/list font-sans text-[clamp(1.15rem,1.6vw,1.35rem)] font-medium leading-relaxed tracking-[-0.01em] text-neutral-100">
+          <div className="border-t border-white/10 pt-3">
+            <p className="group/list leading-relaxed">
               {OFF_SCREEN_INTERESTS.map((interest, i) => (
                 <React.Fragment key={interest}>
-                  <span className="inline-block transition-all duration-200 cursor-default group-hover/list:opacity-35 hover:!opacity-100 hover:text-white">
+                  <span className="font-sans text-lg font-medium text-neutral-100 transition-opacity duration-200 group-hover/list:opacity-35 hover:!opacity-100 cursor-default">
                     {interest}
                   </span>
                   {i < OFF_SCREEN_INTERESTS.length - 1 && (
-                    <span className="font-mono text-[#ef4444]/60 mx-2.5 select-none transition-opacity duration-200 group-hover/list:opacity-40">
-                      /
-                    </span>
+                    <span className="text-neutral-600 mx-2 select-none">/</span>
                   )}
                 </React.Fragment>
               ))}

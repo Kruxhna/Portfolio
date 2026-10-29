@@ -213,7 +213,7 @@ export function ProjectsSection() {
                     </div>
 
                     {/* Project Title */}
-                    <h3 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#ECC3AB] leading-[1.02]">
+                    <h3 className="text-4xl sm:text-5xl md:text-6xl font-sans font-medium tracking-[-0.035em] leading-[1.12] text-[#ECC3AB]">
                       {project.title}
                     </h3>
 

@@ -73,7 +73,7 @@ export function ContactSection() {
         </div>
 
         <div>
-          <h2 className="text-4xl font-bold tracking-tight text-[#ECC3AB] sm:text-5xl lg:text-6xl max-w-3xl leading-[1.1]">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-sans font-medium tracking-[-0.035em] text-[#ECC3AB] max-w-3xl leading-[1.12]">
             Let&apos;s build something intelligent together.
           </h2>
           <p className="mt-3 max-w-2xl text-sm sm:text-base text-[#E69683]/80 leading-relaxed">
