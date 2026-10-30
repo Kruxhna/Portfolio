@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { useReducedMotion } from "framer-motion";
 import { useLenis } from "lenis/react";
 import type Lenis from "lenis";
 import { useGlobalTsunamiMode } from "@/lib/tsunamiStore";
@@ -40,9 +41,11 @@ export interface TsunamiScrollRevealProps {
   blendShadow?: boolean;
   /** Enable scroll-driven liquid mask reveal (0% to 100% fluid unveiling) */
   mask?: boolean;
-  /** Viewport entry progress where reveal begins (0.0 = bottom of screen, default 0.05) */
+  /** Keep fully visible once revealed (default true) */
+  once?: boolean;
+  /** Viewport entry progress where reveal begins (0.0 = bottom of screen, default 0.04) */
   revealStart?: number;
-  /** Viewport exit progress where reveal completes (1.0 = top of screen, default 0.72) */
+  /** Viewport exit progress where reveal completes (1.0 = top of screen, default 0.65) */
   revealEnd?: number;
   /** Linear interpolation damping factor (0.01 to 0.3, default 0.09) */
   lerpSmoothness?: number;
@@ -76,10 +79,12 @@ uniform int uFitMode; // 0: contain, 1: cover
 void main() {
   vUv = a_position * 0.5 + 0.5;
 
-  if (uFitMode == 1) {
+  if (uFitMode == 1 && uMediaSize.x > 0.0 && uMediaSize.y > 0.0 && uPanelSize.x > 0.0 && uPanelSize.y > 0.0) {
+    float panelAspect = uPanelSize.x / uPanelSize.y;
+    float mediaAspect = uMediaSize.x / uMediaSize.y;
     vec2 ratio = vec2(
-      min((uPanelSize.x / uPanelSize.y) / (uMediaSize.x / uMediaSize.y), 1.0),
-      min((uPanelSize.y / uPanelSize.x) / (uMediaSize.y / uMediaSize.x), 1.0)
+      min(panelAspect / mediaAspect, 1.0),
+      min(mediaAspect / panelAspect, 1.0)
     );
     vTextureCoord = (vUv - vec2(0.5)) * ratio + vec2(0.5);
   } else {
@@ -157,36 +162,6 @@ vec4 sampleTexture(vec2 uv) {
   return vec4(col, 1.0);
 }
 
-vec4 gaussianBlur(vec2 uv, float radius, float intensity) {
-  if (radius <= 0.0 || intensity <= 0.0) {
-    return sampleTexture(uv);
-  }
-
-  vec4 result = vec4(0.0);
-  float totalWeight = 0.0;
-
-  float centerWeight = 0.147761;
-  result += sampleTexture(uv) * centerWeight;
-  totalWeight += centerWeight;
-
-  float adjWeight = 0.118318;
-  result += sampleTexture(clamp(uv + vec2(radius, 0.0), 0.0, 1.0)) * adjWeight;
-  result += sampleTexture(clamp(uv + vec2(-radius, 0.0), 0.0, 1.0)) * adjWeight;
-  result += sampleTexture(clamp(uv + vec2(0.0, radius), 0.0, 1.0)) * adjWeight;
-  result += sampleTexture(clamp(uv + vec2(0.0, -radius), 0.0, 1.0)) * adjWeight;
-  totalWeight += adjWeight * 4.0;
-
-  float diagWeight = 0.094907;
-  float diagRadius = radius * 0.707;
-  result += sampleTexture(clamp(uv + vec2(diagRadius, diagRadius), 0.0, 1.0)) * diagWeight;
-  result += sampleTexture(clamp(uv + vec2(-diagRadius, diagRadius), 0.0, 1.0)) * diagWeight;
-  result += sampleTexture(clamp(uv + vec2(diagRadius, -diagRadius), 0.0, 1.0)) * diagWeight;
-  result += sampleTexture(clamp(uv + vec2(-diagRadius, -diagRadius), 0.0, 1.0)) * diagWeight;
-  totalWeight += diagWeight * 4.0;
-
-  return result / totalWeight;
-}
-
 vec4 applySpectralDispersion(vec2 uv, vec2 distortion, float strength, float enhance, float blurRadius) {
   vec2 distortedUV = clamp(uv + distortion, 0.0, 1.0);
   vec4 baseColor = sampleTexture(distortedUV);
@@ -201,7 +176,7 @@ vec4 applySpectralDispersion(vec2 uv, vec2 distortion, float strength, float enh
   vec2 offset2 = dispersionDir * (0.75 * scale);
   vec2 offset3 = dispersionDir * (1.15 * scale);
 
-  // Direct fast chromatic sampling without 27-tap multi-pass gaussian blur
+  // Fast chromatic sampling
   vec4 sample1 = sampleTexture(clamp(distortedUV + offset1, 0.0, 1.0));
   vec4 sample2 = sampleTexture(clamp(distortedUV + offset2, 0.0, 1.0));
   vec4 sample3 = sampleTexture(clamp(distortedUV + offset3, 0.0, 1.0));
@@ -356,12 +331,13 @@ void main() {
 
   if (uMask) {
     float maskEdge = waveCenter - uWaveWidth * 0.5;
-    float baseMask = smoothstep(maskEdge - uWaveWidth * 0.3, maskEdge + uWaveWidth * 0.3, projectedPosition);
+    // Fluid unmasking: swept region is 1.0 (visible), unswept region is 0.0 (masked)
+    float baseMask = 1.0 - smoothstep(maskEdge - uWaveWidth * 0.3, maskEdge + uWaveWidth * 0.3, projectedPosition);
 
     if (waveMask > 0.001) {
       float maskDisturbance = (fractalNoise(rotatedUV * 15.0 * uWaveFrequency) - 0.5) * effectiveDisturbance * 0.7;
-      float disturbedMask = smoothstep(maskEdge + maskDisturbance - uWaveWidth * 0.4,
-                                     maskEdge + maskDisturbance + uWaveWidth * 0.2, projectedPosition);
+      float disturbedMask = 1.0 - smoothstep(maskEdge + maskDisturbance - uWaveWidth * 0.4,
+                                           maskEdge + maskDisturbance + uWaveWidth * 0.2, projectedPosition);
       baseMask = mix(baseMask, disturbedMask, 0.75);
       baseMask = mix(baseMask, smoothstep(0.3, 0.7, baseMask), waveMask * 0.35);
     }
@@ -401,8 +377,9 @@ export function TsunamiScrollReveal({
   blendReflection = true,
   blendShadow = true,
   mask = true,
+  once = true,
   revealStart = 0.04,
-  revealEnd = 0.72,
+  revealEnd = 0.65,
   lerpSmoothness = 0.09,
   velocityMultiplier = 1.8,
   fit = "cover",
@@ -417,6 +394,8 @@ export function TsunamiScrollReveal({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [tsunamiMode] = useGlobalTsunamiMode();
+  const reducedMotion = useReducedMotion();
+  const [webglSupported, setWebglSupported] = useState<boolean>(true);
 
   const isVideo =
     mediaType === "video" ||
@@ -425,6 +404,7 @@ export function TsunamiScrollReveal({
       /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(src));
 
   const isVisibleRef = useRef<boolean>(true);
+  const hasRevealedRef = useRef<boolean>(false);
   const targetProgressRef = useRef<number>(0.0);
   const currentProgressRef = useRef<number>(0.0);
   const appearProgressRef = useRef<number>(0.0);
@@ -445,10 +425,11 @@ export function TsunamiScrollReveal({
   useEffect(() => {
     if (tsunamiMode === "appear") {
       appearProgressRef.current = 0.0;
+      hasRevealedRef.current = false;
     }
   }, [tsunamiMode]);
 
-  // Load Media Element
+  // Load Media Element (immediate, supports cached images & fast decoding)
   useEffect(() => {
     if (!src) {
       setMediaReady(false);
@@ -496,8 +477,8 @@ export function TsunamiScrollReveal({
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.decoding = "async";
-      img.loading = "lazy";
-      img.onload = () => {
+
+      const handleLoad = () => {
         if (!active) return;
         mediaDimensionsRef.current = {
           width: img.naturalWidth || 1920,
@@ -506,7 +487,17 @@ export function TsunamiScrollReveal({
         mediaElementRef.current = img;
         setMediaReady(true);
       };
+
+      img.onload = handleLoad;
+      img.onerror = (e) => {
+        console.error("Failed to load image texture for TsunamiScrollReveal:", src, e);
+      };
       img.src = src;
+
+      // If image is already cached in memory, trigger immediate readiness
+      if (img.complete && img.naturalWidth > 0) {
+        handleLoad();
+      }
 
       return () => {
         active = false;
@@ -553,6 +544,13 @@ export function TsunamiScrollReveal({
       } else {
         mappedProgress = (viewportProgress - revealStart) / (revealEnd - revealStart);
       }
+
+      // Latch reveal when card reaches or exceeds view threshold
+      if (once && (mappedProgress >= 0.95 || hasRevealedRef.current)) {
+        hasRevealedRef.current = true;
+        mappedProgress = 1.0;
+      }
+
       targetProgressRef.current = mappedProgress;
 
       if (typeof lenisVelocity === "number") {
@@ -569,7 +567,7 @@ export function TsunamiScrollReveal({
         lastTimeRef.current = now;
       }
     },
-    [revealStart, revealEnd, velocityMultiplier]
+    [revealStart, revealEnd, velocityMultiplier, once]
   );
 
   // Sync directly with Lenis smooth scroll
@@ -584,6 +582,13 @@ export function TsunamiScrollReveal({
 
   useEffect(() => {
     updateScrollPhysics();
+    // Fast-track initial state if already on-screen
+    if (targetProgressRef.current >= 0.5) {
+      currentProgressRef.current = targetProgressRef.current;
+      if (targetProgressRef.current >= 0.9) {
+        hasRevealedRef.current = true;
+      }
+    }
     const onScroll = () => updateScrollPhysics();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -606,7 +611,10 @@ export function TsunamiScrollReveal({
       premultipliedAlpha: true,
       powerPreference: "high-performance",
     });
-    if (!gl) return;
+    if (!gl) {
+      setWebglSupported(false);
+      return;
+    }
 
     const vs = createShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER_SRC);
     const fs = createShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER_SRC);
@@ -654,13 +662,13 @@ export function TsunamiScrollReveal({
 
     const texture: WebGLTexture | null = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
-    // Flip Y so DOM images/videos render right-side-up in WebGL UV space
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
+    // Initial 1x1 burgundy-black placeholder while texture decodes
     gl.texImage2D(
       gl.TEXTURE_2D,
       0,
@@ -690,8 +698,8 @@ export function TsunamiScrollReveal({
       width = container.clientWidth;
       height = container.clientHeight;
 
-      const renderW = Math.floor(width * dpr);
-      const renderH = Math.floor(height * dpr);
+      const renderW = Math.max(1, Math.floor(width * dpr));
+      const renderH = Math.max(1, Math.floor(height * dpr));
 
       if (canvas.width !== renderW || canvas.height !== renderH) {
         canvas.width = renderW;
@@ -702,6 +710,12 @@ export function TsunamiScrollReveal({
     };
 
     handleResize();
+    const resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
     window.addEventListener("resize", handleResize);
 
     const render = () => {
@@ -711,7 +725,6 @@ export function TsunamiScrollReveal({
       }
 
       timeRef.current += ambientSpeed;
-      handleResize();
 
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.useProgram(program);
@@ -721,6 +734,9 @@ export function TsunamiScrollReveal({
       if (tsunamiMode === "appear") {
         appearProgressRef.current = Math.min(1.0, appearProgressRef.current + 0.014);
         activeProgress = appearProgressRef.current;
+        if (activeProgress >= 0.98) {
+          hasRevealedRef.current = true;
+        }
       } else if (tsunamiMode === "sequence") {
         activeProgress = (timeRef.current * 0.18) % 1.0;
       } else {
@@ -775,6 +791,9 @@ export function TsunamiScrollReveal({
 
       const radAngle = (angle * Math.PI) / 180;
 
+      // If revealed with once=true, keep mask unmasked so media is crystal clear
+      const isMaskActive = mask && !hasRevealedRef.current && tsunamiMode !== "sequence";
+
       gl.uniform1f(uProgressLoc, activeProgress);
       gl.uniform1f(uWaveWidthLoc, waveWidth);
       gl.uniform1f(uDistortionLoc, distortion);
@@ -787,14 +806,14 @@ export function TsunamiScrollReveal({
       gl.uniform1f(uAngleLoc, radAngle);
       gl.uniform1i(uBlendReflLoc, blendReflection ? 1 : 0);
       gl.uniform1i(uBlendShadowLoc, blendShadow ? 1 : 0);
-      gl.uniform1i(uMaskLoc, mask && tsunamiMode !== "sequence" ? 1 : 0);
+      gl.uniform1i(uMaskLoc, isMaskActive ? 1 : 0);
       gl.uniform1f(uVelocityLoc, velocityRef.current);
       gl.uniform1f(uTimeLoc, timeRef.current);
       gl.uniform1i(uHasTextureLoc, textureLoaded ? 1 : 0);
       gl.uniform2f(
         uMediaSizeLoc,
-        mediaDimensionsRef.current.width,
-        mediaDimensionsRef.current.height
+        mediaDimensionsRef.current.width || 1920,
+        mediaDimensionsRef.current.height || 1080
       );
       gl.uniform2f(uPanelSizeLoc, canvas.width, canvas.height);
       gl.uniform1i(uFitModeLoc, fit === "cover" ? 1 : 0);
@@ -808,6 +827,7 @@ export function TsunamiScrollReveal({
 
     return () => {
       cancelAnimationFrame(animId);
+      resizeObserver.disconnect();
       window.removeEventListener("resize", handleResize);
       if (texture) gl.deleteTexture(texture);
       gl.deleteBuffer(quadBuffer);
@@ -816,6 +836,7 @@ export function TsunamiScrollReveal({
       gl.deleteShader(fs);
     };
   }, [
+    src,
     mediaReady,
     isVideo,
     tsunamiMode,
@@ -844,9 +865,19 @@ export function TsunamiScrollReveal({
       role="img"
       aria-label={alt}
     >
+      {/* High-fidelity fallback if WebGL is unavailable or reduced-motion is requested */}
+      {(!webglSupported || reducedMotion) && src && !isVideo && (
+        <img
+          src={src}
+          alt={alt || ""}
+          className="w-full h-full object-cover block select-none pointer-events-none"
+        />
+      )}
       <canvas
         ref={canvasRef}
-        className="w-full h-full block select-none pointer-events-none"
+        className={`w-full h-full block select-none pointer-events-none ${
+          !webglSupported || reducedMotion ? "hidden" : ""
+        }`}
       />
     </div>
   );

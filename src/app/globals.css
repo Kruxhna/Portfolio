@@ -284,19 +284,38 @@
   line-height: 0.85;
 }
 
-/* ─── Unified Custom Cursor ─────────────────────────────────────────────── */
-@media (hover: hover) and (pointer: fine) {
+/* ─── Minecraft Dragon Fireball & Ender Dragon Custom Cursor ─────────────── */
+@media (pointer: fine) {
+  /* Fallback native CSS cursors when JS overlay is disabled or bypassed */
+  html,
+  body {
+    cursor: url('/cursors/dragon-fireball.png') 16 4, auto;
+  }
+  a,
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  select,
+  label,
+  [data-cursor="pointer"],
+  [data-cursor="link"],
+  [data-cursor="view"] {
+    cursor: url('/cursors/ender-dragon.png') 16 4, pointer;
+  }
+
+  /* Zero-latency DOM cursor active state */
   html.has-custom-cursor,
   html.has-custom-cursor * {
     cursor: none !important;
   }
   html.has-custom-cursor [data-cursor="text"],
-  html.has-custom-cursor input,
+  html.has-custom-cursor input[type="text"],
+  html.has-custom-cursor input[type="email"],
+  html.has-custom-cursor input[type="search"],
   html.has-custom-cursor textarea,
-  html.has-custom-cursor select,
-  html.has-custom-cursor [contenteditable="true"],
-  html.has-custom-cursor [data-cursor="none"] {
-    cursor: auto !important;
+  html.has-custom-cursor [contenteditable="true"] {
+    cursor: text !important;
   }
 }
 
@@ -449,53 +468,23 @@
   }
 }
 
-/* ─── Tsunami Full-Page Scroll Animation & Chromatic Dispersion ─────────────
-   Synchronizes live DOM typography and cards with the WebGL Tsunami wave
-   using the CAESAR color system (#6D001A, #9E0B2E, #C93B5B, #E899AC).
+/* ─── Tsunami Full-Page Scroll Animation & Section Presentation ─────────────
+   Synchronizes section containers with the WebGL Tsunami wave while keeping
+   live DOM typography and tables razor-sharp and rock-solid to read.
 ────────────────────────────────────────────────────────────────────────────── */
 
 .tsunami-section-content {
-  transform-origin: 50% 35%;
   backface-visibility: hidden;
 }
 
-/* Prismatic CAESAR RGB channel splitting on headings & display text during scroll wave */
-.tsunami-dispersing h1,
-.tsunami-dispersing h2,
-.tsunami-dispersing h3 {
-  text-shadow:
-    var(--tsunami-chroma-x, 0px) var(--tsunami-chroma-y, 0px) 0px rgba(158, 11, 46, 0.55),
-    calc(var(--tsunami-chroma-x, 0px) * -1) calc(var(--tsunami-chroma-y, 0px) * -1) 0px rgba(232, 153, 172, 0.42);
-  transition: text-shadow 120ms linear;
-}
-
-.tsunami-dispersing p,
-.tsunami-dispersing span {
-  text-shadow:
-    calc(var(--tsunami-chroma-x, 0px) * 0.45) calc(var(--tsunami-chroma-y, 0px) * 0.45) 0px rgba(158, 11, 46, 0.32),
-    calc(var(--tsunami-chroma-x, 0px) * -0.45) calc(var(--tsunami-chroma-y, 0px) * -0.45) 0px rgba(201, 59, 91, 0.24);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .tsunami-section-content,
-  .tsunami-dispersing h1,
-  .tsunami-dispersing h2,
-  .tsunami-dispersing h3,
-  .tsunami-dispersing p,
-  .tsunami-dispersing span {
+  .tsunami-section-content {
     filter: none !important;
     transform: none !important;
-    text-shadow: none !important;
   }
 }
 
-html.reduced-motion .tsunami-section-content,
-html.reduced-motion .tsunami-dispersing h1,
-html.reduced-motion .tsunami-dispersing h2,
-html.reduced-motion .tsunami-dispersing h3,
-html.reduced-motion .tsunami-dispersing p,
-html.reduced-motion .tsunami-dispersing span {
+html.reduced-motion .tsunami-section-content {
   filter: none !important;
   transform: none !important;
-  text-shadow: none !important;
 }

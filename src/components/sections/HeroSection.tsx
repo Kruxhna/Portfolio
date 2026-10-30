@@ -89,10 +89,13 @@ function ScatterLetter({
   const rawScrollX = useTransform(scrollY, [0, 900], [0, targetX]);
   const rawScrollY = useTransform(scrollY, [0, 900], [0, targetY]);
   const rawScrollRotate = useTransform(scrollY, [0, 900], [0, targetRot]);
+  // Fade out scattered letters before they overlap downstream DSA and project text
+  const rawScrollOpacity = useTransform(scrollY, [0, 200, 520], [1, 1, 0]);
 
   const springScrollX = useSpring(rawScrollX, springConfig);
   const springScrollY = useSpring(rawScrollY, springConfig);
   const springScrollRotate = useSpring(rawScrollRotate, springConfig);
+  const springScrollOpacity = useSpring(rawScrollOpacity, { stiffness: 90, damping: 20 });
 
   // Click burst impulse values
   const clickX = useMotionValue(0);
@@ -149,8 +152,9 @@ function ScatterLetter({
         x: totalX,
         y: totalY,
         rotate: totalRotate,
+        opacity: springScrollOpacity,
         transformStyle: "preserve-3d",
-        willChange: "transform",
+        willChange: "transform, opacity",
       }}
     >
       {/* Inner span: preserves entrance animation and fontVariationSettings */}
