@@ -18,7 +18,7 @@ const SECTIONS = [
   { id: "activity", tag: "04", name: "GITHUB ARCHIVE" },
   { id: "arsenal", tag: "05", name: "TOOLING & STACK" },
   { id: "about", tag: "06", name: "(02) ABOUT" },
-  { id: "contact", tag: "07", name: "TRANSMISSION" },
+  { id: "contact", tag: "07", name: "CONTACT" },
 ];
 
 export function ScrollTelemetryHUD() {
@@ -73,12 +73,12 @@ export function ScrollTelemetryHUD() {
       }`}
     >
       {/* ── SECTION COORDINATE CHIP ── */}
-      <div className="flex items-center gap-2.5 rounded-full border border-[rgba(221,112,116,0.2)] bg-[#0A0807]/85 px-3.5 py-1.5 backdrop-blur-md shadow-xl text-[10.5px] uppercase tracking-wider text-[#ECC3AB]">
-        <span className="flex h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
-        <span className="text-[#DD7074] font-semibold">[{activeSection.tag}]</span>
-        <span className="text-[#ECC3AB] max-w-[140px] truncate">{activeSection.name}</span>
-        <span className="text-[#DD7074]/40">·</span>
-        <span className="text-[#E69683] font-bold">{percentage}%</span>
+      <div className="flex items-center gap-2.5 rounded-full border border-[rgba(221,112,116,0.2)] bg-[#000000]/85 px-3.5 py-1.5 backdrop-blur-md shadow-xl text-[10.5px] uppercase tracking-wider text-[#F5EEF0]">
+        <span className="flex h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
+        <span className="text-[#A68E94] font-semibold">[{activeSection.tag}]</span>
+        <span className="text-[#F5EEF0] max-w-[140px] truncate">{activeSection.name}</span>
+        <span className="text-[#A68E94]/40">·</span>
+        <span className="text-[#A68E94] font-bold">{percentage}%</span>
       </div>
 
       {/* ── SMOOTH SCROLL TO TOP CIRCULAR BUTTON ── */}
@@ -87,7 +87,7 @@ export function ScrollTelemetryHUD() {
         data-cursor="magnetic"
         title="Scroll to top"
         aria-label="Scroll to top"
-        className="relative group flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(221,112,116,0.25)] bg-[#0A0807]/90 text-[#ECC3AB] shadow-xl backdrop-blur-md transition-all hover:border-[#E02E32] hover:bg-[#14100D] cursor-pointer"
+        className="relative group flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(221,112,116,0.25)] bg-[#000000]/90 text-[#F5EEF0] shadow-xl backdrop-blur-md transition-all hover:border-[#9E0B2E] hover:bg-[#140408] cursor-pointer"
       >
         {/* Radial SVG Progress Meter */}
         <svg className="absolute inset-0 h-full w-full -rotate-90 transform p-0.5">
@@ -95,7 +95,7 @@ export function ScrollTelemetryHUD() {
             cx="17"
             cy="17"
             r={radius}
-            stroke="rgba(221, 112, 116, 0.15)"
+            stroke="rgba(38, 16, 21, 0.15)"
             strokeWidth="1.8"
             fill="transparent"
           />
@@ -103,7 +103,7 @@ export function ScrollTelemetryHUD() {
             cx="17"
             cy="17"
             r={radius}
-            stroke="#E02E32"
+            stroke="#9E0B2E"
             strokeWidth="1.8"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
@@ -113,7 +113,7 @@ export function ScrollTelemetryHUD() {
           />
         </svg>
 
-        <ArrowUp className="relative z-10 h-3.5 w-3.5 text-[#ECC3AB] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:text-[#E02E32]" />
+        <ArrowUp className="relative z-10 h-3.5 w-3.5 text-[#F5EEF0] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:text-[#9E0B2E]" />
       </button>
     </div>
   );

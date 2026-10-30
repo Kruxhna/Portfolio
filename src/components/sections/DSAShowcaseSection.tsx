@@ -147,25 +147,25 @@ export function DSAShowcaseSection() {
             {/* ── Top Group: Editorial Header & Narrative ──────────────────── */}
             <div>
               {/* 1. Eyebrow */}
-              <p className="font-mono text-xs uppercase tracking-widest text-[#DD7074] mb-4">
+              <p className="font-mono text-xs uppercase tracking-widest text-[#A68E94] mb-4">
                 {DSA_DATA.eyebrow}
               </p>
 
               {/* 2. Display Title */}
               <h2
                 id="dsa-title"
-                className="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.94] text-[#ECC3AB] mb-6"
+                className="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.94] text-[#F5EEF0] mb-6"
               >
                 {DSA_DATA.title}
               </h2>
 
               {/* 3. Body Copy */}
-              <p className="text-base sm:text-lg text-[#ECC3AB]/90 leading-relaxed max-w-md font-sans">
+              <p className="text-base sm:text-lg text-[#F5EEF0]/90 leading-relaxed max-w-md font-sans">
                 {DSA_DATA.statement}
               </p>
 
               {/* 4. Technical Spec Strip */}
-              <p className="font-mono text-xs text-[#E69683]/80 mt-6 pt-5 border-t border-[#DD7074]/20">
+              <p className="font-mono text-xs text-[#A68E94]/80 mt-6 pt-5 border-t border-[#A68E94]/20">
                 {DSA_DATA.tagline}
               </p>
 
@@ -180,20 +180,20 @@ export function DSAShowcaseSection() {
                 >
                   {DSA_DATA.profileLinkText}
                 </ExternalLinkPill>
-                <span className="text-[#DD7074]">
+                <span className="text-[#A68E94]">
                   / {DSA_DATA.lastSyncedDate}
                 </span>
               </div>
             </div>
 
             {/* ── Bottom Group: Fills Bottom-Left (Flush with Right Column) ── */}
-            <div className="border-t border-[#DD7074]/20 pt-7 mt-8">
+            <div className="border-t border-[#A68E94]/20 pt-7 mt-8">
               {/* Header Row */}
               <div className="flex items-center justify-between text-[11px] font-mono">
-                <span className="uppercase tracking-widest text-[#DD7074] font-semibold">
+                <span className="uppercase tracking-widest text-[#A68E94] font-semibold">
                   PARADIGMS MASTERED
                 </span>
-                <span className="text-[#E46B5E] text-[10px] tracking-wide">
+                <span className="text-[#C93B5B] text-[10px] tracking-wide">
                   [ click to filter submissions ]
                 </span>
               </div>
@@ -210,8 +210,8 @@ export function DSAShowcaseSection() {
                       data-cursor="magnetic"
                       className={`text-xs font-mono px-3 py-1.5 rounded transition-all cursor-pointer ${
                         isSel
-                          ? "bg-[#C3181E] border border-[#E44847]/60 text-[#ECC3AB] font-semibold shadow-sm"
-                          : "bg-[#4E0104]/85 border border-[#9A142C] text-[#E8A791] hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67]"
+                          ? "bg-[#6D001A] border border-[#9E0B2E]/60 text-[#F5EEF0] font-semibold shadow-sm"
+                          : "bg-[#240009]/85 border border-[#6D001A] text-[#F5EEF0] hover:bg-[#3B000E] hover:text-[#F5EEF0] hover:border-[#9E0B2E]"
                       }`}
                     >
                       {pName === "All Paradigms" ? "[ All Paradigms ]" : `${pName} [${item.count}]`}
@@ -221,34 +221,34 @@ export function DSAShowcaseSection() {
               </div>
 
               {/* Dynamic Complexity Bound Subtitle */}
-              <div className="mt-3 text-[11px] font-mono text-[#E46B5E] flex items-center gap-1.5 min-h-[20px]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#E46B5E] shrink-0" />
+              <div className="mt-3 text-[11px] font-mono text-[#C93B5B] flex items-center gap-1.5 min-h-[20px]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C93B5B] shrink-0" />
                 <span className="truncate">{paradigmData[selectedParadigm].bound}</span>
               </div>
 
               {/* Compact Complexity & Consistency Telemetry Strip */}
-              <div className="grid grid-cols-3 gap-4 mt-6 pt-5 border-t border-[#DD7074]/20">
+              <div className="grid grid-cols-3 gap-4 mt-6 pt-5 border-t border-[#A68E94]/20">
                 <div>
-                  <div className="text-[10px] font-mono text-[#DD7074] uppercase tracking-wider">
+                  <div className="text-[10px] font-mono text-[#A68E94] uppercase tracking-wider">
                     primary lang
                   </div>
-                  <div className="mt-1 text-xs font-mono text-[#ECC3AB] font-bold">
+                  <div className="mt-1 text-xs font-mono text-[#F5EEF0] font-bold">
                     Python 3 / C++
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono text-[#DD7074] uppercase tracking-wider">
+                  <div className="text-[10px] font-mono text-[#A68E94] uppercase tracking-wider">
                     avg runtime
                   </div>
-                  <div className="mt-1 text-xs font-mono text-[#E46B5E] font-bold">
+                  <div className="mt-1 text-xs font-mono text-[#C93B5B] font-bold">
                     94.2%ile
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] font-mono text-[#DD7074] uppercase tracking-wider">
+                  <div className="text-[10px] font-mono text-[#A68E94] uppercase tracking-wider">
                     memory bound
                   </div>
-                  <div className="mt-1 text-xs font-mono text-[#E8A791] font-bold">
+                  <div className="mt-1 text-xs font-mono text-[#F5EEF0] font-bold">
                     O(1) – O(N)
                   </div>
                 </div>
@@ -264,10 +264,10 @@ export function DSAShowcaseSection() {
             style={getEntranceStyle(1)}
           >
             {/* ── BLOCK A: 5-Metric Stat Strip (Aligned with algorithmic rigor) ─ */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 pb-8 border-b border-[#DD7074]/20">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 pb-8 border-b border-[#A68E94]/20">
               {DSA_DATA.stats.map((stat) => (
                 <div key={stat.id} className="flex flex-col">
-                  <div className="text-4xl sm:text-5xl font-black tracking-tight text-[#ECC3AB] font-mono leading-none tabular-nums">
+                  <div className="text-4xl sm:text-5xl font-black tracking-tight text-[#F5EEF0] font-mono leading-none tabular-nums">
                     <span>
                       {counts[stat.id] !== undefined
                         ? counts[stat.id]
@@ -275,7 +275,7 @@ export function DSAShowcaseSection() {
                       {stat.suffix || ""}
                     </span>
                   </div>
-                  <div className="mt-1.5 text-xs font-mono text-[#E46B5E] lowercase tracking-normal">
+                  <div className="mt-1.5 text-xs font-mono text-[#C93B5B] lowercase tracking-normal">
                     {stat.label}
                   </div>
                 </div>
@@ -283,8 +283,8 @@ export function DSAShowcaseSection() {
             </div>
 
             {/* ── BLOCK B: 3-Column Platform Breakdown ───────────────────────── */}
-            <div className="py-8 border-b border-[#DD7074]/20">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:divide-x sm:divide-[#DD7074]/20">
+            <div className="py-8 border-b border-[#A68E94]/20">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:divide-x sm:divide-[#A68E94]/20">
                 {DSA_DATA.platforms.map((platform, idx) => (
                   <div
                     key={platform.id}
@@ -299,7 +299,7 @@ export function DSAShowcaseSection() {
                     <div>
                       {/* Name + Status Indicator */}
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-sm text-[#ECC3AB] font-semibold lowercase">
+                        <span className="font-mono text-sm text-[#F5EEF0] font-semibold lowercase">
                           {platform.name}
                         </span>
                         <div className="flex items-center gap-1.5 font-mono text-xs lowercase">
@@ -307,15 +307,15 @@ export function DSAShowcaseSection() {
                             className="h-1.5 w-1.5 rounded-full"
                             style={{
                               backgroundColor: platform.isActive
-                                ? "#E46B5E"
-                                : "rgba(221, 112, 116, 0.4)",
+                                ? "#C93B5B"
+                                : "rgba(38, 16, 21, 0.4)",
                             }}
                           />
                           <span
                             style={{
                               color: platform.isActive
-                                ? "#E46B5E"
-                                : "rgba(221, 112, 116, 0.6)",
+                                ? "#C93B5B"
+                                : "rgba(38, 16, 21, 0.6)",
                             }}
                           >
                             {platform.isActive ? "active" : "synced"}
@@ -324,15 +324,15 @@ export function DSAShowcaseSection() {
                       </div>
 
                       {/* Metrics */}
-                      <div className="mt-3 font-mono text-xs text-[#E69683] lowercase leading-relaxed">
-                        <div className="text-[#ECC3AB] font-bold">{platform.solved}</div>
+                      <div className="mt-3 font-mono text-xs text-[#A68E94] lowercase leading-relaxed">
+                        <div className="text-[#F5EEF0] font-bold">{platform.solved}</div>
                         <div className="mt-0.5">{platform.metric}</div>
-                        <div className="mt-0.5 text-[#E46B5E]">{platform.handle}</div>
+                        <div className="mt-0.5 text-[#C93B5B]">{platform.handle}</div>
                       </div>
                     </div>
 
                     {/* Action link */}
-                    <div className="mt-5 pt-3 border-t border-[#DD7074]/15">
+                    <div className="mt-5 pt-3 border-t border-[#A68E94]/15">
                       <ExternalLinkPill
                         href={platform.url}
                         variant="secondary"
@@ -352,7 +352,7 @@ export function DSAShowcaseSection() {
             <div className="pt-8">
               {/* Header row */}
               <div className="flex items-center justify-between mb-4">
-                <span className="font-mono text-xs uppercase tracking-widest text-[#DD7074] font-semibold">
+                <span className="font-mono text-xs uppercase tracking-widest text-[#A68E94] font-semibold">
                   RECENT SUBMISSIONS
                 </span>
                 <ExternalLinkPill
@@ -367,7 +367,7 @@ export function DSAShowcaseSection() {
               </div>
 
               {/* Submissions List Table */}
-              <div className="w-full divide-y divide-[#DD7074]/15 border-t border-b border-[#DD7074]/15 mt-4">
+              <div className="w-full divide-y divide-[#A68E94]/15 border-t border-b border-[#A68E94]/15 mt-4">
                   {DSA_DATA.submissions.map((sub) => {
                     const isMatch =
                       selectedParadigm === "All Paradigms" ||
@@ -375,10 +375,10 @@ export function DSAShowcaseSection() {
 
                     const diffColor =
                       sub.difficulty === "easy"
-                        ? "text-[#E46B5E]"
+                        ? "text-[#C93B5B]"
                         : sub.difficulty === "med"
-                        ? "text-[#E8A791]"
-                        : "text-[#ECC3AB] font-bold";
+                        ? "text-[#F5EEF0]"
+                        : "text-[#F5EEF0] font-bold";
 
                     return (
                       <div
@@ -386,8 +386,8 @@ export function DSAShowcaseSection() {
                         className={`py-3.5 px-3 -mx-3 rounded transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isMatch
                             ? selectedParadigm !== "All Paradigms"
-                              ? "bg-[#C3181E]/15 border-l-2 border-[#C3181E] pl-2.5"
-                              : "hover:bg-[#C3181E]/[0.08]"
+                              ? "bg-[#6D001A]/15 border-l-2 border-[#6D001A] pl-2.5"
+                              : "hover:bg-[#6D001A]/[0.08]"
                             : "opacity-35 hover:opacity-70"
                         }`}
                       >
@@ -398,14 +398,14 @@ export function DSAShowcaseSection() {
                             target="_blank"
                             rel="noopener noreferrer"
                             data-cursor="magnetic"
-                            className="group/link inline-flex items-center gap-1.5 font-mono text-xs sm:text-[13px] text-[#ECC3AB] hover:text-[#E46B5E] transition-colors truncate max-w-full"
+                            className="group/link inline-flex items-center gap-1.5 font-mono text-xs sm:text-[13px] text-[#F5EEF0] hover:text-[#C93B5B] transition-colors truncate max-w-full"
                           >
                             <span className="truncate">{sub.problem}</span>
-                            <ExternalArrow className="opacity-0 group-hover/link:opacity-100 transition-opacity text-[#E46B5E] shrink-0" />
+                            <ExternalArrow className="opacity-0 group-hover/link:opacity-100 transition-opacity text-[#C93B5B] shrink-0" />
                           </a>
                           {/* Mobile-only tag */}
-                          <div className="sm:hidden mt-1 flex items-center gap-2 text-[10px] font-mono text-[#DD7074]">
-                            <span className="text-[#E46B5E]">{sub.paradigm}</span>
+                          <div className="sm:hidden mt-1 flex items-center gap-2 text-[10px] font-mono text-[#A68E94]">
+                            <span className="text-[#C93B5B]">{sub.paradigm}</span>
                             <span>·</span>
                             <span className={diffColor}>{sub.difficulty}</span>
                             <span>·</span>
@@ -416,7 +416,7 @@ export function DSAShowcaseSection() {
                         </div>
 
                         {/* Desktop Paradigm Tag */}
-                        <div className="hidden sm:block text-xs font-mono text-[#E69683] w-44 truncate">
+                        <div className="hidden sm:block text-xs font-mono text-[#A68E94] w-44 truncate">
                           {sub.paradigm}
                         </div>
 
@@ -426,10 +426,10 @@ export function DSAShowcaseSection() {
                         </div>
 
                         {/* Desktop Platform & Time */}
-                        <div className="hidden sm:flex items-center justify-end gap-2 text-xs font-mono text-[#DD7074] w-32 text-right">
+                        <div className="hidden sm:flex items-center justify-end gap-2 text-xs font-mono text-[#A68E94] w-32 text-right">
                           <span>{sub.platform}</span>
                           <span>·</span>
-                          <span className="text-[#ECC3AB]/90">{sub.timeAgo}</span>
+                          <span className="text-[#F5EEF0]/90">{sub.timeAgo}</span>
                         </div>
                       </div>
                     );

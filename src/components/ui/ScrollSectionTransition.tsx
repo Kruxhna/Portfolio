@@ -44,12 +44,12 @@ export function ScrollSectionTransition({
         {showDivider && indexTag && (
           <div className="w-full mb-10 pt-6">
             <div className="w-full h-px bg-[rgba(221,112,116,0.16)]" />
-            <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-widest text-[#DD7074] pt-3">
+            <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-widest text-[#A68E94] pt-3">
               <span className="flex items-center gap-2">
-                <span className="text-[#E02E32] font-semibold">{indexTag}</span>
-                {label && <span className="text-[#ECC3AB]/80">{label}</span>}
+                <span className="text-[#9E0B2E] font-semibold">{indexTag}</span>
+                {label && <span className="text-[#F5EEF0]/80">{label}</span>}
               </span>
-              <span className="text-[#DD7074]/50 tracking-wider">SYSTEM://SECTION</span>
+              <span className="text-[#A68E94]/50 tracking-wider">SYSTEM://SECTION</span>
             </div>
           </div>
         )}
@@ -94,19 +94,19 @@ export function ScrollSectionTransition({
           />
 
           {/* Monospace Metadata Row */}
-          <div className="flex items-center justify-between font-mono text-[10.5px] sm:text-[11px] uppercase tracking-widest text-[#DD7074] pt-3 px-1">
+          <div className="flex items-center justify-between font-mono text-[10.5px] sm:text-[11px] uppercase tracking-widest text-[#A68E94] pt-3 px-1">
             <div className="flex items-center gap-2">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#E02E32]" />
-              <span className="font-bold text-[#E02E32]">{indexTag}</span>
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#9E0B2E]" />
+              <span className="font-bold text-[#9E0B2E]">{indexTag}</span>
               {label && (
                 <>
-                  <span className="text-[#DD7074]/40">//</span>
-                  <span className="text-[#ECC3AB] font-medium tracking-wider">{label}</span>
+                  <span className="text-[#A68E94]/40">//</span>
+                  <span className="text-[#F5EEF0] font-medium tracking-wider">{label}</span>
                 </>
               )}
             </div>
 
-            <span className="hidden sm:inline font-mono text-[10px] tracking-widest text-[#DD7074]/60">
+            <span className="hidden sm:inline font-mono text-[10px] tracking-widest text-[#A68E94]/60">
               COORDINATES · ACTIVE
             </span>
           </div>

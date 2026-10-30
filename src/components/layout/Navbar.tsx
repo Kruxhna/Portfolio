@@ -127,7 +127,7 @@ export function Navbar({
         className={cn(
           "w-full px-[2.5vw] py-4 sm:py-5 flex items-center justify-between transition-all duration-300 select-none",
           isScrolled
-            ? "border-b border-[rgba(221,112,116,0.18)] bg-[#0A0807]/90 shadow-lg backdrop-blur-md"
+            ? "border-b border-[rgba(221,112,116,0.18)] bg-[#000000]/90 shadow-lg backdrop-blur-md"
             : "bg-transparent"
         )}
       >
@@ -146,12 +146,12 @@ export function Navbar({
                 borderWidth: "1px",
                 borderStyle: "solid",
                 backgroundColor: "#5C0105",
-                color: "#ECC3AB",
+                color: "#F5EEF0",
               }}
             >
               k
             </span>
-            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#E8A791]">
+            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#F5EEF0]">
               KRUSHNA
             </span>
           </button>
@@ -182,17 +182,17 @@ export function Navbar({
                 className={cn(
                   "relative py-1 flex items-center gap-1.5 transition-colors group cursor-pointer",
                   isActive
-                    ? "text-[#E02E32] font-medium"
-                    : "text-[#E69683] hover:text-[#ECC3AB]"
+                    ? "text-[#9E0B2E] font-medium"
+                    : "text-[#A68E94] hover:text-[#F5EEF0]"
                 )}
               >
                 {isActive && (
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E]" />
                 )}
                 <span>{item.label}</span>
                 <span
                   className={cn(
-                    "absolute bottom-0 left-0 right-0 h-px bg-[#E02E32] transition-transform duration-200 origin-left",
+                    "absolute bottom-0 left-0 right-0 h-px bg-[#9E0B2E] transition-transform duration-200 origin-left",
                     isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   )}
                 />
@@ -202,7 +202,7 @@ export function Navbar({
         </div>
 
         {/* Right: Live Time, Motion, Theme & Command Palette */}
-        <div className="flex items-center gap-3 lg:gap-4 font-mono text-[11px] text-[#DD7074]">
+        <div className="flex items-center gap-3 lg:gap-4 font-mono text-[11px] text-[#A68E94]">
           {/* Live Indian Standard Time */}
           <span className="hidden sm:inline" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "0.04em" }}>
             IN {timeString || "22:15:00"}
@@ -211,7 +211,7 @@ export function Navbar({
           {/* Interactive Motion Toggle (Secondary HUD Pill) */}
           <button
             onClick={toggleMotion}
-            className="hidden lg:inline-flex items-center rounded-md px-2.5 py-1 text-[10px] text-[#E8A791] bg-[#4E0104]/85 border border-[#9A142C] hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67] transition-colors cursor-pointer select-none"
+            className="hidden lg:inline-flex items-center rounded-md px-2.5 py-1 text-[10px] text-[#F5EEF0] bg-[#240009]/85 border border-[#6D001A] hover:bg-[#3B000E] hover:text-[#F5EEF0] hover:border-[#9E0B2E] transition-colors cursor-pointer select-none"
             title="Toggle Motion Reduction"
           >
             MOTION: {motionMode}
@@ -220,7 +220,7 @@ export function Navbar({
           {/* Interactive Theme Toggle (Secondary HUD Pill) */}
           <button
             onClick={toggleTheme}
-            className="hidden lg:inline-flex items-center rounded-md px-2.5 py-1 text-[10px] text-[#E8A791] bg-[#4E0104]/85 border border-[#9A142C] hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67] transition-colors cursor-pointer select-none"
+            className="hidden lg:inline-flex items-center rounded-md px-2.5 py-1 text-[10px] text-[#F5EEF0] bg-[#240009]/85 border border-[#6D001A] hover:bg-[#3B000E] hover:text-[#F5EEF0] hover:border-[#9E0B2E] transition-colors cursor-pointer select-none"
             title="Toggle Light/Dark Theme"
           >
             THEME: {themeMode}
@@ -230,10 +230,10 @@ export function Navbar({
           {onOpenCommandMenu && (
             <button
               onClick={onOpenCommandMenu}
-              className="flex items-center gap-1.5 rounded-md px-2 py-1 text-[10px] text-[#E8A791] bg-[#4E0104]/85 border border-[#9A142C] hover:bg-[#7B0408] hover:text-[#ECC3AB] hover:border-[#D94F67] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 rounded-md px-2 py-1 text-[10px] text-[#F5EEF0] bg-[#240009]/85 border border-[#6D001A] hover:bg-[#3B000E] hover:text-[#F5EEF0] hover:border-[#9E0B2E] transition-colors cursor-pointer"
               title="Open Command Palette (⌘K)"
             >
-              <Command className="h-3 w-3 text-[#E46B5E]" />
+              <Command className="h-3 w-3 text-[#C93B5B]" />
               <span>⌘K</span>
             </button>
           )}
@@ -241,7 +241,7 @@ export function Navbar({
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg border border-[#9A142C] bg-[#4E0104]/85 text-[#ECC3AB] hover:border-[#D94F67]"
+            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg border border-[#6D001A] bg-[#240009]/85 text-[#F5EEF0] hover:border-[#9E0B2E]"
           >
             {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -250,7 +250,7 @@ export function Navbar({
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-[#9A142C]/40 bg-[#0A0807]/95 px-6 py-4 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 font-mono text-xs uppercase tracking-wider space-y-3">
+        <div className="md:hidden border-b border-[#6D001A]/40 bg-[#000000]/95 px-6 py-4 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 font-mono text-xs uppercase tracking-wider space-y-3">
           {[
             { id: "work", label: "WORK" },
             { id: "about", label: "ABOUT" },
@@ -270,11 +270,11 @@ export function Navbar({
                 className={cn(
                   "block py-1 transition-colors",
                   isActive
-                    ? "text-[#E02E32] font-medium"
-                    : "text-[#E69683] hover:text-[#ECC3AB]"
+                    ? "text-[#9E0B2E] font-medium"
+                    : "text-[#A68E94] hover:text-[#F5EEF0]"
                 )}
               >
-                {isActive && <span className="inline-block mr-2 text-[#E02E32]">•</span>}
+                {isActive && <span className="inline-block mr-2 text-[#9E0B2E]">•</span>}
                 {item.label}
               </a>
             );

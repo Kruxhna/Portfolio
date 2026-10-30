@@ -24,11 +24,11 @@ const DEFAULT_USERNAME = "Kruxhna";
 
 // Color shades matching the portfolio's Obsidian, Oxblood, Crimson, Coral, and Peach palette
 const COLOR_LEVELS: Record<0 | 1 | 2 | 3 | 4, { bg: string; border: string }> = {
-  0: { bg: "bg-[#14100D]/80", border: "border-[rgba(221,112,116,0.14)]" },
-  1: { bg: "bg-[#4E0104]", border: "border-[#7B0408]/70" },
-  2: { bg: "bg-[#9F0B10]", border: "border-[#C3181E]/70" },
-  3: { bg: "bg-[#C3181E]", border: "border-[#E44847]/80" },
-  4: { bg: "bg-[#E46B5E]", border: "border-[#ECC3AB]" },
+  0: { bg: "bg-[#140408]/80", border: "border-[rgba(221,112,116,0.14)]" },
+  1: { bg: "bg-[#240009]", border: "border-[#3B000E]/70" },
+  2: { bg: "bg-[#6D001A]", border: "border-[#6D001A]/70" },
+  3: { bg: "bg-[#6D001A]", border: "border-[#9E0B2E]/80" },
+  4: { bg: "bg-[#C93B5B]", border: "border-[#F5EEF0]" },
 };
 
 // ============================================================================
@@ -110,8 +110,8 @@ export function GitHubStorySection() {
 function GitHubStorySectionSkeleton() {
   return (
     <section className="relative z-10 w-full bg-transparent py-16 md:py-24 max-w-[1720px] mx-auto">
-      <div className="h-14 w-80 bg-[#14100D] rounded-xl animate-pulse mb-8 border border-[rgba(221,112,116,0.15)]" />
-      <div className="w-full h-[340px] bg-[#0A0807]/85 rounded-[28px] border border-[rgba(221,112,116,0.15)] animate-pulse" />
+      <div className="h-14 w-80 bg-[#140408] rounded-xl animate-pulse mb-8 border border-[rgba(221,112,116,0.15)]" />
+      <div className="w-full h-[340px] bg-[#000000]/85 rounded-[28px] border border-[rgba(221,112,116,0.15)] animate-pulse" />
     </section>
   );
 }
@@ -348,7 +348,7 @@ function GitHubStorySectionContent() {
   return (
     <section
       id="story"
-      className="relative z-10 w-full bg-transparent py-20 md:py-28 text-[#ECC3AB]"
+      className="relative z-10 w-full bg-transparent py-20 md:py-28 text-[#F5EEF0]"
     >
       {/* Anchor links for backward compatibility with #github, #lab, #telemetry */}
       <span id="github" className="absolute -top-28 pointer-events-none" />
@@ -361,9 +361,9 @@ function GitHubStorySectionContent() {
         {/* A. SECTION HEADER (TOP ROW)                                       */}
         {/* ================================================================= */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 w-full mb-8">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-sans font-medium tracking-[-0.035em] text-[#ECC3AB] flex flex-wrap items-center gap-x-3 gap-y-0 leading-[1.12]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-sans font-medium tracking-[-0.035em] text-[#F5EEF0] flex flex-wrap items-center gap-x-3 gap-y-0 leading-[1.12]">
             <span>Want to know about my</span>
-            <span className="font-serif italic font-normal bg-gradient-to-r from-[#C3181E] via-[#E46B5E] to-[#ECC3AB] bg-clip-text text-transparent text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] pr-2 lowercase tracking-normal">
+            <span className="font-serif italic font-normal bg-gradient-to-r from-[#6D001A] via-[#C93B5B] to-[#F5EEF0] bg-clip-text text-transparent text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] pr-2 lowercase tracking-normal">
               story?
             </span>
           </h2>
@@ -373,17 +373,17 @@ function GitHubStorySectionContent() {
             target="_blank"
             rel="noopener noreferrer"
             data-cursor="pointer"
-            className="bg-[#C3181E] hover:bg-[#E14945] border border-[#E44847]/60 text-[#ECC3AB] px-6 py-2.5 rounded-full font-mono text-xs font-semibold tracking-[0.12em] uppercase hover:shadow-[0_4px_20px_-4px_rgba(195,24,30,0.55)] transition-all duration-300 inline-flex items-center gap-2 group cursor-pointer shrink-0"
+            className="bg-[#6D001A] hover:bg-[#9E0B2E] border border-[#9E0B2E]/60 text-[#F5EEF0] px-6 py-2.5 rounded-full font-mono text-xs font-semibold tracking-[0.12em] uppercase hover:shadow-[0_4px_20px_-4px_rgba(195,24,30,0.55)] transition-all duration-300 inline-flex items-center gap-2 group cursor-pointer shrink-0"
           >
             <span>READ MY JOURNEY</span>
-            <ArrowUpRight className="w-4 h-4 text-[#ECC3AB] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+            <ArrowUpRight className="w-4 h-4 text-[#F5EEF0] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
           </a>
         </div>
 
         {/* ================================================================= */}
         {/* B. MAIN DARK BENTO CARD (GITHUB CONTRIBUTION GRAPH)               */}
         {/* ================================================================= */}
-        <div className="relative w-full rounded-[28px] bg-[#0A0807]/85 backdrop-blur-xl p-6 sm:p-8 md:p-10 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)] border border-[rgba(221,112,116,0.18)] hover:border-[rgba(228,107,94,0.45)] transition-colors duration-500 overflow-visible">
+        <div className="relative w-full rounded-[28px] bg-[#000000]/85 backdrop-blur-xl p-6 sm:p-8 md:p-10 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)] border border-[rgba(221,112,116,0.18)] hover:border-[rgba(228,107,94,0.45)] transition-colors duration-500 overflow-visible">
           {/* =============================================================== */}
           {/* C. INTERACTIVE CURSOR-TRACKING GOOGLY EYES (BOTTOM-RIGHT OVERLAP)*/}
           {/* =============================================================== */}
@@ -396,9 +396,9 @@ function GitHubStorySectionContent() {
                 viewBox="0 0 100 100"
                 fill="none"
               >
-                <circle cx="50" cy="50" r="48" fill="#F7EFEA" stroke="#0A0807" strokeWidth="2.5" />
+                <circle cx="50" cy="50" r="48" fill="#F7EFEA" stroke="#000000" strokeWidth="2.5" />
                 <g style={{ transform: `translate(${eye1Offset.x}px, ${eye1Offset.y}px)` }}>
-                  <circle cx="50" cy="50" r="21" fill="#0A0807" />
+                  <circle cx="50" cy="50" r="21" fill="#000000" />
                   <circle cx="57" cy="43" r="5" fill="#ffffff" />
                 </g>
               </svg>
@@ -410,9 +410,9 @@ function GitHubStorySectionContent() {
                 viewBox="0 0 100 100"
                 fill="none"
               >
-                <circle cx="50" cy="50" r="48" fill="#F7EFEA" stroke="#0A0807" strokeWidth="2.5" />
+                <circle cx="50" cy="50" r="48" fill="#F7EFEA" stroke="#000000" strokeWidth="2.5" />
                 <g style={{ transform: `translate(${eye2Offset.x}px, ${eye2Offset.y}px)` }}>
-                  <circle cx="50" cy="50" r="21" fill="#0A0807" />
+                  <circle cx="50" cy="50" r="21" fill="#000000" />
                   <circle cx="57" cy="43" r="5" fill="#ffffff" />
                 </g>
               </svg>
@@ -426,33 +426,33 @@ function GitHubStorySectionContent() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
                 {/* Left: Section Label & Dynamic Commits Counter */}
                 <div className="flex flex-col">
-                  <span className="text-[10px] md:text-xs font-semibold tracking-widest text-[#DD7074] uppercase font-mono mb-1 flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
+                  <span className="text-[10px] md:text-xs font-semibold tracking-widest text-[#A68E94] uppercase font-mono mb-1 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
                     <span>GITHUB ACTIVITY</span>
                   </span>
-                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-[#ECC3AB] tracking-tight flex items-center gap-2">
+                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-[#F5EEF0] tracking-tight flex items-center gap-2">
                     <span>
                       {data.total.toLocaleString()} Commits in {selectedYear}
                     </span>
                     {isLoading && (
-                      <span className="inline-block w-2 h-2 rounded-full bg-[#E46B5E] animate-ping" />
+                      <span className="inline-block w-2 h-2 rounded-full bg-[#C93B5B] animate-ping" />
                     )}
                   </span>
                 </div>
 
                 {/* Right: Contribution Intensity Legend + Year Selector Dropdown */}
-                <div className="flex items-center flex-wrap gap-4 text-xs font-mono text-[#DD7074] sm:ml-auto">
+                <div className="flex items-center flex-wrap gap-4 text-xs font-mono text-[#A68E94] sm:ml-auto">
                   {/* Legend */}
                   <div className="flex items-center gap-2 select-none">
-                    <span className="text-[11px] text-[#DD7074]/80">Less</span>
+                    <span className="text-[11px] text-[#A68E94]/80">Less</span>
                     <div className="flex gap-1.5 items-center">
-                      <div className="h-3 w-3 rounded-[3px] border border-[rgba(221,112,116,0.14)] bg-[#14100D]/80" />
-                      <div className="h-3 w-3 rounded-[3px] border border-[#7B0408]/70 bg-[#4E0104]" />
-                      <div className="h-3 w-3 rounded-[3px] border border-[#C3181E]/70 bg-[#9F0B10]" />
-                      <div className="h-3 w-3 rounded-[3px] border border-[#E44847]/80 bg-[#C3181E]" />
-                      <div className="h-3 w-3 rounded-[3px] border border-[#ECC3AB] bg-[#E46B5E]" />
+                      <div className="h-3 w-3 rounded-[3px] border border-[rgba(221,112,116,0.14)] bg-[#140408]/80" />
+                      <div className="h-3 w-3 rounded-[3px] border border-[#3B000E]/70 bg-[#240009]" />
+                      <div className="h-3 w-3 rounded-[3px] border border-[#6D001A]/70 bg-[#6D001A]" />
+                      <div className="h-3 w-3 rounded-[3px] border border-[#9E0B2E]/80 bg-[#6D001A]" />
+                      <div className="h-3 w-3 rounded-[3px] border border-[#F5EEF0] bg-[#C93B5B]" />
                     </div>
-                    <span className="text-[11px] text-[#DD7074]/80">More</span>
+                    <span className="text-[11px] text-[#A68E94]/80">More</span>
                   </div>
 
                   {/* Year Dropdown Pill Button */}
@@ -461,11 +461,11 @@ function GitHubStorySectionContent() {
                       type="button"
                       data-cursor="pointer"
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A0807]/80 hover:bg-[#14100D] text-[#ECC3AB] text-xs font-mono border border-[rgba(221,112,116,0.22)] hover:border-[#E46B5E]/60 transition-all cursor-pointer shadow-sm select-none"
+                      className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#000000]/80 hover:bg-[#140408] text-[#F5EEF0] text-xs font-mono border border-[rgba(221,112,116,0.22)] hover:border-[#C93B5B]/60 transition-all cursor-pointer shadow-sm select-none"
                     >
                       <span className="font-semibold">{selectedYear}</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-[#DD7074] transition-transform duration-200 ${
+                        className={`w-3.5 h-3.5 text-[#A68E94] transition-transform duration-200 ${
                           isDropdownOpen ? "rotate-180" : ""
                         }`}
                       />
@@ -473,7 +473,7 @@ function GitHubStorySectionContent() {
 
                     {/* Dropdown Menu Options */}
                     {isDropdownOpen && (
-                      <div className="absolute right-0 top-full mt-2 w-28 rounded-xl bg-[#0A0807] border border-[rgba(221,112,116,0.25)] shadow-2xl p-1 z-50 animate-in fade-in zoom-in-95 duration-150">
+                      <div className="absolute right-0 top-full mt-2 w-28 rounded-xl bg-[#000000] border border-[rgba(221,112,116,0.25)] shadow-2xl p-1 z-50 animate-in fade-in zoom-in-95 duration-150">
                         {AVAILABLE_YEARS.map((y) => (
                           <button
                             key={y}
@@ -482,13 +482,13 @@ function GitHubStorySectionContent() {
                             onClick={() => handleYearChange(y)}
                             className={`w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg transition-colors flex items-center justify-between ${
                               y === selectedYear
-                                ? "bg-[#C3181E]/20 text-[#ECC3AB] font-semibold border-l-2 border-[#E46B5E]"
-                                : "text-[#DD7074] hover:bg-[#14100D] hover:text-[#ECC3AB]"
+                                ? "bg-[#6D001A]/20 text-[#F5EEF0] font-semibold border-l-2 border-[#C93B5B]"
+                                : "text-[#A68E94] hover:bg-[#140408] hover:text-[#F5EEF0]"
                             }`}
                           >
                             <span>{y}</span>
                             {y === selectedYear && (
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#E46B5E]" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#C93B5B]" />
                             )}
                           </button>
                         ))}
@@ -503,7 +503,7 @@ function GitHubStorySectionContent() {
             <div className="relative z-[50] overflow-x-auto pb-2 scrollbar-none w-full max-w-full md:max-w-[75%] lg:max-w-[80%]">
               <div className="min-w-[680px] flex flex-col select-none">
                 {/* Months Header Labels */}
-                <div className="flex w-full mb-2 pl-7 font-mono text-[10px] text-[#DD7074]/80 tracking-wider">
+                <div className="flex w-full mb-2 pl-7 font-mono text-[10px] text-[#A68E94]/80 tracking-wider">
                   <div className="flex-1 flex justify-between pr-4">
                     {monthHeaders.map((m) => (
                       <span key={m.label} className="w-6 text-left">
@@ -516,7 +516,7 @@ function GitHubStorySectionContent() {
                 {/* Day Labels + 52-Column Heatmap Grid */}
                 <div className="flex gap-2 items-start">
                   {/* Days Column Labels */}
-                  <div className="flex flex-col justify-between h-[106px] text-[10px] font-mono text-[#DD7074]/80 pt-1 select-none pr-1">
+                  <div className="flex flex-col justify-between h-[106px] text-[10px] font-mono text-[#A68E94]/80 pt-1 select-none pr-1">
                     <span>Mon</span>
                     <span>Wed</span>
                     <span>Fri</span>
@@ -582,9 +582,9 @@ function GitHubStorySectionContent() {
             top: `${activeTooltip.y}px`,
             transform: "translate(-50%, -100%)",
           }}
-          className="pointer-events-none z-[100] px-3 py-1.5 rounded-lg bg-[#0A0807]/95 backdrop-blur-md border border-[rgba(221,112,116,0.35)] text-[11px] font-mono text-[#ECC3AB] shadow-[0_8px_24px_rgba(0,0,0,0.85)] whitespace-nowrap animate-in fade-in duration-100 flex items-center gap-2"
+          className="pointer-events-none z-[100] px-3 py-1.5 rounded-lg bg-[#000000]/95 backdrop-blur-md border border-[rgba(221,112,116,0.35)] text-[11px] font-mono text-[#F5EEF0] shadow-[0_8px_24px_rgba(0,0,0,0.85)] whitespace-nowrap animate-in fade-in duration-100 flex items-center gap-2"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#E46B5E]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#C93B5B]" />
           <span>{activeTooltip.text}</span>
         </div>
       )}

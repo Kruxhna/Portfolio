@@ -53,10 +53,10 @@ const PILLARS: ArsenalPillar[] = [
     title: "Artificial Intelligence & Machine Learning",
     subtitle: "Deep learning models, vision architectures, and tensor computation",
     icon: Brain,
-    accentColor: "text-[#E46B5E]",
-    spotlightRgba: "rgba(228, 107, 94, 0.12)",
+    accentColor: "text-[#C93B5B]",
+    spotlightRgba: "rgba(158, 11, 46, 0.12)",
     borderColor: "hover:border-[rgba(228,107,94,0.45)]",
-    badgeVariant: "border-[rgba(228,107,94,0.35)] bg-[rgba(228,107,94,0.15)] text-[#ECC3AB]",
+    badgeVariant: "border-[rgba(228,107,94,0.35)] bg-[rgba(228,107,94,0.15)] text-[#F5EEF0]",
     items: [
       { name: "PyTorch", badge: "Core Engine", icon: PyTorchLogo },
       { name: "TensorFlow", badge: "Production", icon: TensorFlowLogo },
@@ -73,10 +73,10 @@ const PILLARS: ArsenalPillar[] = [
     title: "Programming Languages",
     subtitle: "Algorithmic problem solving, low-latency compute, and web systems",
     icon: Terminal,
-    accentColor: "text-[#E46B5E]",
-    spotlightRgba: "rgba(228, 107, 94, 0.12)",
+    accentColor: "text-[#C93B5B]",
+    spotlightRgba: "rgba(158, 11, 46, 0.12)",
     borderColor: "hover:border-[rgba(228,107,94,0.45)]",
-    badgeVariant: "border-[rgba(228,107,94,0.35)] bg-[rgba(228,107,94,0.15)] text-[#ECC3AB]",
+    badgeVariant: "border-[rgba(228,107,94,0.35)] bg-[rgba(228,107,94,0.15)] text-[#F5EEF0]",
     items: [
       { name: "Python", badge: "Expert", icon: PythonLogo },
       { name: "C++", badge: "DSA & CP", icon: CppLogo },
@@ -89,10 +89,10 @@ const PILLARS: ArsenalPillar[] = [
     title: "MLOps, Cloud & Backend",
     subtitle: "Containerization, asynchronous neural APIs, and experiment tracking",
     icon: Server,
-    accentColor: "text-[#E46B5E]",
-    spotlightRgba: "rgba(228, 107, 94, 0.12)",
+    accentColor: "text-[#C93B5B]",
+    spotlightRgba: "rgba(158, 11, 46, 0.12)",
     borderColor: "hover:border-[rgba(228,107,94,0.45)]",
-    badgeVariant: "border-[rgba(228,107,94,0.35)] bg-[rgba(228,107,94,0.15)] text-[#ECC3AB]",
+    badgeVariant: "border-[rgba(228,107,94,0.35)] bg-[rgba(228,107,94,0.15)] text-[#F5EEF0]",
     items: [
       { name: "Docker", badge: "Containers", icon: DockerLogo },
       { name: "FastAPI", badge: "Async APIs", icon: FastAPILogo },
@@ -108,10 +108,10 @@ const PILLARS: ArsenalPillar[] = [
     title: "Computer Science Foundations",
     subtitle: "Core theoretical pillars, memory architectures, and algorithmic rigor",
     icon: GraduationCap,
-    accentColor: "text-[#E46B5E]",
-    spotlightRgba: "rgba(228, 107, 94, 0.12)",
+    accentColor: "text-[#C93B5B]",
+    spotlightRgba: "rgba(158, 11, 46, 0.12)",
     borderColor: "hover:border-[rgba(228,107,94,0.45)]",
-    badgeVariant: "border-[rgba(228,107,94,0.35)] bg-[rgba(228,107,94,0.15)] text-[#ECC3AB]",
+    badgeVariant: "border-[rgba(228,107,94,0.35)] bg-[rgba(228,107,94,0.15)] text-[#F5EEF0]",
     items: [
       { name: "Data Structures & Algorithms", badge: "O(N) Bounds", icon: DSALogo },
       { name: "Object-Oriented Programming (OOP)", badge: "Design Patterns", icon: OOPLogo },
@@ -133,30 +133,30 @@ export function ArsenalSection() {
     <section id="arsenal" className="relative py-20 sm:py-28">
       {/* 1. SECTION HEADER */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#DD7074]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
+        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#A68E94]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
           <span>04 // TECH STACK</span>
         </div>
 
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-[#ECC3AB] sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-[#F5EEF0] sm:text-4xl">
               Skills &amp; Tooling
             </h2>
-            <p className="mt-1 max-w-xl text-sm sm:text-base text-[#E69683]/80">
+            <p className="mt-1 max-w-xl text-sm sm:text-base text-[#A68E94]/80">
               Organized, high-density matrix of frameworks, systems, and foundational engineering competencies.
             </p>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex flex-wrap gap-1.5 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-1 backdrop-blur-sm">
+          <div className="flex flex-wrap gap-1.5 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#000000] p-1 backdrop-blur-sm">
             <button
               onClick={() => setSelectedPillar("all")}
               data-cursor="link"
               className={`rounded-lg px-3 py-1 font-mono text-xs transition-colors cursor-pointer ${
                 selectedPillar === "all"
-                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60"
-                  : "text-[#DD7074] hover:text-[#ECC3AB]"
+                  ? "bg-[#6D001A] text-[#F5EEF0] border border-[#9E0B2E]/60"
+                  : "text-[#A68E94] hover:text-[#F5EEF0]"
               }`}
             >
               All Matrix
@@ -168,8 +168,8 @@ export function ArsenalSection() {
                 data-cursor="link"
                 className={`rounded-lg px-3 py-1 font-mono text-xs transition-colors cursor-pointer ${
                   selectedPillar === p.id
-                    ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60"
-                    : "text-[#DD7074] hover:text-[#ECC3AB]"
+                    ? "bg-[#6D001A] text-[#F5EEF0] border border-[#9E0B2E]/60"
+                    : "text-[#A68E94] hover:text-[#F5EEF0]"
                 }`}
               >
                 {p.title.split(" ")[0]}
@@ -187,20 +187,20 @@ export function ArsenalSection() {
             <SpotlightCard
               key={pillar.id}
               spotlightColor={pillar.spotlightRgba}
-              className={`group flex flex-col justify-between border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-6 sm:p-7 transition-all duration-300 ${pillar.borderColor}`}
+              className={`group flex flex-col justify-between border-[rgba(221,112,116,0.18)] bg-[#000000] p-6 sm:p-7 transition-all duration-300 ${pillar.borderColor}`}
             >
               <div>
                 {/* Header Row */}
                 <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.18)] pb-4">
                   <div className="flex items-center gap-2.5">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(221,112,116,0.22)] bg-[#14100D]">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(221,112,116,0.22)] bg-[#140408]">
                       <HeaderIcon className={`h-4 w-4 ${pillar.accentColor}`} />
                     </div>
                     <div>
-                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#ECC3AB]">
+                      <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#F5EEF0]">
                         {pillar.title}
                       </h3>
-                      <p className="text-[11px] font-mono text-[#DD7074]">
+                      <p className="text-[11px] font-mono text-[#A68E94]">
                         {pillar.subtitle}
                       </p>
                     </div>
@@ -219,19 +219,19 @@ export function ArsenalSection() {
                       <div
                         key={item.name}
                         data-cursor="link"
-                        className="group/chip flex items-center justify-between gap-2 rounded-xl border border-[rgba(221,112,116,0.14)] bg-[#0A0807] px-3 py-2.5 transition-all duration-200 hover:border-[#E46B5E] hover:bg-[#14100D] hover:shadow-md hover:shadow-black/60"
+                        className="group/chip flex items-center justify-between gap-2 rounded-xl border border-[rgba(221,112,116,0.14)] bg-[#000000] px-3 py-2.5 transition-all duration-200 hover:border-[#C93B5B] hover:bg-[#140408] hover:shadow-md hover:shadow-black/60"
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="flex h-5 w-5 shrink-0 items-center justify-center text-[#ECC3AB] transition-transform duration-200 group-hover/chip:scale-110">
+                          <span className="flex h-5 w-5 shrink-0 items-center justify-center text-[#F5EEF0] transition-transform duration-200 group-hover/chip:scale-110">
                             <Logo className="h-4 w-4" />
                           </span>
-                          <span className="truncate font-mono text-xs font-medium text-[#ECC3AB] group-hover/chip:text-[#ECC3AB]">
+                          <span className="truncate font-mono text-xs font-medium text-[#F5EEF0] group-hover/chip:text-[#F5EEF0]">
                             {item.name}
                           </span>
                         </div>
 
                         {item.badge && (
-                          <span className="shrink-0 rounded bg-[#14100D] border border-[rgba(221,112,116,0.18)] px-1.5 py-0.5 font-mono text-[9px] text-[#DD7074] group-hover/chip:text-[#ECC3AB]">
+                          <span className="shrink-0 rounded bg-[#140408] border border-[rgba(221,112,116,0.18)] px-1.5 py-0.5 font-mono text-[9px] text-[#A68E94] group-hover/chip:text-[#F5EEF0]">
                             {item.badge}
                           </span>
                         )}
@@ -242,9 +242,9 @@ export function ArsenalSection() {
               </div>
 
               {/* Pillar Footer Bar */}
-              <div className="mt-6 border-t border-[rgba(221,112,116,0.18)] pt-3 flex items-center justify-between font-mono text-[11px] text-[#DD7074]">
+              <div className="mt-6 border-t border-[rgba(221,112,116,0.18)] pt-3 flex items-center justify-between font-mono text-[11px] text-[#A68E94]">
                 <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E]" />
                   Production Ready
                 </span>
                 <span className={pillar.accentColor}>Verified Competency</span>

@@ -193,14 +193,14 @@ const FALLBACK_GITHUB_DATA: GithubProfileData = {
 };
 
 const LANGUAGE_COLORS: Record<string, string> = {
-  Python: "#E46B5E",
-  TypeScript: "#ECC3AB",
-  JavaScript: "#E69683",
-  "C++": "#E02E32",
-  "C++/CUDA": "#E02E32",
-  "Jupyter Notebook": "#ECC3AB",
-  HTML: "#E69683",
-  CSS: "#E46B5E",
+  Python: "#C93B5B",
+  TypeScript: "#F5EEF0",
+  JavaScript: "#A68E94",
+  "C++": "#9E0B2E",
+  "C++/CUDA": "#9E0B2E",
+  "Jupyter Notebook": "#F5EEF0",
+  HTML: "#A68E94",
+  CSS: "#C93B5B",
 };
 
 // Generate simulated activity heatmap grid data (18 columns x 5 rows = 90 cells)
@@ -219,7 +219,7 @@ const HEATMAP_INTENSITY_COLORS = [
   "rgba(154, 20, 44, 0.55)",
   "rgba(195, 24, 30, 0.75)",
   "rgba(224, 46, 50, 0.90)",
-  "#E46B5E",
+  "#C93B5B",
 ];
 
 export function LabSection() {
@@ -480,14 +480,14 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
     <section id="lab" className="relative z-10 w-full bg-transparent py-20 sm:py-28">
       {/* Section Header */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2 font-mono text-[0.75rem] tracking-[0.14em] uppercase text-[#DD7074]">
-          <span className="text-[#E02E32] font-bold animate-pulse">•</span>
+        <div className="flex items-center gap-2 font-mono text-[0.75rem] tracking-[0.14em] uppercase text-[#A68E94]">
+          <span className="text-[#9E0B2E] font-bold animate-pulse">•</span>
           <span>03 | GITHUB ACTIVITY</span>
         </div>
         <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
             <h2
-              className="text-[#ECC3AB]"
+              className="text-[#F5EEF0]"
               style={{
                 fontSize: "clamp(2.25rem, 4vw, 3.25rem)",
                 fontWeight: 800,
@@ -498,7 +498,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               Terminal &amp; Live GitHub
             </h2>
             <p
-              className="mt-2 text-[#E69683]"
+              className="mt-2 text-[#A68E94]"
               style={{
                 maxWidth: "560px",
                 fontSize: "0.95rem",
@@ -514,8 +514,8 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
             style={{
               borderRadius: "9999px",
               padding: "4px",
-              background: "rgba(10, 8, 7, 0.8)",
-              border: "1px solid rgba(221, 112, 116, 0.2)",
+              background: "rgba(0, 0, 0, 0.8)",
+              border: "1px solid rgba(38, 16, 21, 0.2)",
             }}
             className="inline-flex items-center backdrop-blur-md self-start md:self-auto shrink-0"
           >
@@ -529,8 +529,8 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               }}
               className={`text-xs transition-all ${
                 activeMainTab === "terminal"
-                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm font-semibold"
-                  : "bg-transparent text-[#DD7074] hover:text-[#ECC3AB] font-medium"
+                  ? "bg-[#6D001A] text-[#F5EEF0] border border-[#9E0B2E]/60 shadow-sm font-semibold"
+                  : "bg-transparent text-[#A68E94] hover:text-[#F5EEF0] font-medium"
               }`}
             >
               <span>&gt; Interactive CLI</span>
@@ -545,8 +545,8 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               }}
               className={`inline-flex items-center gap-2 text-xs transition-all ${
                 activeMainTab === "neural"
-                  ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm font-semibold"
-                  : "bg-transparent text-[#DD7074] hover:text-[#ECC3AB] font-medium"
+                  ? "bg-[#6D001A] text-[#F5EEF0] border border-[#9E0B2E]/60 shadow-sm font-semibold"
+                  : "bg-transparent text-[#A68E94] hover:text-[#F5EEF0] font-medium"
               }`}
             >
               <Box className="h-3.5 w-3.5" />
@@ -568,10 +568,10 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
             >
               <div
                 style={{
-                  background: "rgba(10, 8, 7, 0.88)",
+                  background: "rgba(0, 0, 0, 0.88)",
                   backdropFilter: "blur(14px)",
                   WebkitBackdropFilter: "blur(14px)",
-                  border: "1px solid rgba(221, 112, 116, 0.18)",
+                  border: "1px solid rgba(38, 16, 21, 0.18)",
                   borderRadius: "16px",
                 }}
                 className="group relative flex flex-col shadow-2xl transition-all duration-200 overflow-hidden"
@@ -613,9 +613,9 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                       />
                     </div>
 
-                    <div className="font-mono text-xs text-[#E69683] flex items-center gap-1.5">
-                      <span className="text-[#ECC3AB] font-semibold">visitor@krushna-aiml:~</span>
-                      <span className="text-[#E46B5E] animate-pulse font-bold">_</span>
+                    <div className="font-mono text-xs text-[#A68E94] flex items-center gap-1.5">
+                      <span className="text-[#F5EEF0] font-semibold">visitor@krushna-aiml:~</span>
+                      <span className="text-[#C93B5B] animate-pulse font-bold">_</span>
                     </div>
                   </div>
 
@@ -623,16 +623,16 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                   <div className="flex items-center gap-2.5">
                     <span
                       style={{
-                        border: "1px solid rgba(228, 107, 94, 0.35)",
+                        border: "1px solid rgba(158, 11, 46, 0.35)",
                         background: "rgba(78, 1, 4, 0.7)",
-                        color: "#E8A791",
+                        color: "#F5EEF0",
                         fontSize: "0.7rem",
                         borderRadius: "9999px",
                         padding: "2px 10px",
                       }}
                       className="font-mono font-medium inline-flex items-center gap-1.5"
                     >
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
                       ONLINE
                     </span>
                     <button
@@ -642,7 +642,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                         setIsTerminalExpanded(!isTerminalExpanded);
                       }}
                       data-cursor="pointer"
-                      className="rounded p-1 text-[#DD7074] hover:text-[#ECC3AB] transition-colors"
+                      className="rounded p-1 text-[#A68E94] hover:text-[#F5EEF0] transition-colors"
                       title={isTerminalExpanded ? "Restore" : "Maximize"}
                     >
                       {isTerminalExpanded ? (
@@ -655,8 +655,8 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                 </div>
 
                 {/* Quick Command Suggestion Chips */}
-                <div className="flex flex-wrap items-center gap-1.5 border-b border-[rgba(221,112,116,0.12)] bg-[#0A0807]/50 px-4 py-2 font-mono">
-                  <span className="text-[11px] text-[#DD7074] mr-1">Quick run:</span>
+                <div className="flex flex-wrap items-center gap-1.5 border-b border-[rgba(221,112,116,0.12)] bg-[#000000]/50 px-4 py-2 font-mono">
+                  <span className="text-[11px] text-[#A68E94] mr-1">Quick run:</span>
                   {commandChips.map((chip) => {
                     const isActive = chip === "help";
                     return (
@@ -670,8 +670,8 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                         data-cursor="pointer"
                         className={`rounded-md px-2.5 py-0.5 text-[11px] font-mono transition-all cursor-pointer ${
                           isActive
-                            ? "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 shadow-sm font-semibold"
-                            : "bg-[#4E0104]/70 border border-[#9A142C]/60 text-[#E8A791] hover:bg-[#7B0408] hover:text-[#ECC3AB]"
+                            ? "bg-[#6D001A] text-[#F5EEF0] border border-[#9E0B2E]/60 shadow-sm font-semibold"
+                            : "bg-[#240009]/70 border border-[#6D001A]/60 text-[#F5EEF0] hover:bg-[#3B000E] hover:text-[#F5EEF0]"
                         }`}
                       >
                         {chip}
@@ -686,22 +686,22 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                   <div
                     style={{
                       borderRadius: "10px",
-                      border: "1px solid rgba(221, 112, 116, 0.18)",
+                      border: "1px solid rgba(38, 16, 21, 0.18)",
                       background: "rgba(78, 1, 4, 0.25)",
                       padding: "14px",
                     }}
-                    className="text-[11.5px] leading-relaxed text-[#E69683]"
+                    className="text-[11.5px] leading-relaxed text-[#A68E94]"
                   >
-                    <div className="flex items-center gap-2 text-[#ECC3AB] font-semibold">
-                      <Sparkles className="h-3.5 w-3.5 text-[#E46B5E]" />
+                    <div className="flex items-center gap-2 text-[#F5EEF0] font-semibold">
+                      <Sparkles className="h-3.5 w-3.5 text-[#C93B5B]" />
                       <span>✨ Krushna&apos;s AIML Interactive Terminal [Build v2026.10]</span>
                     </div>
-                    <p className="mt-1 text-[#DD7074]">
-                      Connected to <span className="text-[#ECC3AB]">visitor@krushna-aiml</span>. Type commands below or click the quick action chips.
+                    <p className="mt-1 text-[#A68E94]">
+                      Connected to <span className="text-[#F5EEF0]">visitor@krushna-aiml</span>. Type commands below or click the quick action chips.
                     </p>
-                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10.5px] text-[#DD7074]">
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10.5px] text-[#A68E94]">
                       <span>
-                        Commands: <strong className="text-[#ECC3AB]">help</strong>, <strong className="text-[#ECC3AB]">skills</strong>, <strong className="text-[#ECC3AB]">contact</strong>, <strong className="text-[#ECC3AB]">clear</strong>
+                        Commands: <strong className="text-[#F5EEF0]">help</strong>, <strong className="text-[#F5EEF0]">skills</strong>, <strong className="text-[#F5EEF0]">contact</strong>, <strong className="text-[#F5EEF0]">clear</strong>
                       </span>
                       <span>• Tab completion supported</span>
                     </div>
@@ -712,10 +712,10 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                     <div key={idx} className="space-y-1.5 animate-in fade-in duration-200">
                       {/* Executed Command Line */}
                       <div className="flex items-center gap-2 text-xs">
-                        <span className="font-bold select-none text-[#E46B5E]">
+                        <span className="font-bold select-none text-[#C93B5B]">
                           visitor@krushna-aiml:~$
                         </span>
-                        <span className="font-semibold text-[#ECC3AB]">{item.cmd}</span>
+                        <span className="font-semibold text-[#F5EEF0]">{item.cmd}</span>
                       </div>
 
                       {/* Render Rich Special Output Cards or Monospace Output */}
@@ -723,23 +723,23 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                         <div
                           style={{
                             borderRadius: "10px",
-                            border: "1px solid rgba(221, 112, 116, 0.18)",
-                            background: "rgba(10, 8, 7, 0.7)",
+                            border: "1px solid rgba(38, 16, 21, 0.18)",
+                            background: "rgba(0, 0, 0, 0.7)",
                             padding: "14px",
                           }}
                           className="text-[12px] space-y-3"
                         >
                           <div className="flex items-center justify-between border-b border-[rgba(221,112,116,0.14)] pb-2">
-                            <span className="font-bold text-[#ECC3AB]">
+                            <span className="font-bold text-[#F5EEF0]">
                               ⚡ DIRECT COMMUNICATION &amp; SOCIALS
                             </span>
                             <button
                               type="button"
                               onClick={copyContactEmail}
                               data-cursor="pointer"
-                              className="flex items-center gap-1.5 rounded-md border border-[rgba(221,112,116,0.2)] bg-[rgba(221,112,116,0.06)] px-2.5 py-1 text-[10.5px] text-[#E69683] hover:text-[#ECC3AB] hover:border-[rgba(228,107,94,0.4)] cursor-pointer transition-all"
+                              className="flex items-center gap-1.5 rounded-md border border-[rgba(221,112,116,0.2)] bg-[rgba(221,112,116,0.06)] px-2.5 py-1 text-[10.5px] text-[#A68E94] hover:text-[#F5EEF0] hover:border-[rgba(228,107,94,0.4)] cursor-pointer transition-all"
                             >
-                              {copiedLink ? <Check className="h-3 w-3 text-[#E46B5E]" /> : <Copy className="h-3 w-3" />}
+                              {copiedLink ? <Check className="h-3 w-3 text-[#C93B5B]" /> : <Copy className="h-3 w-3" />}
                               <span>{copiedLink ? "Copied Email!" : "Copy Email"}</span>
                             </button>
                           </div>
@@ -749,64 +749,64 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                               target="_blank"
                               rel="noopener noreferrer"
                               data-cursor="pointer"
-                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(10,8,7,0.8)] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(0,0,0,0.8)] p-2.5 text-[#F5EEF0] hover:border-[#C93B5B]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
-                                <LinkedinIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
+                                <LinkedinIcon className="h-4 w-4 text-[#C93B5B] shrink-0" />
                                 <div className="min-w-0">
-                                  <div className="text-[10px] text-[#DD7074]">LinkedIn</div>
-                                  <div className="font-semibold text-[#ECC3AB] truncate">/in/krushna-nole</div>
+                                  <div className="text-[10px] text-[#A68E94]">LinkedIn</div>
+                                  <div className="font-semibold text-[#F5EEF0] truncate">/in/krushna-nole</div>
                                 </div>
                               </div>
-                              <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
+                              <ExternalArrow className="text-[#A68E94] group-hover:text-[#C93B5B] shrink-0 transition-colors" />
                             </a>
                             <a
                               href="mailto:krushna.aiml@gmail.com"
                               data-cursor="pointer"
-                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(10,8,7,0.8)] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(0,0,0,0.8)] p-2.5 text-[#F5EEF0] hover:border-[#C93B5B]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
-                                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-[#4E0104] text-[#E8A791] border border-[#9A142C]/60 text-xs font-bold">
+                                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-[#240009] text-[#F5EEF0] border border-[#6D001A]/60 text-xs font-bold">
                                   @
                                 </div>
                                 <div className="min-w-0">
-                                  <div className="text-[10px] text-[#DD7074]">Direct Email</div>
-                                  <div className="font-semibold text-[#ECC3AB] truncate">krushna.aiml@gmail.com</div>
+                                  <div className="text-[10px] text-[#A68E94]">Direct Email</div>
+                                  <div className="font-semibold text-[#F5EEF0] truncate">krushna.aiml@gmail.com</div>
                                 </div>
                               </div>
-                              <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
+                              <ExternalArrow className="text-[#A68E94] group-hover:text-[#C93B5B] shrink-0 transition-colors" />
                             </a>
                             <a
                               href="https://github.com/kruxhna"
                               target="_blank"
                               rel="noopener noreferrer"
                               data-cursor="pointer"
-                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(10,8,7,0.8)] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(0,0,0,0.8)] p-2.5 text-[#F5EEF0] hover:border-[#C93B5B]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
-                                <GithubIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
+                                <GithubIcon className="h-4 w-4 text-[#C93B5B] shrink-0" />
                                 <div className="min-w-0">
-                                  <div className="text-[10px] text-[#DD7074]">GitHub Profile</div>
-                                  <div className="font-semibold text-[#ECC3AB] truncate">github.com/kruxhna</div>
+                                  <div className="text-[10px] text-[#A68E94]">GitHub Profile</div>
+                                  <div className="font-semibold text-[#F5EEF0] truncate">github.com/kruxhna</div>
                                 </div>
                               </div>
-                              <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
+                              <ExternalArrow className="text-[#A68E94] group-hover:text-[#C93B5B] shrink-0 transition-colors" />
                             </a>
                             <a
                               href="https://codolio.com/profile/Kruxhna/problemSolving"
                               target="_blank"
                               rel="noopener noreferrer"
                               data-cursor="pointer"
-                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(10,8,7,0.8)] p-2.5 text-[#ECC3AB] hover:border-[#E46B5E]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
+                              className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(0,0,0,0.8)] p-2.5 text-[#F5EEF0] hover:border-[#C93B5B]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
-                                <CodolioIcon className="h-4 w-4 text-[#E46B5E] shrink-0" />
+                                <CodolioIcon className="h-4 w-4 text-[#C93B5B] shrink-0" />
                                 <div className="min-w-0">
-                                  <div className="text-[10px] text-[#DD7074]">Codolio DSA Hub</div>
-                                  <div className="font-semibold text-[#ECC3AB] truncate">300+ Problems Solved</div>
+                                  <div className="text-[10px] text-[#A68E94]">Codolio DSA Hub</div>
+                                  <div className="font-semibold text-[#F5EEF0] truncate">300+ Problems Solved</div>
                                 </div>
                               </div>
-                              <ExternalArrow className="text-[#DD7074] group-hover:text-[#E46B5E] shrink-0 transition-colors" />
+                              <ExternalArrow className="text-[#A68E94] group-hover:text-[#C93B5B] shrink-0 transition-colors" />
                             </a>
                           </div>
                         </div>
@@ -814,20 +814,20 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                         <div
                           style={{
                             borderRadius: "10px",
-                            border: "1px solid rgba(221, 112, 116, 0.18)",
-                            background: "rgba(10, 8, 7, 0.7)",
+                            border: "1px solid rgba(38, 16, 21, 0.18)",
+                            background: "rgba(0, 0, 0, 0.7)",
                             padding: "14px",
                           }}
                           className="text-[11.5px] space-y-3"
                         >
-                          <div className="font-bold text-[#ECC3AB] flex items-center justify-between border-b border-[rgba(221,112,116,0.14)] pb-2">
+                          <div className="font-bold text-[#F5EEF0] flex items-center justify-between border-b border-[rgba(221,112,116,0.14)] pb-2">
                             <span>🧠 TECHNICAL MATRIX: AI/ML &amp; DSA</span>
-                            <span className="text-[10px] text-[#DD7074]">B.E. AIML Mumbai</span>
+                            <span className="text-[10px] text-[#A68E94]">B.E. AIML Mumbai</span>
                           </div>
 
                           <div className="space-y-2">
                             <div>
-                              <span className="font-bold text-[#E46B5E]">[AI/ML &amp; Deep Learning]</span>
+                              <span className="font-bold text-[#C93B5B]">[AI/ML &amp; Deep Learning]</span>
                               <div className="mt-1 flex flex-wrap gap-1.5">
                                 {[
                                   "PyTorch",
@@ -843,7 +843,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                                 ].map((tag) => (
                                   <span
                                     key={tag}
-                                    className="rounded border border-[rgba(221,112,116,0.18)] bg-[#4E0104]/40 px-1.5 py-0.5 text-[10.5px] text-[#ECC3AB]"
+                                    className="rounded border border-[rgba(221,112,116,0.18)] bg-[#240009]/40 px-1.5 py-0.5 text-[10.5px] text-[#F5EEF0]"
                                   >
                                     {tag}
                                   </span>
@@ -852,7 +852,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                             </div>
 
                             <div className="pt-1">
-                              <span className="font-bold text-[#E46B5E]">[Data Structures &amp; Algorithms]</span>
+                              <span className="font-bold text-[#C93B5B]">[Data Structures &amp; Algorithms]</span>
                               <div className="mt-1 flex flex-wrap gap-1.5">
                                 {[
                                   "C++ (STL)",
@@ -867,7 +867,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                                 ].map((tag) => (
                                   <span
                                     key={tag}
-                                    className="rounded border border-[rgba(221,112,116,0.18)] bg-[#4E0104]/40 px-1.5 py-0.5 text-[10.5px] text-[#ECC3AB]"
+                                    className="rounded border border-[rgba(221,112,116,0.18)] bg-[#240009]/40 px-1.5 py-0.5 text-[10.5px] text-[#F5EEF0]"
                                   >
                                     {tag}
                                   </span>
@@ -877,7 +877,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                           </div>
                         </div>
                       ) : (
-                        <pre className="whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-[#E69683]">
+                        <pre className="whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-[#A68E94]">
                           {item.output}
                         </pre>
                       )}
@@ -893,9 +893,9 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                     e.preventDefault();
                     handleCommand(inputVal);
                   }}
-                  className="flex items-center gap-2 border-t border-[rgba(221,112,116,0.14)] bg-[#0A0807]/50 px-4 py-3 font-mono text-xs"
+                  className="flex items-center gap-2 border-t border-[rgba(221,112,116,0.14)] bg-[#000000]/50 px-4 py-3 font-mono text-xs"
                 >
-                  <span className="text-[#E46B5E] font-bold select-none whitespace-nowrap">
+                  <span className="text-[#C93B5B] font-bold select-none whitespace-nowrap">
                     visitor@krushna-aiml:~$
                   </span>
                   <input
@@ -906,7 +906,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                     onChange={(e) => setInputVal(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Type 'help', 'skills', 'contact', 'clear'..."
-                    className="flex-1 bg-transparent text-sm text-[#ECC3AB] placeholder-[#DD7074]/50 focus:outline-none"
+                    className="flex-1 bg-transparent text-sm text-[#F5EEF0] placeholder-[#A68E94]/50 focus:outline-none"
                     autoComplete="off"
                     autoCapitalize="off"
                     spellCheck="false"
@@ -915,12 +915,12 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                     type="submit"
                     data-cursor="pointer"
                     style={{
-                      background: "#C3181E",
-                      color: "#ECC3AB",
+                      background: "#6D001A",
+                      color: "#F5EEF0",
                       borderRadius: "8px",
-                      border: "1px solid rgba(228, 72, 71, 0.6)",
+                      border: "1px solid rgba(158, 11, 46, 0.6)",
                     }}
-                    className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold hover:bg-[#E14945] hover:border-[#ECC3AB]/80 transition-all cursor-pointer shadow-sm shadow-[#C3181E]/20"
+                    className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold hover:bg-[#9E0B2E] hover:border-[#F5EEF0]/80 transition-all cursor-pointer shadow-sm shadow-[#6D001A]/20"
                   >
                     <span>Run</span>
                     <span className="text-[10px] opacity-80">↵</span>
@@ -929,7 +929,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               </div>
 
               {/* Bottom Tech Tags */}
-              <div className="mt-3 flex flex-wrap items-center gap-3 font-mono text-[0.78rem] text-[#DD7074] px-1">
+              <div className="mt-3 flex flex-wrap items-center gap-3 font-mono text-[0.78rem] text-[#A68E94] px-1">
                 <span>JavaScript</span>
                 <span className="text-[rgba(221,112,116,0.3)]">•</span>
                 <span>Node + sharp</span>
@@ -949,10 +949,10 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               <div
                 style={{
                   borderRadius: "16px",
-                  background: "rgba(10, 8, 7, 0.88)",
+                  background: "rgba(0, 0, 0, 0.88)",
                   backdropFilter: "blur(14px)",
                   WebkitBackdropFilter: "blur(14px)",
-                  border: "1px solid rgba(221, 112, 116, 0.18)",
+                  border: "1px solid rgba(38, 16, 21, 0.18)",
                   padding: "22px",
                   display: "flex",
                   flexDirection: "column",
@@ -988,8 +988,8 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                           style={{
                             width: "16px",
                             height: "16px",
-                            backgroundColor: "#E02E32",
-                            border: "2px solid #0A0807",
+                            backgroundColor: "#9E0B2E",
+                            border: "2px solid #000000",
                           }}
                           className="absolute -bottom-1 -right-1 rounded-full"
                         />
@@ -998,7 +998,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                       {/* Identity Block */}
                       <div className="min-w-0 flex flex-col justify-center">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-bold text-[#ECC3AB] text-[1.1rem] leading-tight">
+                          <span className="font-bold text-[#F5EEF0] text-[1.1rem] leading-tight">
                             {githubData.name || "Krushna"}
                           </span>
                           <a
@@ -1011,16 +1011,16 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                               fontSize: "0.72rem",
                               padding: "2px 10px",
                               borderRadius: "9999px",
-                              background: "rgba(221, 112, 116, 0.08)",
-                              border: "1px solid rgba(221, 112, 116, 0.2)",
-                              color: "#E69683",
+                              background: "rgba(38, 16, 21, 0.08)",
+                              border: "1px solid rgba(38, 16, 21, 0.2)",
+                              color: "#A68E94",
                             }}
-                            className="hover:text-[#ECC3AB] hover:border-[rgba(228,107,94,0.5)] transition-all inline-flex items-center"
+                            className="hover:text-[#F5EEF0] hover:border-[rgba(228,107,94,0.5)] transition-all inline-flex items-center"
                           >
                             github.com/{githubData.login}
                           </a>
                         </div>
-                        <p className="mt-0.5 text-[0.8rem] text-[#DD7074] truncate">
+                        <p className="mt-0.5 text-[0.8rem] text-[#A68E94] truncate">
                           B.E. AIML @ University of Mumbai
                         </p>
                       </div>
@@ -1037,13 +1037,13 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                         width: "34px",
                         height: "34px",
                         borderRadius: "8px",
-                        border: "1px solid rgba(221, 112, 116, 0.2)",
-                        background: "rgba(221, 112, 116, 0.04)",
+                        border: "1px solid rgba(38, 16, 21, 0.2)",
+                        background: "rgba(38, 16, 21, 0.04)",
                       }}
-                      className="flex items-center justify-center shrink-0 text-[#DD7074] hover:text-[#ECC3AB] hover:bg-[rgba(221,112,116,0.1)] hover:border-[rgba(228,107,94,0.5)] transition-all cursor-pointer"
+                      className="flex items-center justify-center shrink-0 text-[#A68E94] hover:text-[#F5EEF0] hover:bg-[rgba(221,112,116,0.1)] hover:border-[rgba(228,107,94,0.5)] transition-all cursor-pointer"
                     >
                       <RotateCw
-                        className={`h-3.5 w-3.5 ${isFetchingGithub ? "animate-spin text-[#E46B5E]" : ""}`}
+                        className={`h-3.5 w-3.5 ${isFetchingGithub ? "animate-spin text-[#C93B5B]" : ""}`}
                       />
                     </button>
                   </div>
@@ -1053,7 +1053,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                     style={{
                       fontSize: "0.79rem",
                       lineHeight: "1.55",
-                      color: "#E69683",
+                      color: "#A68E94",
                     }}
                   >
                     {githubData.bio || "AI Systems & ML Engineering | Distributed LLM Inference (C++/CUDA/Rust), Computer Vision & Applied Deep Learning."}
@@ -1063,8 +1063,8 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                 {/* B. 4-Column Telemetry Stats Strip */}
                 <div
                   style={{
-                    borderTop: "1px solid rgba(221, 112, 116, 0.16)",
-                    borderBottom: "1px solid rgba(221, 112, 116, 0.16)",
+                    borderTop: "1px solid rgba(38, 16, 21, 0.16)",
+                    borderBottom: "1px solid rgba(38, 16, 21, 0.16)",
                     padding: "14px 0",
                   }}
                   className="grid grid-cols-4 divide-x divide-[rgba(221,112,116,0.14)]"
@@ -1072,52 +1072,52 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                   {/* Stat 1: Stars */}
                   <div className="flex flex-col items-center justify-center text-center px-1">
                     <div className="flex items-center gap-1.5">
-                      <Star className="h-3.5 w-3.5 text-[#E46B5E] fill-[#E46B5E]" />
-                      <span className="text-[1.05rem] font-bold text-[#ECC3AB]">
+                      <Star className="h-3.5 w-3.5 text-[#C93B5B] fill-[#C93B5B]" />
+                      <span className="text-[1.05rem] font-bold text-[#F5EEF0]">
                         {githubData.total_stars > 0 ? `${githubData.total_stars}+` : "5+"}
                       </span>
                     </div>
-                    <span className="mt-0.5 text-[0.72rem] text-[#DD7074]">Stars</span>
+                    <span className="mt-0.5 text-[0.72rem] text-[#A68E94]">Stars</span>
                   </div>
 
                   {/* Stat 2: Repositories */}
                   <div className="flex flex-col items-center justify-center text-center px-1">
                     <div className="flex items-center gap-1.5">
-                      <GitFork className="h-3.5 w-3.5 text-[#E46B5E]" />
-                      <span className="text-[1.05rem] font-bold text-[#ECC3AB]">
+                      <GitFork className="h-3.5 w-3.5 text-[#C93B5B]" />
+                      <span className="text-[1.05rem] font-bold text-[#F5EEF0]">
                         {githubData.public_repos || 12}
                       </span>
                     </div>
-                    <span className="mt-0.5 text-[0.72rem] text-[#DD7074]">Repositories</span>
+                    <span className="mt-0.5 text-[0.72rem] text-[#A68E94]">Repositories</span>
                   </div>
 
                   {/* Stat 3: Streak */}
                   <div className="flex flex-col items-center justify-center text-center px-1">
                     <div className="flex items-center gap-1.5">
-                      <Flame className="h-3.5 w-3.5 text-[#E46B5E] fill-[#E46B5E]" />
-                      <span className="text-[1.05rem] font-bold text-[#ECC3AB]">
+                      <Flame className="h-3.5 w-3.5 text-[#C93B5B] fill-[#C93B5B]" />
+                      <span className="text-[1.05rem] font-bold text-[#F5EEF0]">
                         {githubData.streak_days || 18}d
                       </span>
                     </div>
-                    <span className="mt-0.5 text-[0.72rem] text-[#DD7074]">Streak</span>
+                    <span className="mt-0.5 text-[0.72rem] text-[#A68E94]">Streak</span>
                   </div>
 
                   {/* Stat 4: Followers */}
                   <div className="flex flex-col items-center justify-center text-center px-1">
                     <div className="flex items-center gap-1.5">
-                      <Users className="h-3.5 w-3.5 text-[#E46B5E]" />
-                      <span className="text-[1.05rem] font-bold text-[#ECC3AB]">
+                      <Users className="h-3.5 w-3.5 text-[#C93B5B]" />
+                      <span className="text-[1.05rem] font-bold text-[#F5EEF0]">
                         {githubData.followers || 7}
                       </span>
                     </div>
-                    <span className="mt-0.5 text-[0.72rem] text-[#DD7074]">Followers</span>
+                    <span className="mt-0.5 text-[0.72rem] text-[#A68E94]">Followers</span>
                   </div>
                 </div>
 
                 {/* C. Featured Repositories List */}
                 <div className="flex flex-col gap-2">
                   {/* Subheader Row */}
-                  <div className="flex items-center justify-between text-[#DD7074] font-mono text-[0.7rem] uppercase tracking-[0.08em]">
+                  <div className="flex items-center justify-between text-[#A68E94] font-mono text-[0.7rem] uppercase tracking-[0.08em]">
                     <span>FEATURED REPOSITORIES</span>
                     <span>{githubData.top_repos?.length || 5} SHOWCASED</span>
                   </div>
@@ -1137,14 +1137,14 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                         className="group flex items-center justify-between gap-3 py-2.5 px-1 hover:bg-[rgba(221,112,116,0.04)] rounded-md transition-all"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <FolderGit2 className="h-[15px] w-[15px] text-[#DD7074] shrink-0 group-hover:text-[#E46B5E] transition-colors" />
+                          <FolderGit2 className="h-[15px] w-[15px] text-[#A68E94] shrink-0 group-hover:text-[#C93B5B] transition-colors" />
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="font-mono text-[0.85rem] font-semibold text-[#ECC3AB] group-hover:text-[#E46B5E] transition-colors truncate">
+                              <span className="font-mono text-[0.85rem] font-semibold text-[#F5EEF0] group-hover:text-[#C93B5B] transition-colors truncate">
                                 {repo.name}
                               </span>
                             </div>
-                            <p className="text-[0.74rem] text-[#E69683]/80 line-clamp-1 mt-0.5">
+                            <p className="text-[0.74rem] text-[#A68E94]/80 line-clamp-1 mt-0.5">
                               {repo.description || "Open source software project by Krushna."}
                             </p>
                             <div className="flex items-center gap-1.5 mt-1">
@@ -1152,18 +1152,18 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                                 className="h-1.5 w-1.5 rounded-full"
                                 style={{
                                   backgroundColor:
-                                    LANGUAGE_COLORS[repo.language || "Python"] || "#E46B5E",
+                                    LANGUAGE_COLORS[repo.language || "Python"] || "#C93B5B",
                                 }}
                               />
-                              <span className="font-mono text-[0.7rem] text-[#DD7074]">
+                              <span className="font-mono text-[0.7rem] text-[#A68E94]">
                                 {repo.language || "Python"}
                               </span>
                             </div>
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-1 shrink-0 font-mono text-[0.75rem] text-[#E69683]">
-                          <Star className="h-3 w-3 text-[#E46B5E] fill-[#E46B5E]" />
+                        <div className="flex items-center gap-1 shrink-0 font-mono text-[0.75rem] text-[#A68E94]">
+                          <Star className="h-3 w-3 text-[#C93B5B] fill-[#C93B5B]" />
                           <span>{repo.stars}</span>
                         </div>
                       </a>
@@ -1175,11 +1175,11 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                 <div className="flex flex-col gap-2.5">
                   {/* Header Row */}
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-[0.75rem] text-[#ECC3AB]">
-                      <Star className="h-3 w-3 text-[#E46B5E] fill-[#E46B5E]" />
+                    <div className="flex items-center gap-1.5 text-[0.75rem] text-[#F5EEF0]">
+                      <Star className="h-3 w-3 text-[#C93B5B] fill-[#C93B5B]" />
                       <span>18-Week Contribution Activity</span>
                     </div>
-                    <span className="text-[0.72rem] text-[#DD7074]">Synced</span>
+                    <span className="text-[0.72rem] text-[#A68E94]">Synced</span>
                   </div>
 
                   {/* Heatmap Grid: 18 cols x 5 rows */}
@@ -1197,14 +1197,14 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                           backgroundColor: HEATMAP_INTENSITY_COLORS[level],
                           borderRadius: "3px",
                         }}
-                        className="aspect-square transition-all hover:scale-125 hover:shadow-sm hover:shadow-[#C3181E]/40"
+                        className="aspect-square transition-all hover:scale-125 hover:shadow-sm hover:shadow-[#6D001A]/40"
                         title={`Activity level: ${level}`}
                       />
                     ))}
                   </div>
 
                   {/* Legend Footer Row */}
-                  <div className="flex items-center justify-between text-[0.7rem] text-[#DD7074]">
+                  <div className="flex items-center justify-between text-[0.7rem] text-[#A68E94]">
                     <span>Less active</span>
                     <div className="flex items-center gap-1.5">
                       {HEATMAP_INTENSITY_COLORS.map((color, idx) => (
@@ -1233,21 +1233,21 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                     width: "100%",
                     padding: "10px 16px",
                     borderRadius: "10px",
-                    border: "1px solid rgba(221, 112, 116, 0.25)",
-                    background: "rgba(221, 112, 116, 0.04)",
+                    border: "1px solid rgba(38, 16, 21, 0.25)",
+                    background: "rgba(38, 16, 21, 0.04)",
                     display: "inline-flex",
                     alignItems: "center",
                     justifyContent: "center",
                     gap: "8px",
                     fontSize: "0.82rem",
                     fontWeight: 600,
-                    color: "#ECC3AB",
+                    color: "#F5EEF0",
                   }}
                   className="group hover:border-[rgba(228,107,94,0.5)] hover:bg-[rgba(221,112,116,0.08)] transition-all"
                 >
-                  <GithubIcon className="h-4 w-4 text-[#DD7074] group-hover:text-[#ECC3AB] transition-colors" />
+                  <GithubIcon className="h-4 w-4 text-[#A68E94] group-hover:text-[#F5EEF0] transition-colors" />
                   <span>View github.com/Kruxhna</span>
-                  <span className="text-[#E46B5E] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  <span className="text-[#C93B5B] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                     ↗
                   </span>
                 </a>
@@ -1256,16 +1256,16 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
           </div>
         ) : (
           /* TAB 2: Neural Architecture Forensic Simulator */
-          <SpotlightCard className="p-6 sm:p-8 border-[rgba(221,112,116,0.18)]" style={{ background: "rgba(10, 8, 7, 0.88)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", borderRadius: "16px" }}>
+          <SpotlightCard className="p-6 sm:p-8 border-[rgba(221,112,116,0.18)]" style={{ background: "rgba(0, 0, 0, 0.88)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", borderRadius: "16px" }}>
             <div className="flex flex-col justify-between gap-4 border-b border-[rgba(221,112,116,0.18)] pb-5 sm:flex-row sm:items-center">
               <div>
                 <div className="flex items-center gap-2">
                   <Badge variant="accent">Spatial-Temporal Forensic Pipeline</Badge>
-                  <span className="font-mono text-xs text-[#DD7074]/70">
+                  <span className="font-mono text-xs text-[#A68E94]/70">
                     PyTorch • 16-Frame Sequence
                   </span>
                 </div>
-                <h3 className="mt-2 text-lg sm:text-xl font-bold text-[#ECC3AB]">
+                <h3 className="mt-2 text-lg sm:text-xl font-bold text-[#F5EEF0]">
                   EfficientNet-B0 + Bidirectional LSTM Pipeline Visualizer
                 </h3>
               </div>
@@ -1276,13 +1276,13 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                 data-cursor="magnetic"
                 className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold transition-all ${
                   simRunning
-                    ? "bg-[#181310] text-[#DD7074]/60 cursor-not-allowed border border-[rgba(221,112,116,0.15)]"
-                    : "bg-[#C3181E] text-[#ECC3AB] border border-[#E44847]/60 hover:bg-[#E14945] hover:text-[#ECC3AB] hover:border-[#ECC3AB]/80 active:bg-[#9F0B10] shadow-lg shadow-[#C3181E]/20"
+                    ? "bg-[#181310] text-[#A68E94]/60 cursor-not-allowed border border-[rgba(221,112,116,0.15)]"
+                    : "bg-[#6D001A] text-[#F5EEF0] border border-[#9E0B2E]/60 hover:bg-[#9E0B2E] hover:text-[#F5EEF0] hover:border-[#F5EEF0]/80 active:bg-[#6D001A] shadow-lg shadow-[#6D001A]/20"
                 }`}
               >
                 {simRunning ? (
                   <>
-                    <Activity className="h-4 w-4 animate-spin text-[#ECC3AB]" />
+                    <Activity className="h-4 w-4 animate-spin text-[#F5EEF0]" />
                     <span>Processing Frames...</span>
                   </>
                 ) : (
@@ -1300,21 +1300,21 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               <div
                 className={`rounded-xl border p-4 transition-all ${
                   simStep >= 1
-                    ? "border-[#E46B5E] bg-[#4E0104]/30 shadow-md shadow-[#C3181E]/10"
+                    ? "border-[#C93B5B] bg-[#240009]/30 shadow-md shadow-[#6D001A]/10"
                     : "border-[rgba(221,112,116,0.18)] bg-[#120E0B]/50"
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]/70">
+                <div className="flex items-center justify-between text-xs font-mono text-[#A68E94]/70">
                   <span>STAGE 01</span>
-                  {simStep >= 1 && <span className="text-[#E46B5E]">ACTIVE</span>}
+                  {simStep >= 1 && <span className="text-[#C93B5B]">ACTIVE</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-[#ECC3AB]">
+                <div className="mt-2 text-sm font-bold text-[#F5EEF0]">
                   MTCNN Face Alignment
                 </div>
-                <p className="mt-1 text-xs text-[#E69683]">
+                <p className="mt-1 text-xs text-[#A68E94]">
                   Detects landmarks & crops 16 consecutive 224x224 RGB face patches.
                 </p>
-                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#DD7074]/70">
+                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#A68E94]/70">
                   Shape: [16, 3, 224, 224]
                 </div>
               </div>
@@ -1323,21 +1323,21 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               <div
                 className={`rounded-xl border p-4 transition-all ${
                   simStep >= 2
-                    ? "border-[#E46B5E] bg-[#4E0104]/30 shadow-md shadow-[#C3181E]/10"
+                    ? "border-[#C93B5B] bg-[#240009]/30 shadow-md shadow-[#6D001A]/10"
                     : "border-[rgba(221,112,116,0.18)] bg-[#120E0B]/50"
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]/70">
+                <div className="flex items-center justify-between text-xs font-mono text-[#A68E94]/70">
                   <span>STAGE 02</span>
-                  {simStep >= 2 && <span className="text-[#E46B5E]">ACTIVE</span>}
+                  {simStep >= 2 && <span className="text-[#C93B5B]">ACTIVE</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-[#ECC3AB]">
+                <div className="mt-2 text-sm font-bold text-[#F5EEF0]">
                   Spatial Feature Backbone
                 </div>
-                <p className="mt-1 text-xs text-[#E69683]">
+                <p className="mt-1 text-xs text-[#A68E94]">
                   EfficientNet-B0 maps frame textures into compact latent representations.
                 </p>
-                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#DD7074]/70">
+                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#A68E94]/70">
                   Shape: [16, 1280]
                 </div>
               </div>
@@ -1346,21 +1346,21 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               <div
                 className={`rounded-xl border p-4 transition-all ${
                   simStep >= 3
-                    ? "border-[#E46B5E] bg-[#4E0104]/30 shadow-md shadow-[#C3181E]/10"
+                    ? "border-[#C93B5B] bg-[#240009]/30 shadow-md shadow-[#6D001A]/10"
                     : "border-[rgba(221,112,116,0.18)] bg-[#120E0B]/50"
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]/70">
+                <div className="flex items-center justify-between text-xs font-mono text-[#A68E94]/70">
                   <span>STAGE 03</span>
-                  {simStep >= 3 && <span className="text-[#E46B5E]">ACTIVE</span>}
+                  {simStep >= 3 && <span className="text-[#C93B5B]">ACTIVE</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-[#ECC3AB]">
+                <div className="mt-2 text-sm font-bold text-[#F5EEF0]">
                   Bi-LSTM Temporal Pass
                 </div>
-                <p className="mt-1 text-xs text-[#E69683]">
+                <p className="mt-1 text-xs text-[#A68E94]">
                   Learns inter-frame velocity, micro-flicker, and facial landmark jitter.
                 </p>
-                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#DD7074]/70">
+                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#A68E94]/70">
                   Hidden Dim: 256 x 2
                 </div>
               </div>
@@ -1369,21 +1369,21 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               <div
                 className={`rounded-xl border p-4 transition-all ${
                   simStep >= 4
-                    ? "border-[#E46B5E] bg-[#4E0104]/30 shadow-md shadow-[#C3181E]/10"
+                    ? "border-[#C93B5B] bg-[#240009]/30 shadow-md shadow-[#6D001A]/10"
                     : "border-[rgba(221,112,116,0.18)] bg-[#120E0B]/50"
                 }`}
               >
-                <div className="flex items-center justify-between text-xs font-mono text-[#DD7074]/70">
+                <div className="flex items-center justify-between text-xs font-mono text-[#A68E94]/70">
                   <span>STAGE 04</span>
-                  {simStep >= 4 && <span className="text-[#E46B5E]">COMPLETE</span>}
+                  {simStep >= 4 && <span className="text-[#C93B5B]">COMPLETE</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-[#ECC3AB]">
+                <div className="mt-2 text-sm font-bold text-[#F5EEF0]">
                   Forensic Confidence
                 </div>
-                <p className="mt-1 text-xs text-[#E69683]">
+                <p className="mt-1 text-xs text-[#A68E94]">
                   Linear classification head with sigmoid probability calibration.
                 </p>
-                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#DD7074]/70">
+                <div className="mt-3 rounded bg-[#181310] p-1.5 font-mono text-[11px] text-[#A68E94]/70">
                   Output: [0.0 to 1.0]
                 </div>
               </div>
@@ -1391,12 +1391,12 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
 
             {/* 16-Frame Temporal Video Progress Line (Scrubber) */}
             <div className="mt-8 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-4 font-mono text-xs">
-              <div className="flex items-center justify-between text-[11px] text-[#DD7074]/70 mb-2.5">
-                <span className="flex items-center gap-1.5 text-[#E46B5E] uppercase tracking-wider font-semibold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
+              <div className="flex items-center justify-between text-[11px] text-[#A68E94]/70 mb-2.5">
+                <span className="flex items-center gap-1.5 text-[#C93B5B] uppercase tracking-wider font-semibold">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
                   Video Sequence Progress Scrubber
                 </span>
-                <span className="text-[#ECC3AB]">
+                <span className="text-[#F5EEF0]">
                   FRAME {activeFrame} / 16 • {((activeFrame / 16) * 100).toFixed(0)}% ({(activeFrame * 62.5).toFixed(0)}ms)
                 </span>
               </div>
@@ -1414,25 +1414,25 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
               >
                 <div className="h-2 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(221,112,116,0.18)]">
                   <div
-                    className="h-full bg-gradient-to-r from-[#C3181E] via-[#E46B5E] to-[#ECC3AB] transition-all duration-100"
+                    className="h-full bg-gradient-to-r from-[#6D001A] via-[#C93B5B] to-[#F5EEF0] transition-all duration-100"
                     style={{ width: `${(activeFrame / 16) * 100}%` }}
                   />
                 </div>
                 {/* Visual frame scrubber head */}
                 <div
-                  className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-[#ECC3AB] border-2 border-[#C3181E] shadow-lg pointer-events-none transition-all duration-75"
+                  className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-[#F5EEF0] border-2 border-[#6D001A] shadow-lg pointer-events-none transition-all duration-75"
                   style={{ left: `calc(${(activeFrame / 16) * 100}% - 8px)` }}
                 />
               </div>
 
               {/* Frame ticks */}
-              <div className="mt-1.5 flex justify-between text-[9px] text-[#DD7074]/60">
+              <div className="mt-1.5 flex justify-between text-[9px] text-[#A68E94]/60">
                 {Array.from({ length: 16 }, (_, i) => (
                   <span
                     key={i}
                     onClick={() => setActiveFrame(i + 1)}
-                    className={`cursor-pointer hover:text-[#E46B5E] transition-colors ${
-                      activeFrame === i + 1 ? "text-[#E46B5E] font-bold" : ""
+                    className={`cursor-pointer hover:text-[#C93B5B] transition-colors ${
+                      activeFrame === i + 1 ? "text-[#C93B5B] font-bold" : ""
                     }`}
                   >
                     f{i + 1}
@@ -1444,9 +1444,9 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
             {/* Dev Tuning Sliders */}
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
               <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-4">
-                <div className="flex items-center justify-between text-[11px] text-[#DD7074]/70 mb-2">
-                  <span className="uppercase text-[#ECC3AB]">Dev Tuning: Decision Threshold</span>
-                  <span className="text-[#E46B5E] font-bold">{(tuningThreshold * 100).toFixed(0)}%</span>
+                <div className="flex items-center justify-between text-[11px] text-[#A68E94]/70 mb-2">
+                  <span className="uppercase text-[#F5EEF0]">Dev Tuning: Decision Threshold</span>
+                  <span className="text-[#C93B5B] font-bold">{(tuningThreshold * 100).toFixed(0)}%</span>
                 </div>
                 <div
                   data-cursor="scrub"
@@ -1460,21 +1460,21 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                 >
                   <div className="h-1.5 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(221,112,116,0.18)]">
                     <div
-                      className="h-full bg-[#C3181E]"
+                      className="h-full bg-[#6D001A]"
                       style={{ width: `${tuningThreshold * 100}%` }}
                     />
                   </div>
                   <div
-                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-[#ECC3AB] border border-[#C3181E] shadow-md pointer-events-none"
+                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-[#F5EEF0] border border-[#6D001A] shadow-md pointer-events-none"
                     style={{ left: `calc(${tuningThreshold * 100}% - 7px)` }}
                   />
                 </div>
               </div>
 
               <div className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#120E0B] p-4">
-                <div className="flex items-center justify-between text-[11px] text-[#DD7074]/70 mb-2">
-                  <span className="uppercase text-[#ECC3AB]">Dev Tuning: Temporal Pass Window</span>
-                  <span className="text-[#E46B5E] font-bold">16 frames (250ms)</span>
+                <div className="flex items-center justify-between text-[11px] text-[#A68E94]/70 mb-2">
+                  <span className="uppercase text-[#F5EEF0]">Dev Tuning: Temporal Pass Window</span>
+                  <span className="text-[#C93B5B] font-bold">16 frames (250ms)</span>
                 </div>
                 <div
                   data-cursor="scrub"
@@ -1482,10 +1482,10 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                   className="group relative h-5 w-full cursor-ew-resize flex items-center select-none"
                 >
                   <div className="h-1.5 w-full rounded-full bg-[#181310] overflow-hidden border border-[rgba(221,112,116,0.18)]">
-                    <div className="h-full bg-[#C3181E]" style={{ width: "75%" }} />
+                    <div className="h-full bg-[#6D001A]" style={{ width: "75%" }} />
                   </div>
                   <div
-                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-[#ECC3AB] border border-[#C3181E] shadow-md pointer-events-none"
+                    className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-[#F5EEF0] border border-[#6D001A] shadow-md pointer-events-none"
                     style={{ left: "calc(75% - 7px)" }}
                   />
                 </div>
@@ -1494,34 +1494,34 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
 
             {/* Inference Telemetry & Output */}
             {simResult && (
-              <div className="mt-6 rounded-xl border border-[#E44847]/40 bg-[#120E0B] p-5 animate-in fade-in slide-from-top-2">
+              <div className="mt-6 rounded-xl border border-[#9E0B2E]/40 bg-[#120E0B] p-5 animate-in fade-in slide-from-top-2">
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="flex h-2.5 w-2.5 rounded-full bg-[#E02E32] animate-pulse" />
-                      <span className="font-mono text-xs uppercase tracking-wider text-[#E46B5E] font-semibold">
+                      <span className="flex h-2.5 w-2.5 rounded-full bg-[#9E0B2E] animate-pulse" />
+                      <span className="font-mono text-xs uppercase tracking-wider text-[#C93B5B] font-semibold">
                         {simResult.label}
                       </span>
                     </div>
-                    <div className="mt-1 text-sm text-[#E69683]">
+                    <div className="mt-1 text-sm text-[#A68E94]">
                       Inter-frame temporal discontinuity score:{" "}
-                      <span className="font-mono text-[#ECC3AB] font-bold">
+                      <span className="font-mono text-[#F5EEF0] font-bold">
                         {(simResult.score * 100).toFixed(1)}%
                       </span>{" "}
                       synthetic confidence.
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs font-mono text-[#DD7074]/70">
+                  <div className="flex items-center gap-4 text-xs font-mono text-[#A68E94]/70">
                     <div>
                       <span>LATENCY: </span>
-                      <span className="text-[#E46B5E] font-bold">
+                      <span className="text-[#C93B5B] font-bold">
                         {simResult.latency}ms
                       </span>
                     </div>
                     <div>
                       <span>DEVICE: </span>
-                      <span className="text-[#ECC3AB]">CUDA:0 (RTX)</span>
+                      <span className="text-[#F5EEF0]">CUDA:0 (RTX)</span>
                     </div>
                   </div>
                 </div>

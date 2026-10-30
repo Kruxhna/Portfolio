@@ -164,7 +164,7 @@ export function ProjectsSection() {
       <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12">
         {/* 1. GIANT SECTION HEADER (Exact Egorz.com Title "i made") */}
         <div className="mb-8 md:mb-10">
-          <h2 className="text-7xl sm:text-8xl md:text-[9rem] font-black tracking-tighter leading-none text-[#ECC3AB] mb-6 sm:mb-8 select-none lowercase">
+          <h2 className="text-7xl sm:text-8xl md:text-[9rem] font-black tracking-tighter leading-none text-[#F5EEF0] mb-6 sm:mb-8 select-none lowercase">
             i made
           </h2>
 
@@ -179,8 +179,8 @@ export function ProjectsSection() {
                   data-cursor="magnetic"
                   className={`transition-colors cursor-pointer ${
                     isActive
-                      ? "text-[#E02E32] font-bold"
-                      : "text-[#DD7074] hover:text-[#ECC3AB]"
+                      ? "text-[#9E0B2E] font-bold"
+                      : "text-[#A68E94] hover:text-[#F5EEF0]"
                   }`}
                 >
                   {tab.label}
@@ -195,7 +195,7 @@ export function ProjectsSection() {
           {filteredProjects.map((project) => (
             <article
               key={project.id}
-              className="pt-10 pb-16 border-t border-[#DD7074]/20 first:border-t-0 first:pt-4"
+              className="pt-10 pb-16 border-t border-[#A68E94]/20 first:border-t-0 first:pt-4"
             >
               {/* 12-Column Asymmetrical Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
@@ -204,52 +204,52 @@ export function ProjectsSection() {
                   <div>
                     {/* Meta Bar inside Left Column (Aligned Horizontally with Right Window Top) */}
                     <div className="flex items-center justify-between text-xs font-mono mb-4">
-                      <span className="text-xs font-mono text-[#E46B5E] font-bold">
+                      <span className="text-xs font-mono text-[#C93B5B] font-bold">
                         {project.num}
                       </span>
-                      <span className="text-xs font-mono uppercase tracking-widest text-[#DD7074]">
+                      <span className="text-xs font-mono uppercase tracking-widest text-[#A68E94]">
                         {project.categoryTag}
                       </span>
                     </div>
 
                     {/* Project Title */}
-                    <h3 className="text-4xl sm:text-5xl md:text-6xl font-sans font-medium tracking-[-0.035em] leading-[1.12] text-[#ECC3AB]">
+                    <h3 className="text-4xl sm:text-5xl md:text-6xl font-sans font-medium tracking-[-0.035em] leading-[1.12] text-[#F5EEF0]">
                       {project.title}
                     </h3>
 
                     {/* Subtitle */}
-                    <p className="text-base sm:text-lg text-[#E69683] font-normal mt-3 leading-snug">
+                    <p className="text-base sm:text-lg text-[#A68E94] font-normal mt-3 leading-snug">
                       {project.subtitle}
                     </p>
 
                     {/* THE PROBLEM Block */}
                     <div className="mt-8">
-                      <div className="text-[11px] font-mono uppercase tracking-widest text-[#DD7074] mb-2 font-semibold">
+                      <div className="text-[11px] font-mono uppercase tracking-widest text-[#A68E94] mb-2 font-semibold">
                         THE PROBLEM
                       </div>
-                      <p className="text-sm sm:text-[15px] text-[#ECC3AB]/90 leading-relaxed font-sans">
+                      <p className="text-sm sm:text-[15px] text-[#F5EEF0]/90 leading-relaxed font-sans">
                         {project.problem}
                       </p>
                     </div>
 
                     {/* the fix ↓ Block */}
                     <div className="mt-6">
-                      <div className="text-xs font-mono text-[#E46B5E] mb-2 font-semibold">
+                      <div className="text-xs font-mono text-[#C93B5B] mb-2 font-semibold">
                         the fix ↓
                       </div>
-                      <p className="text-sm sm:text-[15px] text-[#ECC3AB] leading-relaxed font-sans">
+                      <p className="text-sm sm:text-[15px] text-[#F5EEF0] leading-relaxed font-sans">
                         {project.fix}
                       </p>
                     </div>
 
                     {/* Framed 4-Column Stat Strip */}
-                    <div className="grid grid-cols-4 gap-4 py-5 my-8 border-y border-[#DD7074]/20">
+                    <div className="grid grid-cols-4 gap-4 py-5 my-8 border-y border-[#A68E94]/20">
                       {project.stats.map((s, idx) => (
                         <div key={idx}>
-                          <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#ECC3AB] font-mono leading-none">
+                          <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#F5EEF0] font-mono leading-none">
                             {s.value}
                           </div>
-                          <div className="text-[11px] font-mono text-[#E46B5E] mt-1.5 lowercase leading-tight">
+                          <div className="text-[11px] font-mono text-[#C93B5B] mt-1.5 lowercase leading-tight">
                             {s.label}
                           </div>
                         </div>
@@ -257,7 +257,7 @@ export function ProjectsSection() {
                     </div>
 
                     {/* Borderless Inline Monospace Tech Stack */}
-                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-mono text-[#DD7074] mb-8">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-mono text-[#A68E94] mb-8">
                       {project.stack.map((tech) => (
                         <span key={tech}>{tech}</span>
                       ))}
@@ -303,12 +303,12 @@ export function ProjectsSection() {
         </div>
 
         {/* 3. "ALSO MADE" COMPACT ARCHIVE SECTION (Video 00:10–00:12) */}
-        <div className="mt-16 pt-10 border-t border-[#DD7074]/20">
-          <div className="text-xs font-mono uppercase tracking-widest text-[#DD7074] mb-6">
+        <div className="mt-16 pt-10 border-t border-[#A68E94]/20">
+          <div className="text-xs font-mono uppercase tracking-widest text-[#A68E94] mb-6">
             ALSO MADE
           </div>
 
-          <div className="divide-y divide-[#DD7074]/20 border-b border-[#DD7074]/20">
+          <div className="divide-y divide-[#A68E94]/20 border-b border-[#A68E94]/20">
             {/* Archive Row 1 */}
             <a
               href="https://github.com/Kruxhna"
@@ -316,20 +316,20 @@ export function ProjectsSection() {
               rel="noopener noreferrer"
               data-cursor="view"
               data-cursor-label="*open ↗*"
-              className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#C3181E]/[0.05] transition-colors px-2 rounded-lg cursor-pointer block"
+              className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#6D001A]/[0.05] transition-colors px-2 rounded-lg cursor-pointer block"
             >
               <div className="md:col-span-4 flex items-center gap-2">
-                <span className="text-xl sm:text-2xl font-bold text-[#ECC3AB] group-hover:text-[#E46B5E] transition-colors">
+                <span className="text-xl sm:text-2xl font-bold text-[#F5EEF0] group-hover:text-[#C93B5B] transition-colors">
                   Project Glassbox
                 </span>
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#E46B5E] inline-flex items-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#C93B5B] inline-flex items-center">
                   <ExternalArrow />
                 </span>
               </div>
-              <div className="md:col-span-6 text-sm text-[#E69683] leading-relaxed font-sans">
+              <div className="md:col-span-6 text-sm text-[#A68E94] leading-relaxed font-sans">
                 Python forensic triage engine to parse, filter, and score evidence leads from multi-gigabyte UFDR mobile dumps.
               </div>
-              <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#DD7074]">
+              <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#A68E94]">
                 FORENSIC ENGINE
               </div>
             </a>
@@ -341,20 +341,20 @@ export function ProjectsSection() {
               rel="noopener noreferrer"
               data-cursor="view"
               data-cursor-label="*open ↗*"
-              className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#C3181E]/[0.05] transition-colors px-2 rounded-lg cursor-pointer block"
+              className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#6D001A]/[0.05] transition-colors px-2 rounded-lg cursor-pointer block"
             >
               <div className="md:col-span-4 flex items-center gap-2">
-                <span className="text-xl sm:text-2xl font-bold text-[#ECC3AB] group-hover:text-[#E46B5E] transition-colors">
+                <span className="text-xl sm:text-2xl font-bold text-[#F5EEF0] group-hover:text-[#C93B5B] transition-colors">
                   Multi-Agent Research Suite
                 </span>
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#E46B5E] inline-flex items-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#C93B5B] inline-flex items-center">
                   <ExternalArrow />
                 </span>
               </div>
-              <div className="md:col-span-6 text-sm text-[#E69683] leading-relaxed font-sans">
+              <div className="md:col-span-6 text-sm text-[#A68E94] leading-relaxed font-sans">
                 Autonomous tool-calling agent workflows and evaluation harness built for the Google &amp; Kaggle 5-Day AI Agents Intensive.
               </div>
-              <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#DD7074]">
+              <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#A68E94]">
                 AGENTIC AI
               </div>
             </a>

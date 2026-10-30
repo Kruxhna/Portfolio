@@ -12,9 +12,9 @@ import React, {
 
 export const SAND_TEXT_CONFIG = {
   text: "KRUXHNA",
-  backgroundColor: "#0A0807",
-  glyphColor: "#DEC1B4",
-  particleColors: ["#DEC1B4", "#CEA491", "#AD6A4C"],
+  backgroundColor: "#000000",
+  glyphColor: "#FFFFFF",
+  particleColors: ["#FFFFFF", "#E899AC", "#C93B5B", "#6D001A"],
   turbulenceFreq: 0.009,
   turbulenceAmp: 2.2, // Silky, subtle mirage heat-haze in px
   turbulenceSpeed: 0.012,

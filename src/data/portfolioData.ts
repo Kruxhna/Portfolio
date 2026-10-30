@@ -72,9 +72,9 @@ export const DSA_STATS = {
   activeStreak: "45 Days",
   codolioProfile: "https://codolio.com/profile/Kruxhna/problemSolving",
   breakdown: [
-    { level: "Easy", count: 142, percentage: 40.5, color: "#ECC3AB", barBg: "bg-[#ECC3AB]", textCol: "text-[#ECC3AB]" },
-    { level: "Medium", count: 176, percentage: 50.3, color: "#E46B5E", barBg: "bg-[#E46B5E]", textCol: "text-[#E46B5E]" },
-    { level: "Hard", count: 32, percentage: 9.2, color: "#C3181E", barBg: "bg-[#C3181E]", textCol: "text-[#C3181E]" },
+    { level: "Easy", count: 142, percentage: 40.5, color: "#C93B5B", barBg: "bg-[#C93B5B]", textCol: "text-[#C93B5B]" },
+    { level: "Medium", count: 176, percentage: 50.3, color: "#9E0B2E", barBg: "bg-[#9E0B2E]", textCol: "text-[#9E0B2E]" },
+    { level: "Hard", count: 32, percentage: 9.2, color: "#6D001A", barBg: "bg-[#6D001A]", textCol: "text-[#6D001A]" },
   ],
   topics: [
     { name: "Dynamic Programming", count: "65+ Solved", complexity: "Memoization & 2D Tabulation" },

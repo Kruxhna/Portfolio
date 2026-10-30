@@ -35,7 +35,7 @@ export function SpotlightCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "relative rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#0A0807] p-6 backdrop-blur-md overflow-hidden transition-all duration-300",
+        "relative rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#000000] p-6 backdrop-blur-md overflow-hidden transition-all duration-300",
         "hover:border-[rgba(228,107,94,0.45)] hover:shadow-[0_8px_30px_rgba(195,24,30,0.12)]",
         className
       )}

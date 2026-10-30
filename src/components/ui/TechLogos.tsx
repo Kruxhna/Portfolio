@@ -47,7 +47,7 @@ export function ScikitLearnLogo(props: IconProps) {
     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" {...props}>
       <circle cx="8" cy="8" r="4" fill="#F89939" />
       <circle cx="16" cy="16" r="4" fill="#3499CD" />
-      <path d="M10 10l4 4" stroke="#ECC3AB" strokeWidth="2" />
+      <path d="M10 10l4 4" stroke="#F5EEF0" strokeWidth="2" />
     </svg>
   );
 }
@@ -112,7 +112,7 @@ export function TSLogo(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" {...props}>
       <rect x="2" y="2" width="20" height="20" rx="3" fill="#3178C6" />
-      <path d="M7 9h6v2H11v7H9v-7H7V9zm8 2.5c0-.8.7-1.5 1.5-1.5h3.5v2h-3v1h2c1.1 0 2 .9 2 2v1c0 1.1-.9 2-2 2h-4v-2h3.5v-1h-2c-1.1 0-2-.9-2-2v-1.5z" fill="#ECC3AB" />
+      <path d="M7 9h6v2H11v7H9v-7H7V9zm8 2.5c0-.8.7-1.5 1.5-1.5h3.5v2h-3v1h2c1.1 0 2 .9 2 2v1c0 1.1-.9 2-2 2h-4v-2h3.5v-1h-2c-1.1 0-2-.9-2-2v-1.5z" fill="#F5EEF0" />
     </svg>
   );
 }
@@ -129,7 +129,7 @@ export function FastAPILogo(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" {...props}>
       <circle cx="12" cy="12" r="10" fill="#059669" />
-      <path d="M13 4L6 14h5l-1 6 7-10h-5l1-6z" fill="#ECC3AB" />
+      <path d="M13 4L6 14h5l-1 6 7-10h-5l1-6z" fill="#F5EEF0" />
     </svg>
   );
 }

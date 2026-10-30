@@ -12,7 +12,7 @@ import {
 } from "framer-motion";
 import { Letter3DViewer } from "@/components/ui/Letter3DViewer";
 
-const ACCENT_COLOR = "#E46B5E";
+const ACCENT_COLOR = "#C93B5B";
 
 const ALIAS_LIST = [
   "rset", "Kruxhna", "krush", "0xKrush", "aiml-k", "5<4t", "kru",
@@ -394,7 +394,7 @@ export function HeroSection() {
 
               {/* Eyebrow — delay 0.05s */}
               <p
-                className="hero-animate hero-fade-up font-mono uppercase text-[#DD7074] tracking-widest mb-3 pointer-events-none"
+                className="hero-animate hero-fade-up font-mono uppercase text-[#A68E94] tracking-widest mb-3 pointer-events-none"
                 style={{
                   fontSize: 11,
                   letterSpacing: "0.14em",
@@ -406,7 +406,7 @@ export function HeroSection() {
 
               {/* Headline — delay 0.18s */}
               <h2
-                className="hero-animate hero-fade-up text-[#ECC3AB] font-sans font-normal pointer-events-none"
+                className="hero-animate hero-fade-up text-[#F5EEF0] font-sans font-normal pointer-events-none"
                 style={{
                   fontSize: "clamp(36px, 3.2vw, 58px)",
                   lineHeight: 1.25,
@@ -415,23 +415,23 @@ export function HeroSection() {
                 }}
               >
                 I{" "}
-                <span className="font-mono font-medium" style={{ color: "#E46B5E" }}>
+                <span className="font-mono font-medium" style={{ color: "#C93B5B" }}>
                   profile
                 </span>
                 ,{" "}
-                <span className="font-mono font-medium" style={{ color: "#E46B5E" }}>
+                <span className="font-mono font-medium" style={{ color: "#C93B5B" }}>
                   optimize
                 </span>{" "}
                 and{" "}
-                <span className="font-mono font-medium" style={{ color: "#E46B5E" }}>
+                <span className="font-mono font-medium" style={{ color: "#C93B5B" }}>
                   scale
                 </span>{" "}
                 engines that turn{" "}
                 <span
                   className="font-serif italic font-normal headline-accent-underline"
                   style={{
-                    color: "#ECC3AB",
-                    textDecorationColor: "#D94F67",
+                    color: "#F5EEF0",
+                    textDecorationColor: "#9E0B2E",
                   }}
                 >
                   heavy math
@@ -446,7 +446,7 @@ export function HeroSection() {
                 style={{
                   marginLeft: "clamp(200px, 18vw, 320px)",
                   fontSize: "clamp(15px, 1.2vw, 19px)",
-                  color: "#DD7074",
+                  color: "#A68E94",
                   animationDelay: "0.38s",
                 }}
                 onClick={scrambleToNext}
@@ -455,10 +455,10 @@ export function HeroSection() {
                 onKeyDown={(e) => e.key === "Enter" && scrambleToNext()}
                 title="Click to shuffle alias"
               >
-                <span className="group-hover:text-[#ECC3AB] transition-colors">aka {displayedAlias}</span>
+                <span className="group-hover:text-[#F5EEF0] transition-colors">aka {displayedAlias}</span>
                 <svg
                   className="w-5 h-5 translate-y-0.5 transition-transform group-hover:translate-x-0.5"
-                  viewBox="0 0 24 24" fill="none" stroke="#DD7074"
+                  viewBox="0 0 24 24" fill="none" stroke="#A68E94"
                   strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
                 >
                   <path d="M4 6c0 6 5 11 14 11" />
@@ -477,7 +477,7 @@ export function HeroSection() {
                 animationDelay: "0.30s",
               }}
             >
-              <Letter3DViewer accentColor="#E46B5E" />
+              <Letter3DViewer accentColor="#C93B5B" />
             </div>
 
           </div>
@@ -489,7 +489,7 @@ export function HeroSection() {
           >
             {/*
               "krushna" wordmark — split into one <span> per letter with scroll/click scatter.
-              Color: Warm Peach (#E8A791)
+              Color: Warm Peach (#F5EEF0)
               leading-[0.82], clamp(4.2rem, 12vw, 13.5rem)
             */}
             <h1
@@ -497,7 +497,7 @@ export function HeroSection() {
               data-cursor="invert"
               aria-label="krushna"
               onClick={handleWordmarkClick}
-              className={`hero-animate font-sans font-black whitespace-nowrap overflow-visible text-[#E8A791] relative z-30 select-none ${
+              className={`hero-animate font-sans font-black whitespace-nowrap overflow-visible text-[#F5EEF0] relative z-30 select-none ${
                 isScattered ? "pointer-events-none" : "pointer-events-auto cursor-pointer"
               }`}
               style={{
@@ -533,27 +533,27 @@ export function HeroSection() {
             <div
               className="hero-animate hero-divider w-full h-px mt-3 relative z-10 pointer-events-none"
               style={{
-                background: "rgba(221, 112, 116, 0.2)",
+                background: "rgba(38, 16, 21, 0.2)",
                 animationDelay: "0.72s",
               }}
             />
 
             {/* Bottom Telemetry & Scroll-to-Explore Action */}
             <div
-              className="hero-animate hero-fade-up flex items-center justify-between pt-3 text-[10px] font-mono tracking-widest uppercase text-[#DD7074] pointer-events-auto"
+              className="hero-animate hero-fade-up flex items-center justify-between pt-3 text-[10px] font-mono tracking-widest uppercase text-[#A68E94] pointer-events-auto"
               style={{ animationDelay: "0.85s" }}
             >
-              <span className="hidden sm:inline text-[#DD7074]/60">
+              <span className="hidden sm:inline text-[#A68E94]/60">
                 SYS://COORDINATES · INDIA · 2026
               </span>
               <a
                 href="#dsa"
                 data-cursor="magnetic"
-                className="group ml-auto flex items-center gap-2 hover:text-[#ECC3AB] transition-colors cursor-pointer"
+                className="group ml-auto flex items-center gap-2 hover:text-[#F5EEF0] transition-colors cursor-pointer"
               >
                 <span>SCROLL TO EXPLORE</span>
-                <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-[rgba(221,112,116,0.35)] group-hover:border-[#E02E32] transition-colors">
-                  <span className="inline-block h-1 w-1 rounded-full bg-[#E02E32] group-hover:scale-125 transition-transform" />
+                <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-[rgba(221,112,116,0.35)] group-hover:border-[#9E0B2E] transition-colors">
+                  <span className="inline-block h-1 w-1 rounded-full bg-[#9E0B2E] group-hover:scale-125 transition-transform" />
                 </span>
               </a>
             </div>

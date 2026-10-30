@@ -5,6 +5,7 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { PixelMatrixBackground } from "@/components/layout/PixelMatrixBackground";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 import { ScrollTelemetryHUD } from "@/components/ui/ScrollTelemetryHUD";
+import { TsunamiControllerPill } from "@/components/ui/TsunamiControllerPill";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -67,11 +68,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      style={{ backgroundColor: "#0A0807" }}
+      style={{ backgroundColor: "#000000" }}
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${alexBrush.variable} dark scroll-smooth`}
     >
-      <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#C3181E] selection:text-[#ECC3AB]">
-        {/* Pixelated Matrix Voxel Image Transition (FRONT.png -> BACK.png across scroll) */}
+      <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#6D001A] selection:text-[#FFFFFF]">
+        {/* Reverse-Engineered Tsunami Liquid Wave Background (CAESAR Plain Colors) */}
         <PixelMatrixBackground />
 
         {/* Global Unified Custom Cursor */}
@@ -83,6 +84,7 @@ export default function RootLayout({
             {children}
           </div>
           <ScrollTelemetryHUD />
+          <TsunamiControllerPill />
         </SmoothScrollProvider>
       </body>
     </html>

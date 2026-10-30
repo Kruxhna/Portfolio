@@ -46,90 +46,112 @@
 
 @layer base {
   :root {
-    /* Typography Colors (Custom Red/Peach/Berry Palette from COLOR.jpg) */
-    --font-primary: #ECC3AB;        /* Top-right soft peach cream for main headings & body */
-    --font-secondary: #E69683;      /* Warm apricot blush for subtext & nav links */
-    --font-muted: #DD7074;          /* Dusty rose for eyebrow labels, timestamps & HUD metadata */
-    --font-dim: #A0274B;            /* Deep berry for subtle captions / disabled text */
-    --font-accent-warm: #E46B5E;    /* Coral highlight for italic/serif keywords ("profile, optimize, scale") */
-    --font-accent-vivid: #E02E32;   /* Vibrant vermilion for active nav links & primary highlights */
-    --font-accent-berry: #D94F67;   /* Berry rose for link hover states */
-    --font-display-mark: #E8A791;   /* Warm peach for large "krushna" watermark / display type */
+    /* ============================================================
+       CAESAR COLOR SYSTEM — Black / Burgundy / White
+       ============================================================ */
 
-    /* Button Colors */
-    --btn-primary-bg: #C3181E;      /* Rich crimson fill for primary buttons & active toggles */
-    --btn-primary-hover: #E14945;   /* Bright coral-red hover fill */
-    --btn-primary-active: #9F0B10;  /* Deep ruby active/pressed fill */
-    --btn-primary-text: #ECC3AB;    /* Soft peach cream text on primary buttons */
-    --btn-primary-border: #E44847;  /* Coral border highlight */
-
-    --btn-secondary-bg: #4E0104;    /* Deep oxblood fill for secondary/HUD buttons (e.g., "3D" pill) */
-    --btn-secondary-hover: #7B0408; /* Dark blood-red hover fill */
-    --btn-secondary-text: #E8A791;  /* Warm peach text on secondary buttons */
-    --btn-secondary-border: #9A142C;/* Wine-red border for secondary/outline buttons */
-
-    /* Stacking Background Colors — STRICTLY PRESERVED */
-    --bg-black: #000000;
-    --bg-obsidian: #0A0807;
-    --bg-primary: #000000;
-    --bg-elevated: #0A0807;
-    --bg-surface-hover: #14100D;
-    --bg-glass: rgba(10, 8, 7, 0.72);
+    /* Core Backgrounds */
     --bg: #000000;
-    --card-bg: #0A0807;
+    --bg-elevated: #0A0204;
+    --bg-surface: #140408;
+    --bg-glass: rgba(10, 2, 4, 0.78);
+
+    /* Accent Scale */
+    --accent-subtle: #240009;
+    --accent-dark: #3B000E;
+    --accent: #6D001A;
+    --accent-hover: #9E0B2E;
+    --accent-light: #C93B5B;
+    --accent-blush: #E899AC;
+
+    /* Foreground */
+    --fg-bright: #FFFFFF;
+    --fg: #F5EEF0;
+    --muted: #A68E94;
+    --muted-dark: #6E565C;
+
+    /* Borders & Glows */
+    --border: #261015;
+    --border-hover: rgba(158, 11, 46, 0.55);
+    --glow-primary: rgba(109, 0, 26, 0.35);
+    --glow-bright: rgba(158, 11, 46, 0.25);
+
+    /* Legacy alias tokens (mapped to CAESAR) */
+    --bg-black: #000000;
+    --bg-obsidian: #000000;
+    --bg-primary: #000000;
+    --bg-elevated-legacy: #0A0204;
+    --bg-surface-hover: #140408;
+    --card-bg: #0A0204;
     --bg-dim: 0.55;
 
-    /* Semantic Token Mappings */
-    --text-display: #E8A791;
-    --text-primary: #ECC3AB;
-    --text-secondary: #E69683;
-    --text-muted: #DD7074;
-    --fg: #ECC3AB;
-    --muted: #DD7074;
+    --text-display: #F5EEF0;
+    --text-primary: #F5EEF0;
+    --text-secondary: #A68E94;
+    --text-muted: #6E565C;
+    --font-primary: #F5EEF0;
+    --font-secondary: #A68E94;
+    --font-muted: #6E565C;
+    --font-dim: #6E565C;
+    --font-accent-warm: #E899AC;
+    --font-accent-vivid: #9E0B2E;
+    --font-accent-berry: #C93B5B;
+    --font-display-mark: #F5EEF0;
 
-    --accent-primary: #E46B5E;
-    --accent-hover: #D94F67;
-    --accent-subtle: rgba(228, 107, 94, 0.15);
-    --border-subtle: rgba(221, 112, 116, 0.16);
-    --border-hover: rgba(224, 46, 50, 0.45);
-    --line: rgba(221, 112, 116, 0.16);
-    --card-border: rgba(221, 112, 116, 0.16);
-    --accent: #E46B5E;
+    --btn-primary-bg: #6D001A;
+    --btn-primary-hover: #9E0B2E;
+    --btn-primary-active: #3B000E;
+    --btn-primary-text: #FFFFFF;
+    --btn-primary-border: #9E0B2E;
+
+    --btn-secondary-bg: #240009;
+    --btn-secondary-hover: #3B000E;
+    --btn-secondary-text: #F5EEF0;
+    --btn-secondary-border: #6D001A;
+
+    --accent-primary: #6D001A;
+    --accent-secondary: #9E0B2E;
+    --accent-subtle: #240009;
+    --border-subtle: rgba(38, 16, 21, 0.8);
+    --border-hover: rgba(158, 11, 46, 0.55);
+    --line: rgba(38, 16, 21, 0.8);
+    --card-border: rgba(38, 16, 21, 0.8);
+    --accent: #6D001A;
   }
 
-  /* Light Theme (Preserved structure with palette harmonization) */
+  /* Light Theme (CAESAR harmonized) */
   .theme-light, [data-theme="light"] {
-    --bg-primary: #ECC3AB;
-    --bg-elevated: #E8A791;
-    --bg-surface-hover: #E69683;
-    --bg-glass: rgba(236, 195, 171, 0.78);
-    --text-display: #4E0104;
-    --text-primary: #4E0104;
-    --text-secondary: #7B0408;
-    --text-muted: rgba(78, 1, 4, 0.65);
-    --accent-primary: #C3181E;
-    --accent-hover: #9F0B10;
-    --accent-subtle: rgba(195, 24, 30, 0.15);
-    --border-subtle: rgba(78, 1, 4, 0.14);
-    --border-hover: rgba(195, 24, 30, 0.45);
+    --bg: #F5EEF0;
+    --bg-primary: #F5EEF0;
+    --bg-elevated: #EDE0E3;
+    --bg-surface-hover: #E0CDD2;
+    --bg-glass: rgba(245, 238, 240, 0.78);
+    --text-display: #240009;
+    --text-primary: #240009;
+    --text-secondary: #6D001A;
+    --text-muted: rgba(109, 0, 26, 0.65);
+    --accent-primary: #6D001A;
+    --accent-hover: #9E0B2E;
+    --accent-subtle: rgba(109, 0, 26, 0.15);
+    --border-subtle: rgba(38, 16, 21, 0.14);
+    --border-hover: rgba(109, 0, 26, 0.45);
 
-    --bg: #ECC3AB;
-    --fg: #4E0104;
-    --muted: rgba(78, 1, 4, 0.65);
-    --line: rgba(78, 1, 4, 0.14);
-    --accent: #C3181E;
-    --card-bg: #E8A791;
-    --card-border: rgba(78, 1, 4, 0.14);
+    --fg: #240009;
+    --muted: rgba(109, 0, 26, 0.65);
+    --line: rgba(38, 16, 21, 0.14);
+    --accent: #6D001A;
+    --card-bg: #EDE0E3;
+    --card-border: rgba(38, 16, 21, 0.14);
     --bg-dim: 0.35;
   }
 
   ::selection {
-    background-color: #C3181E;
-    color: #ECC3AB;
+    background-color: #6D001A;
+    color: #FFFFFF;
   }
 
   html {
-    background-color: #0A0807;
+    background-color: #000000;
   }
 
   body {
@@ -154,15 +176,15 @@
 
 /* Subtle dot-grid background overlay */
 .bg-grid-dots {
-  background-image: radial-gradient(rgba(206, 164, 145, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(158, 11, 46, 0.06) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .bg-grid-lines {
   background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(206, 164, 145, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(206, 164, 145, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(158, 11, 46, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(158, 11, 46, 0.04) 1px, transparent 1px);
 }
 
 /* Subtle film grain texture */
@@ -181,12 +203,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C3181E;
+  background: #6D001A;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #E14945;
+  background: #9E0B2E;
 }
 
 /* Glassmorphism and Card Aesthetics */
@@ -200,7 +222,7 @@
 
 .card-surface:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 8px 30px rgba(173, 106, 76, 0.08);
+  box-shadow: 0 8px 30px rgba(109, 0, 26, 0.08);
 }
 
 /* ─── Hero entrance animations ───────────────────────────────────────────────
@@ -373,37 +395,37 @@
 
 /* ── Primary (solid crimson) ── */
 .elp-primary {
-  background-color: #C3181E;
-  color: #ECC3AB;
-  border: 1px solid rgba(228, 72, 71, 0.6);
+  background-color: #6D001A;
+  color: #FFFFFF;
+  border: 1px solid rgba(158, 11, 46, 0.6);
 }
 .elp-primary:hover,
 .elp-primary:focus-visible {
-  background-color: #E14945;
-  color: #ECC3AB;
-  border-color: rgba(236, 195, 171, 0.8);
-  box-shadow: 0 4px 20px -4px rgba(195, 24, 30, 0.5);
+  background-color: #9E0B2E;
+  color: #FFFFFF;
+  border-color: rgba(201, 59, 91, 0.8);
+  box-shadow: 0 4px 20px -4px rgba(109, 0, 26, 0.5);
 }
 
 /* ── Secondary (ghost / glass) ── */
 .elp-secondary {
-  background-color: rgba(10, 8, 7, 0.72);
+  background-color: rgba(10, 2, 4, 0.78);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #ECC3AB;
-  border: 1px solid rgba(221, 112, 116, 0.16);
+  color: #F5EEF0;
+  border: 1px solid rgba(38, 16, 21, 0.8);
 }
 .elp-secondary:hover,
 .elp-secondary:focus-visible {
-  background-color: rgba(221, 112, 116, 0.08);
-  color: #F3E3DC;
-  border-color: rgba(221, 112, 116, 0.38);
+  background-color: rgba(158, 11, 46, 0.08);
+  color: #F5EEF0;
+  border-color: rgba(158, 11, 46, 0.38);
   box-shadow: 0 4px 16px -6px rgba(0, 0, 0, 0.5);
 }
 
 /* ── Focus ring ── */
 .external-link-pill:focus-visible {
-  outline: 2px solid #C3181E;
+  outline: 2px solid #6D001A;
   outline-offset: 3px;
 }
 

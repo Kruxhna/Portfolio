@@ -130,12 +130,12 @@ function InferenceMeshVisual() {
     >
       <defs>
         <pattern id="inf-grid" width="28" height="28" patternUnits="userSpaceOnUse">
-          <circle cx="14" cy="14" r="0.8" fill="#E46B5E" fillOpacity="0.25" />
+          <circle cx="14" cy="14" r="0.8" fill="#C93B5B" fillOpacity="0.25" />
         </pattern>
         <linearGradient id="inf-accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#E46B5E" stopOpacity="0.9" />
-          <stop offset="50%" stopColor="#ECC3AB" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#E46B5E" stopOpacity="0.2" />
+          <stop offset="0%" stopColor="#C93B5B" stopOpacity="0.9" />
+          <stop offset="50%" stopColor="#F5EEF0" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#C93B5B" stopOpacity="0.2" />
         </linearGradient>
       </defs>
 
@@ -147,30 +147,30 @@ function InferenceMeshVisual() {
           width="250"
           height="128"
           rx="14"
-          fill="#0A0807"
+          fill="#000000"
           fillOpacity="0.92"
-          stroke="#E46B5E"
+          stroke="#C93B5B"
           strokeOpacity="0.5"
           strokeWidth="1.2"
         />
-        <text x="18" y="24" fill="#ECC3AB" fontSize="11" fontFamily="monospace" fontWeight="700">
+        <text x="18" y="24" fill="#F5EEF0" fontSize="11" fontFamily="monospace" fontWeight="700">
           NODE 00 // RTX GPU (CUDA C++)
         </text>
-        <text x="18" y="42" fill="#DD7074" fontSize="9" fontFamily="monospace">
+        <text x="18" y="42" fill="#A68E94" fontSize="9" fontFamily="monospace">
           12GB GDDR6X · 504 GB/s BANDWIDTH
         </text>
 
-        <rect x="18" y="56" width="214" height="26" rx="6" fill="#140D0A" stroke="#E46B5E" strokeOpacity="0.35" />
-        <text x="28" y="73" fill="#ECC3AB" fontSize="9.5" fontFamily="monospace" fontWeight="600">
+        <rect x="18" y="56" width="214" height="26" rx="6" fill="#140D0A" stroke="#C93B5B" strokeOpacity="0.35" />
+        <text x="28" y="73" fill="#F5EEF0" fontSize="9.5" fontFamily="monospace" fontWeight="600">
           GGUF Layers 00–18 (Active VRAM)
         </text>
 
-        <rect x="18" y="92" width="102" height="22" rx="4" fill="#E46B5E" fillOpacity="0.18" />
-        <text x="26" y="106" fill="#ECC3AB" fontSize="8.5" fontFamily="monospace" fontWeight="600">
+        <rect x="18" y="92" width="102" height="22" rx="4" fill="#C93B5B" fillOpacity="0.18" />
+        <text x="26" y="106" fill="#F5EEF0" fontSize="8.5" fontFamily="monospace" fontWeight="600">
           CUDA:0 STREAMS
         </text>
-        <rect x="128" y="92" width="104" height="22" rx="4" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.25" />
-        <text x="136" y="106" fill="#DD7074" fontSize="8.5" fontFamily="monospace">
+        <rect x="128" y="92" width="104" height="22" rx="4" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.25" />
+        <text x="136" y="106" fill="#A68E94" fontSize="8.5" fontFamily="monospace">
           FP16 TENSORS
         </text>
       </g>
@@ -181,30 +181,30 @@ function InferenceMeshVisual() {
           width="250"
           height="128"
           rx="14"
-          fill="#0A0807"
+          fill="#000000"
           fillOpacity="0.92"
-          stroke="#DD7074"
+          stroke="#A68E94"
           strokeOpacity="0.3"
           strokeWidth="1"
         />
-        <text x="18" y="24" fill="#ECC3AB" fontSize="11" fontFamily="monospace" fontWeight="700">
+        <text x="18" y="24" fill="#F5EEF0" fontSize="11" fontFamily="monospace" fontWeight="700">
           NODE 01 // WORKER CLUSTER (RUST)
         </text>
-        <text x="18" y="42" fill="#DD7074" fontSize="9" fontFamily="monospace">
+        <text x="18" y="42" fill="#A68E94" fontSize="9" fontFamily="monospace">
           P2P RPC DAEMON · TAILSCALE MESH
         </text>
 
-        <rect x="18" y="56" width="214" height="26" rx="6" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.25" />
-        <text x="28" y="73" fill="#ECC3AB" fontSize="9.5" fontFamily="monospace" fontWeight="600">
+        <rect x="18" y="56" width="214" height="26" rx="6" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.25" />
+        <text x="28" y="73" fill="#F5EEF0" fontSize="9.5" fontFamily="monospace" fontWeight="600">
           GGUF Layers 19–36 (Offload Node)
         </text>
 
-        <rect x="18" y="92" width="102" height="22" rx="4" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.25" />
-        <text x="26" y="106" fill="#DD7074" fontSize="8.5" fontFamily="monospace">
+        <rect x="18" y="92" width="102" height="22" rx="4" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.25" />
+        <text x="26" y="106" fill="#A68E94" fontSize="8.5" fontFamily="monospace">
           Q4_K_M QUANT
         </text>
-        <rect x="128" y="92" width="104" height="22" rx="4" fill="#E46B5E" fillOpacity="0.18" />
-        <text x="136" y="106" fill="#ECC3AB" fontSize="8.5" fontFamily="monospace" fontWeight="600">
+        <rect x="128" y="92" width="104" height="22" rx="4" fill="#C93B5B" fillOpacity="0.18" />
+        <text x="136" y="106" fill="#F5EEF0" fontSize="8.5" fontFamily="monospace" fontWeight="600">
           SHM RING BUF
         </text>
       </g>
@@ -212,12 +212,12 @@ function InferenceMeshVisual() {
       {/* Interconnect Bridge */}
       <path
         d="M 285 100 C 320 100, 320 100, 355 100"
-        stroke="#E46B5E"
+        stroke="#C93B5B"
         strokeWidth="2"
         strokeDasharray="4 4"
       />
-      <circle cx="320" cy="100" r="5" fill="#ECC3AB" stroke="#E46B5E" strokeWidth="2" className="animate-pulse" />
-      <text x="320" y="82" fill="#E46B5E" fontSize="8" fontFamily="monospace" fontWeight="700" textAnchor="middle" letterSpacing="0.08em">
+      <circle cx="320" cy="100" r="5" fill="#F5EEF0" stroke="#C93B5B" strokeWidth="2" className="animate-pulse" />
+      <text x="320" y="82" fill="#C93B5B" fontSize="8" fontFamily="monospace" fontWeight="700" textAnchor="middle" letterSpacing="0.08em">
         TAILSCALE MESH
       </text>
 
@@ -227,16 +227,16 @@ function InferenceMeshVisual() {
           width="570"
           height="140"
           rx="16"
-          fill="#120D0B"
+          fill="#0A0204"
           fillOpacity="0.94"
-          stroke="#E46B5E"
+          stroke="#C93B5B"
           strokeOpacity="0.32"
           strokeWidth="1"
         />
 
         {/* Left Side: 4x4 Quantized Matrix Weights Grid */}
         <g transform="translate(24, 20)">
-          <text x="0" y="12" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="700">
+          <text x="0" y="12" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="700">
             QUANTIZED TENSOR MATRIX [4x4]
           </text>
           {Array.from({ length: 16 }, (_, i) => {
@@ -251,8 +251,8 @@ function InferenceMeshVisual() {
                 width="18"
                 height="14"
                 rx="3"
-                fill={isHighlight ? "#E46B5E" : "#1C1410"}
-                stroke="#E46B5E"
+                fill={isHighlight ? "#C93B5B" : "#1C1410"}
+                stroke="#C93B5B"
                 strokeOpacity={isHighlight ? "0.9" : "0.22"}
               />
             );
@@ -261,30 +261,30 @@ function InferenceMeshVisual() {
 
         {/* Center: Live Performance Telemetry */}
         <g transform="translate(180, 24)">
-          <rect width="180" height="94" rx="8" fill="#0A0807" stroke="#DD7074" strokeOpacity="0.2" />
-          <text x="14" y="22" fill="#DD7074" fontSize="9" fontFamily="monospace">INTERCONNECT TELEMETRY</text>
-          <text x="14" y="44" fill="#ECC3AB" fontSize="14" fontFamily="monospace" fontWeight="800">
-            &lt; 0.8ms <tspan fontSize="9" fill="#E46B5E">IPC</tspan>
+          <rect width="180" height="94" rx="8" fill="#000000" stroke="#A68E94" strokeOpacity="0.2" />
+          <text x="14" y="22" fill="#A68E94" fontSize="9" fontFamily="monospace">INTERCONNECT TELEMETRY</text>
+          <text x="14" y="44" fill="#F5EEF0" fontSize="14" fontFamily="monospace" fontWeight="800">
+            &lt; 0.8ms <tspan fontSize="9" fill="#C93B5B">IPC</tspan>
           </text>
-          <text x="14" y="66" fill="#ECC3AB" fontSize="12" fontFamily="monospace" fontWeight="700">
-            42.4 <tspan fontSize="9" fill="#DD7074">tokens / sec</tspan>
+          <text x="14" y="66" fill="#F5EEF0" fontSize="12" fontFamily="monospace" fontWeight="700">
+            42.4 <tspan fontSize="9" fill="#A68E94">tokens / sec</tspan>
           </text>
-          <text x="14" y="83" fill="#E46B5E" fontSize="8.5" fontFamily="monospace" fontWeight="600">
+          <text x="14" y="83" fill="#C93B5B" fontSize="8.5" fontFamily="monospace" fontWeight="600">
             ZERO-COPY RING BUFFER
           </text>
         </g>
 
         {/* Right Side: Runtime Stack Badges */}
         <g transform="translate(385, 24)">
-          <rect width="165" height="94" rx="8" fill="#0A0807" stroke="#DD7074" strokeOpacity="0.2" />
-          <text x="14" y="20" fill="#DD7074" fontSize="8.5" fontFamily="monospace">RUNTIME ENGINE</text>
-          <text x="14" y="39" fill="#ECC3AB" fontSize="11" fontFamily="monospace" fontWeight="700">
+          <rect width="165" height="94" rx="8" fill="#000000" stroke="#A68E94" strokeOpacity="0.2" />
+          <text x="14" y="20" fill="#A68E94" fontSize="8.5" fontFamily="monospace">RUNTIME ENGINE</text>
+          <text x="14" y="39" fill="#F5EEF0" fontSize="11" fontFamily="monospace" fontWeight="700">
             llama.cpp + LibTorch
           </text>
-          <text x="14" y="58" fill="#DD7074" fontSize="9.5" fontFamily="monospace">
+          <text x="14" y="58" fill="#A68E94" fontSize="9.5" fontFamily="monospace">
             C++ / CUDA Kernels
           </text>
-          <text x="14" y="78" fill="#E46B5E" fontSize="9" fontFamily="monospace" fontWeight="600">
+          <text x="14" y="78" fill="#C93B5B" fontSize="9" fontFamily="monospace" fontWeight="600">
             CMake · FlashAttention-2
           </text>
         </g>
@@ -308,11 +308,11 @@ function AgentPipelineVisual() {
     >
       <defs>
         <pattern id="ml-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-          <circle cx="15" cy="15" r="0.8" fill="#E46B5E" fillOpacity="0.22" />
+          <circle cx="15" cy="15" r="0.8" fill="#C93B5B" fillOpacity="0.22" />
         </pattern>
         <linearGradient id="ml-spark-fill" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#E46B5E" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#E46B5E" stopOpacity="0.0" />
+          <stop offset="0%" stopColor="#C93B5B" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#C93B5B" stopOpacity="0.0" />
         </linearGradient>
       </defs>
 
@@ -324,57 +324,57 @@ function AgentPipelineVisual() {
           width="570"
           height="140"
           rx="16"
-          fill="#0A0807"
+          fill="#000000"
           fillOpacity="0.92"
-          stroke="#E46B5E"
+          stroke="#C93B5B"
           strokeOpacity="0.38"
           strokeWidth="1.2"
         />
-        <text x="20" y="24" fill="#ECC3AB" fontSize="11" fontFamily="monospace" fontWeight="700">
+        <text x="20" y="24" fill="#F5EEF0" fontSize="11" fontFamily="monospace" fontWeight="700">
           AUTONOMOUS MULTI-AGENT &amp; DEEP LEARNING PIPELINE
         </text>
 
         {/* 4 Pipeline Stages */}
         <g transform="translate(18, 44)">
           {/* Stage 1: Stream Ingestion */}
-          <rect width="118" height="74" rx="8" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.2" />
-          <text x="10" y="20" fill="#E46B5E" fontSize="9" fontFamily="monospace" fontWeight="700">STAGE 01</text>
-          <text x="10" y="38" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="600">Stream Ingest</text>
-          <text x="10" y="56" fill="#DD7074" fontSize="8.5" fontFamily="monospace">RF / 16-Frame Tensor</text>
+          <rect width="118" height="74" rx="8" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.2" />
+          <text x="10" y="20" fill="#C93B5B" fontSize="9" fontFamily="monospace" fontWeight="700">STAGE 01</text>
+          <text x="10" y="38" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="600">Stream Ingest</text>
+          <text x="10" y="56" fill="#A68E94" fontSize="8.5" fontFamily="monospace">RF / 16-Frame Tensor</text>
 
           {/* Arrow 1 */}
-          <path d="M 122 37 L 138 37" stroke="#E46B5E" strokeWidth="1.5" />
-          <polygon points="138,37 133,34 133,40" fill="#E46B5E" />
+          <path d="M 122 37 L 138 37" stroke="#C93B5B" strokeWidth="1.5" />
+          <polygon points="138,37 133,34 133,40" fill="#C93B5B" />
 
           {/* Stage 2: Feature Extractor */}
           <g transform="translate(144, 0)">
-            <rect width="118" height="74" rx="8" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.2" />
-            <text x="10" y="20" fill="#E46B5E" fontSize="9" fontFamily="monospace" fontWeight="700">STAGE 02</text>
-            <text x="10" y="38" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="600">Feature Fusion</text>
-            <text x="10" y="56" fill="#DD7074" fontSize="8.5" fontFamily="monospace">MTCNN + EfficientNet</text>
+            <rect width="118" height="74" rx="8" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.2" />
+            <text x="10" y="20" fill="#C93B5B" fontSize="9" fontFamily="monospace" fontWeight="700">STAGE 02</text>
+            <text x="10" y="38" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="600">Feature Fusion</text>
+            <text x="10" y="56" fill="#A68E94" fontSize="8.5" fontFamily="monospace">MTCNN + EfficientNet</text>
           </g>
 
           {/* Arrow 2 */}
-          <path d="M 268 37 L 284 37" stroke="#E46B5E" strokeWidth="1.5" />
-          <polygon points="284,37 279,34 279,40" fill="#E46B5E" />
+          <path d="M 268 37 L 284 37" stroke="#C93B5B" strokeWidth="1.5" />
+          <polygon points="284,37 279,34 279,40" fill="#C93B5B" />
 
           {/* Stage 3: Agentic Reasoning */}
           <g transform="translate(290, 0)">
-            <rect width="118" height="74" rx="8" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.2" />
-            <text x="10" y="20" fill="#E46B5E" fontSize="9" fontFamily="monospace" fontWeight="700">STAGE 03</text>
-            <text x="10" y="38" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="600">Agent Reasoning</text>
-            <text x="10" y="56" fill="#ECC3AB" fontSize="8.5" fontFamily="monospace">Tool Orchestrator</text>
+            <rect width="118" height="74" rx="8" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.2" />
+            <text x="10" y="20" fill="#C93B5B" fontSize="9" fontFamily="monospace" fontWeight="700">STAGE 03</text>
+            <text x="10" y="38" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="600">Agent Reasoning</text>
+            <text x="10" y="56" fill="#F5EEF0" fontSize="8.5" fontFamily="monospace">Tool Orchestrator</text>
           </g>
 
           {/* Arrow 3 */}
-          <path d="M 414 37 L 430 37" stroke="#E46B5E" strokeWidth="1.5" />
-          <polygon points="430,37 425,34 425,40" fill="#E46B5E" />
+          <path d="M 414 37 L 430 37" stroke="#C93B5B" strokeWidth="1.5" />
+          <polygon points="430,37 425,34 425,40" fill="#C93B5B" />
 
           {/* Stage 4: Calibrated Decision */}
           <g transform="translate(436, 0)">
-            <rect width="98" height="74" rx="8" fill="#E46B5E" fillOpacity="0.18" stroke="#E46B5E" strokeOpacity="0.65" />
-            <text x="10" y="20" fill="#ECC3AB" fontSize="9" fontFamily="monospace" fontWeight="700">STAGE 04</text>
-            <text x="10" y="38" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="700">Calibrated</text>
+            <rect width="98" height="74" rx="8" fill="#C93B5B" fillOpacity="0.18" stroke="#C93B5B" strokeOpacity="0.65" />
+            <text x="10" y="20" fill="#F5EEF0" fontSize="9" fontFamily="monospace" fontWeight="700">STAGE 04</text>
+            <text x="10" y="38" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="700">Calibrated</text>
             <text x="10" y="56" fill="#27C93F" fontSize="8.5" fontFamily="monospace" fontWeight="600">Conf: 0.948</text>
           </g>
         </g>
@@ -386,20 +386,20 @@ function AgentPipelineVisual() {
           width="570"
           height="136"
           rx="16"
-          fill="#120D0B"
+          fill="#0A0204"
           fillOpacity="0.94"
-          stroke="#DD7074"
+          stroke="#A68E94"
           strokeOpacity="0.24"
           strokeWidth="1"
         />
 
         {/* Left: Temporal Confidence Sparkline */}
         <g transform="translate(20, 20)">
-          <text x="0" y="12" fill="#ECC3AB" fontSize="10" fontFamily="monospace" fontWeight="700">
+          <text x="0" y="12" fill="#F5EEF0" fontSize="10" fontFamily="monospace" fontWeight="700">
             TEMPORAL CONFIDENCE TELEMETRY
           </text>
           <g transform="translate(0, 22)">
-            <rect width="180" height="72" rx="6" fill="#0A0807" stroke="#DD7074" strokeOpacity="0.2" />
+            <rect width="180" height="72" rx="6" fill="#000000" stroke="#A68E94" strokeOpacity="0.2" />
             {/* Sparkline path */}
             <path
               d="M 12 55 Q 32 50, 52 38 T 92 42 T 132 20 L 168 18 L 168 64 L 12 64 Z"
@@ -407,12 +407,12 @@ function AgentPipelineVisual() {
             />
             <path
               d="M 12 55 Q 32 50, 52 38 T 92 42 T 132 20 L 168 18"
-              stroke="#E46B5E"
+              stroke="#C93B5B"
               strokeWidth="2"
               fill="none"
             />
             <circle cx="168" cy="18" r="3.5" fill="#27C93F" />
-            <text x="14" y="62" fill="#ECC3AB" fontSize="8.5" fontFamily="monospace" fontWeight="700">
+            <text x="14" y="62" fill="#F5EEF0" fontSize="8.5" fontFamily="monospace" fontWeight="700">
               16-FRAME SPATIAL WINDOW · 14ms
             </text>
           </g>
@@ -420,19 +420,19 @@ function AgentPipelineVisual() {
 
         {/* Center: Autonomous State Loop */}
         <g transform="translate(225, 20)">
-          <text x="0" y="12" fill="#ECC3AB" fontSize="10" fontFamily="monospace" fontWeight="700">
+          <text x="0" y="12" fill="#F5EEF0" fontSize="10" fontFamily="monospace" fontWeight="700">
             AGENT REASONING STATE MACHINE
           </text>
           <g transform="translate(0, 22)">
-            <rect width="185" height="72" rx="6" fill="#0A0807" stroke="#E46B5E" strokeOpacity="0.3" />
+            <rect width="185" height="72" rx="6" fill="#000000" stroke="#C93B5B" strokeOpacity="0.3" />
             <g transform="translate(12, 18)">
-              <rect width="72" height="20" rx="4" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.25" />
-              <text x="8" y="14" fill="#DD7074" fontSize="8" fontFamily="monospace">[01] INGEST</text>
+              <rect width="72" height="20" rx="4" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.25" />
+              <text x="8" y="14" fill="#A68E94" fontSize="8" fontFamily="monospace">[01] INGEST</text>
 
-              <rect x="80" y="0" width="82" height="20" rx="4" fill="#E46B5E" fillOpacity="0.2" stroke="#E46B5E" strokeOpacity="0.5" />
-              <text x="88" y="14" fill="#ECC3AB" fontSize="8" fontFamily="monospace" fontWeight="600">[02] TRIAGE</text>
+              <rect x="80" y="0" width="82" height="20" rx="4" fill="#C93B5B" fillOpacity="0.2" stroke="#C93B5B" strokeOpacity="0.5" />
+              <text x="88" y="14" fill="#F5EEF0" fontSize="8" fontFamily="monospace" fontWeight="600">[02] TRIAGE</text>
             </g>
-            <text x="12" y="56" fill="#ECC3AB" fontSize="8.5" fontFamily="monospace" fontWeight="600">
+            <text x="12" y="56" fill="#F5EEF0" fontSize="8.5" fontFamily="monospace" fontWeight="600">
               DETERMINISTIC VERIFICATION LOOP
             </text>
           </g>
@@ -440,13 +440,13 @@ function AgentPipelineVisual() {
 
         {/* Right: ML Frameworks */}
         <g transform="translate(435, 20)">
-          <text x="0" y="12" fill="#ECC3AB" fontSize="10" fontFamily="monospace" fontWeight="700">
+          <text x="0" y="12" fill="#F5EEF0" fontSize="10" fontFamily="monospace" fontWeight="700">
             MODEL ARCHITECTURE
           </text>
-          <rect x="0" y="22" width="118" height="72" rx="6" fill="#0A0807" stroke="#DD7074" strokeOpacity="0.2" />
-          <text x="10" y="40" fill="#ECC3AB" fontSize="9.5" fontFamily="monospace" fontWeight="700">PyTorch JIT</text>
-          <text x="10" y="56" fill="#DD7074" fontSize="8.5" fontFamily="monospace">Bi-LSTM + MTCNN</text>
-          <text x="10" y="74" fill="#E46B5E" fontSize="8.5" fontFamily="monospace" fontWeight="600">Hugging Face</text>
+          <rect x="0" y="22" width="118" height="72" rx="6" fill="#000000" stroke="#A68E94" strokeOpacity="0.2" />
+          <text x="10" y="40" fill="#F5EEF0" fontSize="9.5" fontFamily="monospace" fontWeight="700">PyTorch JIT</text>
+          <text x="10" y="56" fill="#A68E94" fontSize="8.5" fontFamily="monospace">Bi-LSTM + MTCNN</text>
+          <text x="10" y="74" fill="#C93B5B" fontSize="8.5" fontFamily="monospace" fontWeight="600">Hugging Face</text>
         </g>
       </g>
     </svg>
@@ -468,11 +468,11 @@ function SpatialCanvasVisual() {
     >
       <defs>
         <pattern id="spatial-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-          <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#DD7074" strokeWidth="0.5" strokeOpacity="0.06" />
+          <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#A68E94" strokeWidth="0.5" strokeOpacity="0.06" />
         </pattern>
         <linearGradient id="spatial-curve-fill" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#E46B5E" stopOpacity="0.35" />
-          <stop offset="100%" stopColor="#E46B5E" stopOpacity="0.0" />
+          <stop offset="0%" stopColor="#C93B5B" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#C93B5B" stopOpacity="0.0" />
         </linearGradient>
       </defs>
 
@@ -484,18 +484,18 @@ function SpatialCanvasVisual() {
           width="265"
           height="288"
           rx="16"
-          fill="#0A0807"
+          fill="#000000"
           fillOpacity="0.92"
-          stroke="#E46B5E"
+          stroke="#C93B5B"
           strokeOpacity="0.38"
           strokeWidth="1.2"
         />
-        <text x="18" y="26" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="700">
+        <text x="18" y="26" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="700">
           3D SCENE &amp; CANVAS // THREE.JS
         </text>
 
         {/* Isometric Grid Floor */}
-        <g stroke="#DD7074" strokeOpacity="0.18" strokeWidth="1">
+        <g stroke="#A68E94" strokeOpacity="0.18" strokeWidth="1">
           <line x1="42" y1="210" x2="224" y2="210" />
           <line x1="62" y1="190" x2="204" y2="190" />
           <line x1="82" y1="170" x2="184" y2="170" />
@@ -505,7 +505,7 @@ function SpatialCanvasVisual() {
         </g>
 
         {/* 3D Wireframe Cube with Vertices */}
-        <g stroke="#E46B5E" strokeWidth="1.5">
+        <g stroke="#C93B5B" strokeWidth="1.5">
           {/* Back Face */}
           <rect x="98" y="78" width="70" height="70" fill="none" strokeOpacity="0.3" strokeDasharray="3 3" />
           {/* Connecting Depth Edges */}
@@ -514,24 +514,24 @@ function SpatialCanvasVisual() {
           <line x1="78" y1="178" x2="98" y2="148" strokeOpacity="0.5" />
           <line x1="148" y1="178" x2="168" y2="148" strokeOpacity="0.5" />
           {/* Front Face */}
-          <rect x="78" y="108" width="70" height="70" fill="#E46B5E" fillOpacity="0.08" stroke="#ECC3AB" strokeWidth="1.6" />
+          <rect x="78" y="108" width="70" height="70" fill="#C93B5B" fillOpacity="0.08" stroke="#F5EEF0" strokeWidth="1.6" />
         </g>
 
         {/* Vertices */}
-        <circle cx="78" cy="108" r="3.5" fill="#E46B5E" />
-        <circle cx="148" cy="108" r="3.5" fill="#ECC3AB" />
-        <circle cx="78" cy="178" r="3.5" fill="#ECC3AB" />
-        <circle cx="148" cy="178" r="3.5" fill="#E46B5E" />
+        <circle cx="78" cy="108" r="3.5" fill="#C93B5B" />
+        <circle cx="148" cy="108" r="3.5" fill="#F5EEF0" />
+        <circle cx="78" cy="178" r="3.5" fill="#F5EEF0" />
+        <circle cx="148" cy="178" r="3.5" fill="#C93B5B" />
 
         {/* Camera Euler Angles */}
-        <text x="18" y="234" fill="#DD7074" fontSize="8.5" fontFamily="monospace">
+        <text x="18" y="234" fill="#A68E94" fontSize="8.5" fontFamily="monospace">
           Euler: [18.4°, -24.8°, 0.0°] · OrbitControls
         </text>
 
         {/* WebGL Telemetry Pill */}
-        <rect x="18" y="248" width="228" height="24" rx="6" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.2" />
+        <rect x="18" y="248" width="228" height="24" rx="6" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.2" />
         <circle cx="30" cy="260" r="3" fill="#27C93F" />
-        <text x="40" y="263" fill="#ECC3AB" fontSize="9" fontFamily="monospace" fontWeight="600">
+        <text x="40" y="263" fill="#F5EEF0" fontSize="9" fontFamily="monospace" fontWeight="600">
           60 FPS · SHADER PASS · FBO MASK
         </text>
       </g>
@@ -542,22 +542,22 @@ function SpatialCanvasVisual() {
           width="280"
           height="288"
           rx="16"
-          fill="#0A0807"
+          fill="#000000"
           fillOpacity="0.92"
-          stroke="#DD7074"
+          stroke="#A68E94"
           strokeOpacity="0.25"
           strokeWidth="1.2"
         />
-        <text x="18" y="26" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="700">
+        <text x="18" y="26" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="700">
           FRAMER MOTION // BEZIER CURVE
         </text>
 
         {/* Curve Graph Grid */}
         <g transform="translate(25, 44)">
-          <rect width="230" height="126" rx="8" fill="#120D0B" stroke="#DD7074" strokeOpacity="0.15" />
+          <rect width="230" height="126" rx="8" fill="#0A0204" stroke="#A68E94" strokeOpacity="0.15" />
           {/* Axis Ticks */}
-          <line x1="20" y1="106" x2="210" y2="106" stroke="#DD7074" strokeOpacity="0.2" />
-          <line x1="20" y1="20" x2="20" y2="106" stroke="#DD7074" strokeOpacity="0.2" />
+          <line x1="20" y1="106" x2="210" y2="106" stroke="#A68E94" strokeOpacity="0.2" />
+          <line x1="20" y1="20" x2="20" y2="106" stroke="#A68E94" strokeOpacity="0.2" />
 
           {/* Area Under Curve */}
           <path
@@ -568,38 +568,38 @@ function SpatialCanvasVisual() {
           {/* The Cubic Bezier Curve: (0.22, 1, 0.36, 1) */}
           <path
             d="M 20 106 C 65 20, 95 20, 210 20"
-            stroke="#E46B5E"
+            stroke="#C93B5B"
             strokeWidth="2.5"
             strokeLinecap="round"
           />
 
           {/* Control Point Handles */}
-          <line x1="20" y1="106" x2="65" y2="20" stroke="#ECC3AB" strokeOpacity="0.4" strokeDasharray="2 2" />
-          <circle cx="65" cy="20" r="3.5" fill="#ECC3AB" />
+          <line x1="20" y1="106" x2="65" y2="20" stroke="#F5EEF0" strokeOpacity="0.4" strokeDasharray="2 2" />
+          <circle cx="65" cy="20" r="3.5" fill="#F5EEF0" />
 
-          <line x1="210" y1="20" x2="95" y2="20" stroke="#ECC3AB" strokeOpacity="0.4" strokeDasharray="2 2" />
-          <circle cx="95" cy="20" r="3.5" fill="#E46B5E" />
+          <line x1="210" y1="20" x2="95" y2="20" stroke="#F5EEF0" strokeOpacity="0.4" strokeDasharray="2 2" />
+          <circle cx="95" cy="20" r="3.5" fill="#C93B5B" />
         </g>
 
         {/* Bezier Formula Tag */}
-        <rect x="25" y="186" width="230" height="24" rx="6" fill="#140D0A" stroke="#E46B5E" strokeOpacity="0.3" />
-        <text x="35" y="202" fill="#ECC3AB" fontSize="9" fontFamily="monospace" fontWeight="600">
+        <rect x="25" y="186" width="230" height="24" rx="6" fill="#140D0A" stroke="#C93B5B" strokeOpacity="0.3" />
+        <text x="35" y="202" fill="#F5EEF0" fontSize="9" fontFamily="monospace" fontWeight="600">
           ease: [0.22, 1, 0.36, 1] · 350ms
         </text>
 
         {/* Responsive Viewport Pills */}
         <g transform="translate(25, 224)">
-          <rect width="70" height="22" rx="4" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.2" />
-          <text x="10" y="15" fill="#DD7074" fontSize="8" fontFamily="monospace">MOBILE 390</text>
+          <rect width="70" height="22" rx="4" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.2" />
+          <text x="10" y="15" fill="#A68E94" fontSize="8" fontFamily="monospace">MOBILE 390</text>
 
-          <rect x="78" y="0" width="70" height="22" rx="4" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.2" />
-          <text x="88" y="15" fill="#DD7074" fontSize="8" fontFamily="monospace">TABLET 768</text>
+          <rect x="78" y="0" width="70" height="22" rx="4" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.2" />
+          <text x="88" y="15" fill="#A68E94" fontSize="8" fontFamily="monospace">TABLET 768</text>
 
-          <rect x="156" y="0" width="74" height="22" rx="4" fill="#E46B5E" fillOpacity="0.2" stroke="#E46B5E" strokeOpacity="0.5" />
-          <text x="164" y="15" fill="#ECC3AB" fontSize="8" fontFamily="monospace" fontWeight="700">1720px</text>
+          <rect x="156" y="0" width="74" height="22" rx="4" fill="#C93B5B" fillOpacity="0.2" stroke="#C93B5B" strokeOpacity="0.5" />
+          <text x="164" y="15" fill="#F5EEF0" fontSize="8" fontFamily="monospace" fontWeight="700">1720px</text>
         </g>
 
-        <text x="25" y="268" fill="#DD7074" fontSize="8.5" fontFamily="monospace">
+        <text x="25" y="268" fill="#A68E94" fontSize="8.5" fontFamily="monospace">
           Three.js Canvas + React Native + Figma
         </text>
       </g>
@@ -622,7 +622,7 @@ function CloudTopologyVisual() {
     >
       <defs>
         <pattern id="cloud-grid" width="32" height="32" patternUnits="userSpaceOnUse">
-          <circle cx="16" cy="16" r="0.8" fill="#E46B5E" fillOpacity="0.25" />
+          <circle cx="16" cy="16" r="0.8" fill="#C93B5B" fillOpacity="0.25" />
         </pattern>
       </defs>
 
@@ -634,18 +634,18 @@ function CloudTopologyVisual() {
           width="570"
           height="146"
           rx="16"
-          fill="#0A0807"
+          fill="#000000"
           fillOpacity="0.92"
-          stroke="#E46B5E"
+          stroke="#C93B5B"
           strokeOpacity="0.38"
           strokeWidth="1.2"
         />
 
         {/* Edge CDN Ingress Header */}
         <g transform="translate(18, 16)">
-          <rect width="534" height="28" rx="6" fill="#140D0A" stroke="#DD7074" strokeOpacity="0.2" />
+          <rect width="534" height="28" rx="6" fill="#140D0A" stroke="#A68E94" strokeOpacity="0.2" />
           <circle cx="14" cy="14" r="3" fill="#27C93F" />
-          <text x="26" y="18" fill="#ECC3AB" fontSize="9" fontFamily="monospace" fontWeight="700">
+          <text x="26" y="18" fill="#F5EEF0" fontSize="9" fontFamily="monospace" fontWeight="700">
             EDGE INGRESS // CLOUDFLARE CDN · TLS 1.3 · HTTP/3 · RATE LIMIT 10k req/s
           </text>
         </g>
@@ -653,17 +653,17 @@ function CloudTopologyVisual() {
         {/* Dual Microservices: Rust Axum & Python FastAPI */}
         <g transform="translate(18, 54)">
           {/* Microservice A: Rust Axum */}
-          <rect width="260" height="74" rx="8" fill="#120D0B" stroke="#E46B5E" strokeOpacity="0.4" />
-          <text x="12" y="20" fill="#E46B5E" fontSize="9" fontFamily="monospace" fontWeight="700">SERVICE 01 // RUST AXUM</text>
-          <text x="12" y="38" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="600">Tokio Async Worker Daemon</text>
-          <text x="12" y="56" fill="#DD7074" fontSize="8.5" fontFamily="monospace">16 Worker Threads · p99 &lt; 0.4ms</text>
+          <rect width="260" height="74" rx="8" fill="#0A0204" stroke="#C93B5B" strokeOpacity="0.4" />
+          <text x="12" y="20" fill="#C93B5B" fontSize="9" fontFamily="monospace" fontWeight="700">SERVICE 01 // RUST AXUM</text>
+          <text x="12" y="38" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="600">Tokio Async Worker Daemon</text>
+          <text x="12" y="56" fill="#A68E94" fontSize="8.5" fontFamily="monospace">16 Worker Threads · p99 &lt; 0.4ms</text>
 
           {/* Microservice B: Python FastAPI */}
           <g transform="translate(274, 0)">
-            <rect width="260" height="74" rx="8" fill="#120D0B" stroke="#DD7074" strokeOpacity="0.25" />
-            <text x="12" y="20" fill="#E46B5E" fontSize="9" fontFamily="monospace" fontWeight="700">SERVICE 02 // FASTAPI</text>
-            <text x="12" y="38" fill="#ECC3AB" fontSize="10.5" fontFamily="monospace" fontWeight="600">Uvicorn ASGI Connection Pool</text>
-            <text x="12" y="56" fill="#DD7074" fontSize="8.5" fontFamily="monospace">Pydantic V2 · OpenAPI 3.1 Spec</text>
+            <rect width="260" height="74" rx="8" fill="#0A0204" stroke="#A68E94" strokeOpacity="0.25" />
+            <text x="12" y="20" fill="#C93B5B" fontSize="9" fontFamily="monospace" fontWeight="700">SERVICE 02 // FASTAPI</text>
+            <text x="12" y="38" fill="#F5EEF0" fontSize="10.5" fontFamily="monospace" fontWeight="600">Uvicorn ASGI Connection Pool</text>
+            <text x="12" y="56" fill="#A68E94" fontSize="8.5" fontFamily="monospace">Pydantic V2 · OpenAPI 3.1 Spec</text>
           </g>
         </g>
       </g>
@@ -674,44 +674,44 @@ function CloudTopologyVisual() {
           width="570"
           height="126"
           rx="16"
-          fill="#120D0B"
+          fill="#0A0204"
           fillOpacity="0.94"
-          stroke="#DD7074"
+          stroke="#A68E94"
           strokeOpacity="0.24"
           strokeWidth="1"
         />
 
         {/* Database Store */}
         <g transform="translate(20, 20)">
-          <text x="0" y="12" fill="#ECC3AB" fontSize="10" fontFamily="monospace" fontWeight="700">
+          <text x="0" y="12" fill="#F5EEF0" fontSize="10" fontFamily="monospace" fontWeight="700">
             DISTRIBUTED DATA STORE
           </text>
-          <rect x="0" y="22" width="160" height="66" rx="6" fill="#0A0807" stroke="#DD7074" strokeOpacity="0.2" />
-          <text x="10" y="42" fill="#ECC3AB" fontSize="9.5" fontFamily="monospace" fontWeight="600">MongoDB Atlas</text>
-          <text x="10" y="60" fill="#DD7074" fontSize="8.5" fontFamily="monospace">Replica Set (3 Nodes)</text>
-          <text x="10" y="76" fill="#E46B5E" fontSize="8.5" fontFamily="monospace">Redis Ephemeral Cache</text>
+          <rect x="0" y="22" width="160" height="66" rx="6" fill="#000000" stroke="#A68E94" strokeOpacity="0.2" />
+          <text x="10" y="42" fill="#F5EEF0" fontSize="9.5" fontFamily="monospace" fontWeight="600">MongoDB Atlas</text>
+          <text x="10" y="60" fill="#A68E94" fontSize="8.5" fontFamily="monospace">Replica Set (3 Nodes)</text>
+          <text x="10" y="76" fill="#C93B5B" fontSize="8.5" fontFamily="monospace">Redis Ephemeral Cache</text>
         </g>
 
         {/* Terraform IaC Spec */}
         <g transform="translate(200, 20)">
-          <text x="0" y="12" fill="#ECC3AB" fontSize="10" fontFamily="monospace" fontWeight="700">
+          <text x="0" y="12" fill="#F5EEF0" fontSize="10" fontFamily="monospace" fontWeight="700">
             TERRAFORM INFRASTRUCTURE AS CODE
           </text>
-          <rect x="0" y="22" width="170" height="66" rx="6" fill="#0A0807" stroke="#E46B5E" strokeOpacity="0.3" />
+          <rect x="0" y="22" width="170" height="66" rx="6" fill="#000000" stroke="#C93B5B" strokeOpacity="0.3" />
           <text x="12" y="42" fill="#27C93F" fontSize="9" fontFamily="monospace">+ 4 to add, 0 to change</text>
-          <text x="12" y="60" fill="#DD7074" fontSize="8.5" fontFamily="monospace">AWS ECS · Fargate · VPC</text>
-          <text x="12" y="76" fill="#ECC3AB" fontSize="8.5" fontFamily="monospace" fontWeight="600">Docker Compose Orchestration</text>
+          <text x="12" y="60" fill="#A68E94" fontSize="8.5" fontFamily="monospace">AWS ECS · Fargate · VPC</text>
+          <text x="12" y="76" fill="#F5EEF0" fontSize="8.5" fontFamily="monospace" fontWeight="600">Docker Compose Orchestration</text>
         </g>
 
         {/* CI/CD & Health */}
         <g transform="translate(390, 20)">
-          <text x="0" y="12" fill="#ECC3AB" fontSize="10" fontFamily="monospace" fontWeight="700">
+          <text x="0" y="12" fill="#F5EEF0" fontSize="10" fontFamily="monospace" fontWeight="700">
             AUTOMATED CI/CD &amp; HEALTH
           </text>
-          <rect x="0" y="22" width="160" height="66" rx="6" fill="#0A0807" stroke="#DD7074" strokeOpacity="0.2" />
-          <text x="12" y="42" fill="#ECC3AB" fontSize="9" fontFamily="monospace">Jenkins Build #142</text>
+          <rect x="0" y="22" width="160" height="66" rx="6" fill="#000000" stroke="#A68E94" strokeOpacity="0.2" />
+          <text x="12" y="42" fill="#F5EEF0" fontSize="9" fontFamily="monospace">Jenkins Build #142</text>
           <text x="12" y="60" fill="#27C93F" fontSize="8.5" fontFamily="monospace" fontWeight="600">Pipeline Passed (0m 48s)</text>
-          <text x="12" y="76" fill="#E46B5E" fontSize="8.5" fontFamily="monospace" fontWeight="600">UPTIME: 99.99% · 24/7</text>
+          <text x="12" y="76" fill="#C93B5B" fontSize="8.5" fontFamily="monospace" fontWeight="600">UPTIME: 99.99% · 24/7</text>
         </g>
       </g>
     </svg>
@@ -776,7 +776,7 @@ export function WhatIDoSection() {
   return (
     <section
       id="what-i-do"
-      className="relative z-10 w-full bg-transparent text-[#ECC3AB] py-24 md:py-36"
+      className="relative z-10 w-full bg-transparent text-[#F5EEF0] py-24 md:py-36"
     >
       {/* Anchor for backward-compatible #capabilities navigation */}
       <span id="capabilities" className="absolute -top-28 pointer-events-none" />
@@ -786,7 +786,7 @@ export function WhatIDoSection() {
         <div
           className="absolute top-1/4 -left-20 w-[600px] h-[600px] rounded-full pointer-events-none"
           style={{
-            background: "radial-gradient(circle at 20% 30%, rgba(228, 107, 94, 0.08), transparent 60%)",
+            background: "radial-gradient(circle at 20% 30%, rgba(158, 11, 46, 0.08), transparent 60%)",
           }}
         />
       </div>
@@ -801,8 +801,8 @@ export function WhatIDoSection() {
             {/* Top Group: Section Kicker & Giant Index Numeral */}
             <div>
               {/* Section Kicker */}
-              <p className="font-mono text-xs tracking-[0.16em] uppercase text-[#DD7074] mb-4 flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
+              <p className="font-mono text-xs tracking-[0.16em] uppercase text-[#A68E94] mb-4 flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
                 <span>CAPABILITIES | WHAT I DO</span>
               </p>
 
@@ -815,7 +815,7 @@ export function WhatIDoSection() {
                     animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                     exit={reducedMotion ? undefined : { y: -32, opacity: 0, filter: "blur(6px)" }}
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    className="block font-extrabold text-[6.5rem] sm:text-[8rem] lg:text-[9.5rem] leading-none tracking-tighter select-none text-[#ECC3AB] drop-shadow-[0_8px_32px_rgba(228,107,94,0.18)]"
+                    className="block font-extrabold text-[6.5rem] sm:text-[8rem] lg:text-[9.5rem] leading-none tracking-tighter select-none text-[#F5EEF0] drop-shadow-[0_8px_32px_rgba(228,107,94,0.18)]"
                   >
                     {activeCard.number}
                   </motion.span>
@@ -827,17 +827,17 @@ export function WhatIDoSection() {
             <div className="pt-8">
               {/* Split Heading: "What" (sans) + "i do" (editorial serif italic) */}
               <h2 className="text-5xl md:text-6xl tracking-tight leading-[1.05]">
-                <span className="font-bold text-[#ECC3AB]">What </span>
-                <span className="font-serif italic font-normal text-[#E46B5E]">i do</span>
+                <span className="font-bold text-[#F5EEF0]">What </span>
+                <span className="font-serif italic font-normal text-[#C93B5B]">i do</span>
               </h2>
 
               {/* Active Category Pill with Smooth Morphing Width & Label Slide */}
               <motion.div
                 layout
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-[#C3181E] text-[#ECC3AB] px-7 py-3.5 rounded-full font-mono text-sm md:text-base font-semibold tracking-tight border border-[#E44847]/60 shadow-[0_4px_24px_-4px_rgba(195,24,30,0.55)] inline-flex items-center gap-2.5 w-fit mt-6 select-none"
+                className="bg-[#6D001A] text-[#F5EEF0] px-7 py-3.5 rounded-full font-mono text-sm md:text-base font-semibold tracking-tight border border-[#9E0B2E]/60 shadow-[0_4px_24px_-4px_rgba(195,24,30,0.55)] inline-flex items-center gap-2.5 w-fit mt-6 select-none"
               >
-                <span className="w-2 h-2 rounded-full bg-[#ECC3AB] animate-pulse shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#F5EEF0] animate-pulse shrink-0" />
                 <div className="overflow-hidden h-6 flex items-center">
                   <AnimatePresence mode="wait">
                     <motion.span
@@ -859,10 +859,10 @@ export function WhatIDoSection() {
                 <a
                   href="#work"
                   data-cursor="pointer"
-                  className="bg-[#0A0807]/75 backdrop-blur-md border border-[rgba(221,112,116,0.25)] text-[#ECC3AB] px-6 py-2.5 rounded-full font-mono text-xs font-semibold tracking-[0.12em] uppercase hover:bg-[#C3181E] hover:text-[#ECC3AB] hover:border-[#E44847]/60 hover:shadow-[0_4px_20px_-4px_rgba(195,24,30,0.5)] transition-all duration-300 inline-flex items-center gap-2 w-fit mt-8 group cursor-pointer"
+                  className="bg-[#000000]/75 backdrop-blur-md border border-[rgba(221,112,116,0.25)] text-[#F5EEF0] px-6 py-2.5 rounded-full font-mono text-xs font-semibold tracking-[0.12em] uppercase hover:bg-[#6D001A] hover:text-[#F5EEF0] hover:border-[#9E0B2E]/60 hover:shadow-[0_4px_20px_-4px_rgba(195,24,30,0.5)] transition-all duration-300 inline-flex items-center gap-2 w-fit mt-8 group cursor-pointer"
                 >
                   <span>VIEW ALL WORKS</span>
-                  <ArrowUpRight className="w-4 h-4 text-[#DD7074] group-hover:text-[#ECC3AB] transition-all duration-250 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ArrowUpRight className="w-4 h-4 text-[#A68E94] group-hover:text-[#F5EEF0] transition-all duration-250 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </div>
             </div>
@@ -885,14 +885,14 @@ export function WhatIDoSection() {
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: false, amount: 0.2 }}
                   transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className={`bg-[#0A0807]/85 backdrop-blur-xl rounded-[28px] p-7 sm:p-10 md:p-12 transition-all duration-500 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.75)] relative group overflow-hidden border ${
+                  className={`bg-[#000000]/85 backdrop-blur-xl rounded-[28px] p-7 sm:p-10 md:p-12 transition-all duration-500 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.75)] relative group overflow-hidden border ${
                     isActive
-                      ? "border-[#E46B5E]/50 shadow-[inset_0_1px_0_0_rgba(236,195,171,0.15)]"
-                      : "border-[rgba(221,112,116,0.16)] hover:border-[#E46B5E]/40"
+                      ? "border-[#C93B5B]/50 shadow-[inset_0_1px_0_0_rgba(236,195,171,0.15)]"
+                      : "border-[rgba(221,112,116,0.16)] hover:border-[#C93B5B]/40"
                   }`}
                 >
                   {/* Card Media Header / Interactive Visual Preview */}
-                  <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-8 bg-[#0A0807] border border-[rgba(221,112,116,0.16)] relative group-hover:border-[#E46B5E]/35 transition-colors duration-500">
+                  <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-8 bg-[#000000] border border-[rgba(221,112,116,0.16)] relative group-hover:border-[#C93B5B]/35 transition-colors duration-500">
                     <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-700 ease-out overflow-hidden">
                       {card.image ? (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -910,17 +910,17 @@ export function WhatIDoSection() {
                   </div>
 
                   {/* Card Eyebrow */}
-                  <p className="font-mono text-xs md:text-sm font-medium tracking-[0.15em] uppercase text-[#E46B5E] mb-3">
+                  <p className="font-mono text-xs md:text-sm font-medium tracking-[0.15em] uppercase text-[#C93B5B] mb-3">
                     {card.eyebrow}
                   </p>
 
                   {/* Card Title */}
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-sans font-medium text-[#ECC3AB] tracking-[-0.035em] leading-[1.12] mb-5">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-sans font-medium text-[#F5EEF0] tracking-[-0.035em] leading-[1.12] mb-5">
                     {card.title}
                   </h3>
 
                   {/* Card Description */}
-                  <p className="text-base md:text-lg text-[#E69683]/85 leading-relaxed mb-9 max-w-2xl">
+                  <p className="text-base md:text-lg text-[#A68E94]/85 leading-relaxed mb-9 max-w-2xl">
                     {card.description}
                   </p>
 
@@ -930,7 +930,7 @@ export function WhatIDoSection() {
                       <span
                         key={tag}
                         data-cursor="pointer"
-                        className="px-4 py-1.5 rounded-full border border-[rgba(221,112,116,0.20)] bg-[#0A0807]/75 font-mono text-[#ECC3AB] text-xs md:text-sm font-medium hover:border-[#E46B5E]/60 hover:bg-[#E46B5E]/10 hover:text-[#ECC3AB] transition-all duration-200 cursor-pointer select-none"
+                        className="px-4 py-1.5 rounded-full border border-[rgba(221,112,116,0.20)] bg-[#000000]/75 font-mono text-[#F5EEF0] text-xs md:text-sm font-medium hover:border-[#C93B5B]/60 hover:bg-[#C93B5B]/10 hover:text-[#F5EEF0] transition-all duration-200 cursor-pointer select-none"
                       >
                         {tag}
                       </span>

@@ -531,26 +531,26 @@ export function CustomCursor() {
 
           // Colors & Borders
           backgroundColor: isDrag
-            ? "#C3181E"
+            ? "#6D001A"
             : isView && capsuleLabel.startsWith("*")
-            ? "rgba(10, 8, 7, 0.95)"
+            ? "rgba(0, 0, 0, 0.95)"
             : isCapsule
-            ? "rgba(10, 8, 7, 0.94)"
+            ? "rgba(0, 0, 0, 0.94)"
             : isInvert
-            ? "#ECC3AB"
+            ? "#F5EEF0"
             : isLink
-            ? "#ECC3AB"
+            ? "#F5EEF0"
             : "transparent",
 
           border: isDrag
             ? "1px solid transparent"
             : isView && capsuleLabel.startsWith("*")
-            ? "1px solid rgba(228, 107, 94, 0.5)"
+            ? "1px solid rgba(158, 11, 46, 0.5)"
             : isCapsule
-            ? "1px solid rgba(221, 112, 116, 0.25)"
+            ? "1px solid rgba(38, 16, 21, 0.25)"
             : isLink || isInvert
             ? "1px solid transparent"
-            : "1px solid rgba(221, 112, 116, 0.4)",
+            : "1px solid rgba(38, 16, 21, 0.4)",
 
           // Mix Blend Mode: difference for wordmark and links; normal for capsule and default
           mixBlendMode: isInvert || isLink ? "difference" : "normal",
@@ -562,8 +562,8 @@ export function CustomCursor() {
       >
         {/* Drag Capsule Content (Crimson Accent Variant) */}
         {isDrag && (
-          <div className="flex items-center gap-1.5 font-mono text-[11px] font-semibold tracking-wider text-[#ECC3AB] uppercase">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#ECC3AB]" />
+          <div className="flex items-center gap-1.5 font-mono text-[11px] font-semibold tracking-wider text-[#F5EEF0] uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#F5EEF0]" />
             <span>{capsuleLabel}</span>
           </div>
         )}
@@ -573,8 +573,8 @@ export function CustomCursor() {
           <span
             className={`font-mono text-[11px] whitespace-nowrap ${
               capsuleLabel.startsWith("*")
-                ? "italic text-[#ECC3AB] font-normal tracking-wide"
-                : "uppercase tracking-[0.12em] text-[#E8A791]"
+                ? "italic text-[#F5EEF0] font-normal tracking-wide"
+                : "uppercase tracking-[0.12em] text-[#F5EEF0]"
             }`}
           >
             {capsuleLabel}
@@ -589,7 +589,7 @@ export function CustomCursor() {
         style={{
           width: isInvert ? "4px" : "3px",
           height: isInvert ? "4px" : "3px",
-          backgroundColor: isInvert ? "#000000" : "#E46B5E",
+          backgroundColor: isInvert ? "#000000" : "#C93B5B",
           opacity: isCapsule || isLink ? 0 : 1,
           transition: "opacity 150ms ease, width 150ms ease, height 150ms ease",
         }}
@@ -599,7 +599,7 @@ export function CustomCursor() {
       {showTagLabel && (
         <div
           ref={tagRef}
-          className="pointer-events-none fixed top-0 left-0 will-change-transform font-mono text-[10px] uppercase tracking-[0.12em] text-[#DD7074] whitespace-nowrap select-none"
+          className="pointer-events-none fixed top-0 left-0 will-change-transform font-mono text-[10px] uppercase tracking-[0.12em] text-[#A68E94] whitespace-nowrap select-none"
           style={{
             transition: "opacity 150ms ease",
           }}

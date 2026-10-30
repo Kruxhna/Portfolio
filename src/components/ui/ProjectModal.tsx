@@ -32,13 +32,13 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
       <div
-        className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-[rgba(221,112,116,0.22)] bg-[#0A0807] p-6 sm:p-8 shadow-2xl shadow-black"
+        className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-[rgba(221,112,116,0.22)] bg-[#000000] p-6 sm:p-8 shadow-2xl shadow-black"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-5 top-5 rounded-lg border border-[#9A142C] bg-[#4E0104]/85 p-1.5 text-[#E8A791] transition-colors hover:border-[#D94F67] hover:bg-[#7B0408] hover:text-[#ECC3AB] cursor-pointer"
+          className="absolute right-5 top-5 rounded-lg border border-[#6D001A] bg-[#240009]/85 p-1.5 text-[#F5EEF0] transition-colors hover:border-[#9E0B2E] hover:bg-[#3B000E] hover:text-[#F5EEF0] cursor-pointer"
           aria-label="Close modal"
         >
           <X className="h-5 w-5" />
@@ -58,15 +58,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           </Badge>
         </div>
 
-        <h2 className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-[#ECC3AB]">
+        <h2 className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-[#F5EEF0]">
           {project.title}
         </h2>
-        <p className="mt-1 text-sm sm:text-base font-medium text-[#E46B5E]">
+        <p className="mt-1 text-sm sm:text-base font-medium text-[#C93B5B]">
           {project.tagline}
         </p>
 
         {/* Summary */}
-        <p className="mt-4 text-sm leading-relaxed text-[#ECC3AB]/85">
+        <p className="mt-4 text-sm leading-relaxed text-[#F5EEF0]/85">
           {project.summary}
         </p>
 
@@ -75,12 +75,12 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           {project.metrics.map((m, idx) => (
             <div
               key={idx}
-              className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#14100D] p-3"
+              className="rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#140408] p-3"
             >
-              <div className="font-mono text-[10px] uppercase text-[#DD7074]">
+              <div className="font-mono text-[10px] uppercase text-[#A68E94]">
                 {m.label}
               </div>
-              <div className="mt-1 font-mono text-lg font-bold text-[#ECC3AB]">
+              <div className="mt-1 font-mono text-lg font-bold text-[#F5EEF0]">
                 {m.value}
               </div>
             </div>
@@ -88,15 +88,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         </div>
 
         {/* Architectural Blueprint */}
-        <div className="mt-6 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#070504] p-5">
-          <div className="flex items-center gap-2 text-xs font-mono text-[#E46B5E] uppercase tracking-wider mb-3">
+        <div className="mt-6 rounded-xl border border-[rgba(221,112,116,0.18)] bg-[#000000] p-5">
+          <div className="flex items-center gap-2 text-xs font-mono text-[#C93B5B] uppercase tracking-wider mb-3">
             <Layers className="h-4 w-4" />
             <span>Architecture & Data Flow</span>
           </div>
           <div className="space-y-2">
             {project.architecture.map((step, idx) => (
-              <div key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-[#ECC3AB]/85">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-[#14100D] border border-[rgba(221,112,116,0.18)] font-mono text-[11px] text-[#E46B5E]">
+              <div key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-[#F5EEF0]/85">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-[#140408] border border-[rgba(221,112,116,0.18)] font-mono text-[11px] text-[#C93B5B]">
                   {idx + 1}
                 </span>
                 <span>{step}</span>
@@ -107,13 +107,13 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
         {/* Key Engineering Highlights */}
         <div className="mt-6">
-          <div className="text-xs font-mono text-[#DD7074] uppercase tracking-wider mb-3">
+          <div className="text-xs font-mono text-[#A68E94] uppercase tracking-wider mb-3">
             Engineering Highlights
           </div>
-          <ul className="space-y-2 text-xs sm:text-sm text-[#ECC3AB]/85">
+          <ul className="space-y-2 text-xs sm:text-sm text-[#F5EEF0]/85">
             {project.highlights.map((h, idx) => (
               <li key={idx} className="flex items-start gap-2">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#E46B5E]" />
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#C93B5B]" />
                 <span>{h}</span>
               </li>
             ))}
@@ -122,7 +122,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
         {/* Stack Tags */}
         <div className="mt-6">
-          <div className="text-xs font-mono text-[#DD7074] uppercase tracking-wider mb-2">
+          <div className="text-xs font-mono text-[#A68E94] uppercase tracking-wider mb-2">
             Technologies & Frameworks
           </div>
           <div className="flex flex-wrap gap-1.5">

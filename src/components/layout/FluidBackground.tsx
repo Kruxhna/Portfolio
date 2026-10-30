@@ -45,7 +45,7 @@ export function FluidBackground({
 
   return (
     <div
-      className={`fixed inset-0 z-0 pointer-events-none select-none overflow-hidden bg-[#0A0807] ${className}`}
+      className={`fixed inset-0 z-0 pointer-events-none select-none overflow-hidden bg-[#000000] ${className}`}
       aria-hidden="true"
     >
       {/* 1. SSR & No-JS Fallback Image (instant visual with zero layout shift) */}
@@ -69,7 +69,7 @@ export function FluidBackground({
       <div
         className="absolute inset-0 pointer-events-none select-none"
         style={{
-          backgroundColor: "rgba(10, 8, 7, var(--bg-dim, 0.55))",
+          backgroundColor: "rgba(0, 0, 0, var(--bg-dim, 0.55))",
         }}
       />
     </div>

@@ -107,7 +107,7 @@ export function AboutSection() {
       id="about"
       ref={sectionRef}
       aria-labelledby="about-heading"
-      className="relative z-10 w-full bg-transparent py-24 sm:py-32 md:py-40 text-neutral-100 selection:bg-[#ef4444] selection:text-white"
+      className="relative z-10 w-full bg-transparent py-24 sm:py-32 md:py-40 text-neutral-100 selection:bg-[#6D001A] selection:text-white"
     >
       {/* Backward-compatible anchor links for navbars and command menu */}
       <span id="timeline" className="absolute -top-28 pointer-events-none" />

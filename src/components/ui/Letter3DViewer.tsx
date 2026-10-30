@@ -14,7 +14,7 @@ function damp(current: number, target: number, speed: number, dt: number): numbe
   return current + (target - current) * (1 - Math.exp(-speed * dt));
 }
 
-export function Letter3DViewer({ accentColor = "#E46B5E" }: Letter3DViewerProps) {
+export function Letter3DViewer({ accentColor = "#C93B5B" }: Letter3DViewerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef  = useRef<HTMLDivElement>(null);
 
@@ -81,7 +81,7 @@ export function Letter3DViewer({ accentColor = "#E46B5E" }: Letter3DViewerProps)
     const roomEnv = new RoomEnvironment();
     scene.environment = pmremGenerator.fromScene(roomEnv, 0.04).texture;
 
-    // Ambient: Soft Peach Cream (#ECC3AB) at 0.7 intensity
+    // Ambient: Soft Peach Cream (#F5EEF0) at 0.7 intensity
     const ambientLight = new THREE.AmbientLight(0xECC3AB, 0.7);
     scene.add(ambientLight);
 
@@ -90,18 +90,21 @@ export function Letter3DViewer({ accentColor = "#E46B5E" }: Letter3DViewerProps)
     keyLight.position.set(4, 6, 5);
     scene.add(keyLight);
 
-    // Rim/Fill Directional Light (bottom-left [-4, -3, 2]): Crimson / Coral-Red (#C3181E) at 0.85 intensity
+    // Rim/Fill Directional Light (bottom-left [-4, -3, 2]): Crimson / Coral-Red (#6D001A) at 0.85 intensity
     const rimLight = new THREE.DirectionalLight(0xC3181E, 0.85);
     rimLight.position.set(-4, -3, 2);
     scene.add(rimLight);
 
-    // ── 5. Tactile Warm Bronze / Ceramic Material ────────────────────────────
+    // ── 5. Dark Liquid Chrome & Reflective Obsidian Material (Matches Reference Recording) ──
     const mat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(accentColor),
-      roughness: 0.22,
-      metalness: 0.15,
-      clearcoat: 0.4,
-      clearcoatRoughness: 0.18,
+      color: new THREE.Color('#141012'),
+      emissive: new THREE.Color('#240009'),
+      emissiveIntensity: 0.2,
+      roughness: 0.12,
+      metalness: 0.92,
+      clearcoat: 0.95,
+      clearcoatRoughness: 0.08,
+      reflectivity: 0.95,
       transmission: 0,
       transparent: false,
       opacity: 1.0,
@@ -278,10 +281,10 @@ export function Letter3DViewer({ accentColor = "#E46B5E" }: Letter3DViewerProps)
     >
       {/* Loading spinner */}
       {isLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 font-mono text-[11px] text-[#DD7074] pointer-events-none">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 font-mono text-[11px] text-[#A68E94] pointer-events-none">
           <div
-            className="h-6 w-6 rounded-full border-2 border-[#9A142C]/40 animate-spin"
-            style={{ borderTopColor: "#E46B5E" }}
+            className="h-6 w-6 rounded-full border-2 border-[#6D001A]/40 animate-spin"
+            style={{ borderTopColor: "#C93B5B" }}
           />
           <span>Loading…</span>
         </div>
@@ -289,7 +292,7 @@ export function Letter3DViewer({ accentColor = "#E46B5E" }: Letter3DViewerProps)
 
       {/* Error fallback */}
       {loadError && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 font-mono text-[11px] text-[#E46B5E] pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center z-10 font-mono text-[11px] text-[#C93B5B] pointer-events-none">
           Unable to display 3D model
         </div>
       )}

@@ -194,7 +194,7 @@ function DirectionalCell({ item, isLarge = false, isLastRow = false }: Direction
             animate={{ x: "0%", y: "0%" }}
             exit={getTransformOffset(exitDir)}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 bg-[#ECC3AB] z-0 pointer-events-none"
+            className="absolute inset-0 bg-[#F5EEF0] z-0 pointer-events-none"
           />
         )}
       </AnimatePresence>
@@ -205,8 +205,8 @@ function DirectionalCell({ item, isLarge = false, isLastRow = false }: Direction
         <div
           className={`transition-all duration-300 ease-out flex items-center justify-center ${
             isHovered
-              ? "text-[#0A0807] scale-110"
-              : "text-[#ECC3AB] group-hover:text-[#F7EFEA]"
+              ? "text-[#000000] scale-110"
+              : "text-[#F5EEF0] group-hover:text-[#F7EFEA]"
           }`}
         >
           <IconComponent
@@ -222,8 +222,8 @@ function DirectionalCell({ item, isLarge = false, isLastRow = false }: Direction
         <span
           className={`font-mono text-[10.5px] sm:text-[11px] font-bold tracking-[0.14em] uppercase text-center whitespace-nowrap transition-all duration-200 mt-2.5 ${
             isHovered
-              ? "opacity-100 translate-y-0 text-[#0A0807]"
-              : "opacity-0 translate-y-2 text-[#0A0807]"
+              ? "opacity-100 translate-y-0 text-[#000000]"
+              : "opacity-0 translate-y-2 text-[#000000]"
           }`}
         >
           {item.name}
@@ -245,7 +245,7 @@ export function TechStackGrid() {
   return (
     <section
       id="arsenal"
-      className="relative z-10 w-full bg-transparent py-20 md:py-28 text-[#ECC3AB]"
+      className="relative z-10 w-full bg-transparent py-20 md:py-28 text-[#F5EEF0]"
     >
       {/* Anchor links for navbar & command palette backward compatibility */}
       <span id="skills" className="absolute -top-28 pointer-events-none" />
@@ -259,19 +259,19 @@ export function TechStackGrid() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
           <div>
             {/* Eyebrow Kicker */}
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#DD7074] mb-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#E02E32] animate-pulse" />
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#A68E94] mb-3">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
               <span>05 // TECHNOLOGIES &amp; TOOLING</span>
             </div>
 
             {/* Heading: "Technologies" (Calligraphic Script) + "I work with" (Tight Sans) */}
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-sans font-medium tracking-[-0.035em] text-[#ECC3AB] flex flex-wrap items-baseline gap-x-3.5 gap-y-1 leading-[1.12]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-sans font-medium tracking-[-0.035em] text-[#F5EEF0] flex flex-wrap items-baseline gap-x-3.5 gap-y-1 leading-[1.12]">
               <motion.span
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="font-cursive text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-normal bg-gradient-to-r from-[#E02E32] via-[#E46B5E] to-[#ECC3AB] bg-clip-text text-transparent capitalize tracking-normal -mt-2 md:mt-0 pt-2 sm:pt-4"
+                className="font-cursive text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-normal bg-gradient-to-r from-[#9E0B2E] via-[#C93B5B] to-[#F5EEF0] bg-clip-text text-transparent capitalize tracking-normal -mt-2 md:mt-0 pt-2 sm:pt-4"
               >
                 Technologies
               </motion.span>
@@ -280,15 +280,15 @@ export function TechStackGrid() {
           </div>
 
           {/* Stack Profile Switcher Pill Toggle */}
-          <div className="flex items-center gap-1.5 p-1 rounded-full bg-[#0A0807]/80 backdrop-blur-md border border-[rgba(221,112,116,0.22)] shadow-sm self-start md:self-end">
+          <div className="flex items-center gap-1.5 p-1 rounded-full bg-[#000000]/80 backdrop-blur-md border border-[rgba(221,112,116,0.22)] shadow-sm self-start md:self-end">
             <button
               type="button"
               data-cursor="pointer"
               onClick={() => setActiveStackMode("custom")}
               className={`px-4 py-1.5 rounded-full font-mono text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                 activeStackMode === "custom"
-                  ? "bg-[#C3181E] text-[#ECC3AB] shadow-md border border-[#E44847]/60"
-                  : "text-[#DD7074] hover:text-[#ECC3AB] hover:bg-[#14100D]"
+                  ? "bg-[#6D001A] text-[#F5EEF0] shadow-md border border-[#9E0B2E]/60"
+                  : "text-[#A68E94] hover:text-[#F5EEF0] hover:bg-[#140408]"
               }`}
             >
               Core Systems &amp; AI
@@ -299,8 +299,8 @@ export function TechStackGrid() {
               onClick={() => setActiveStackMode("reference")}
               className={`px-4 py-1.5 rounded-full font-mono text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                 activeStackMode === "reference"
-                  ? "bg-[#C3181E] text-[#ECC3AB] shadow-md border border-[#E44847]/60"
-                  : "text-[#DD7074] hover:text-[#ECC3AB] hover:bg-[#14100D]"
+                  ? "bg-[#6D001A] text-[#F5EEF0] shadow-md border border-[#9E0B2E]/60"
+                  : "text-[#A68E94] hover:text-[#F5EEF0] hover:bg-[#140408]"
               }`}
             >
               Full-Stack Reference
@@ -311,12 +311,12 @@ export function TechStackGrid() {
         {/* ================================================================= */}
         {/* B. ASYMMETRICAL 3-ROW BORDERED LOGO MATRIX                        */}
         {/* ================================================================= */}
-        <div className="relative w-full rounded-[20px] border border-[rgba(221,112,116,0.18)] bg-[#0A0807]/90 backdrop-blur-xl overflow-hidden shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)]">
+        <div className="relative w-full rounded-[20px] border border-[rgba(221,112,116,0.18)] bg-[#000000]/90 backdrop-blur-xl overflow-hidden shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)]">
           {/* Subtle Ambient Radial Glow */}
           <div
             className="pointer-events-none absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-15 blur-3xl"
             style={{
-              background: "radial-gradient(circle, rgba(228, 107, 94, 0.4), transparent 70%)",
+              background: "radial-gradient(circle, rgba(158, 11, 46, 0.4), transparent 70%)",
             }}
           />
 
