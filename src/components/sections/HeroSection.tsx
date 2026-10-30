@@ -250,20 +250,25 @@ export function HeroSection() {
     // Radius for wordmark letter influence: ~18vw in px
     const getRadius = () => window.innerWidth * 0.18;
 
-    // Recompute letter rects (called on resize / scroll)
+    // Recompute document-relative letter rects (only on resize/init, never on scroll)
     const updateRects = () => {
-      letterRectCacheRef.current = letterSpanRefs.current.map(
-        (el) => el?.getBoundingClientRect() ?? new DOMRect()
-      );
+      const scrollY = window.scrollY || 0;
+      letterRectCacheRef.current = letterSpanRefs.current.map((el) => {
+        if (!el) return new DOMRect();
+        const r = el.getBoundingClientRect();
+        return new DOMRect(r.left, r.top + scrollY, r.width, r.height);
+      });
     };
 
     // Initial rect computation after paint
     const initTimer = setTimeout(updateRects, 300);
 
-    const handleResize = () => updateRects();
-    const handleScroll = () => updateRects();
+    const handleResize = () => {
+      if (isVisibleRef.current) {
+        updateRects();
+      }
+    };
     window.addEventListener("resize", handleResize, { passive: true });
-    window.addEventListener("scroll", handleScroll, { passive: true });
 
     // IntersectionObserver: pause RAF when hero is offscreen
     const io = new IntersectionObserver(
@@ -299,11 +304,12 @@ export function HeroSection() {
       const cx = cursorRef.current.x;
       const cy = cursorRef.current.y;
 
+      const currentScrollY = window.scrollY || 0;
       for (let i = 0; i < WORDMARK.length; i++) {
         const rect = rects[i];
         if (!rect) continue;
         const lx = rect.left + rect.width / 2;
-        const ly = rect.top + rect.height / 2;
+        const ly = rect.top + rect.height / 2 - currentScrollY;
         const dist = Math.sqrt((cx - lx) ** 2 + (cy - ly) ** 2);
         // influence 0 (far) → 1 (close); smoothstep
         const rawT = 1 - dist / radius;
@@ -329,8 +335,7 @@ export function HeroSection() {
       cancelAnimationFrame(rafRef.current);
       clearTimeout(initTimer);
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mousemove", handleMouseMove);
       io.disconnect();
     };
   }, []);
@@ -351,7 +356,8 @@ export function HeroSection() {
 
   useEffect(() => {
     const unsubscribe = scrollY.on("change", (latest) => {
-      setIsScattered(latest > 40);
+      const next = latest > 40;
+      setIsScattered((prev) => (prev !== next ? next : prev));
     });
     return () => unsubscribe();
   }, [scrollY]);

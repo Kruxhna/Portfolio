@@ -220,69 +220,135 @@ function GitHubStorySectionContent() {
   }, [selectedYear]);
 
   // ============================================================================
-  // GOOGLY EYES PHYSICS (60FPS CURSOR TRACKING WITH CLAMPED VECTORS)
+  // GOOGLY EYES PHYSICS (DIRECT DOM TRANSFORMS WITH SETTLE CHECK & INTERSECTION OBSERVER)
+  // Zero React re-renders during mouse tracking
   // ============================================================================
+  const sectionRef = useRef<HTMLElement | null>(null);
   const eye1Ref = useRef<SVGSVGElement | null>(null);
   const eye2Ref = useRef<SVGSVGElement | null>(null);
-  const [eye1Offset, setEye1Offset] = useState({ x: 0, y: 0 });
-  const [eye2Offset, setEye2Offset] = useState({ x: 0, y: 0 });
+  const pupil1Ref = useRef<SVGGElement | null>(null);
+  const pupil2Ref = useRef<SVGGElement | null>(null);
 
   useEffect(() => {
-    let animId: number;
+    let animId = 0;
+    let isRunning = false;
+    let isVisible = false;
+
     let target1 = { x: 0, y: 0 };
     let target2 = { x: 0, y: 0 };
     let current1 = { x: 0, y: 0 };
     let current2 = { x: 0, y: 0 };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
+    // Cached eye centers to eliminate layout thrashing
+    let center1 = { x: 0, y: 0, width: 1 };
+    let center2 = { x: 0, y: 0, width: 1 };
 
-      [
-        { ref: eye1Ref, setTarget: (t: { x: number; y: number }) => (target1 = t) },
-        { ref: eye2Ref, setTarget: (t: { x: number; y: number }) => (target2 = t) },
-      ].forEach(({ ref, setTarget }) => {
-        if (!ref.current) return;
-        const rect = ref.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const dx = mouseX - centerX;
-        const dy = mouseY - centerY;
-        const angle = Math.atan2(dy, dx);
-        const dist = Math.hypot(dx, dy);
-
-        // Max radius for pupil displacement inside 100x100 viewBox (sclera radius 48, pupil 21 => max 22)
-        const maxDist = 22;
-        // Sensitivity based on distance from eye
-        const scaleDist = Math.min(maxDist, dist / (rect.width / 32));
-
-        setTarget({
-          x: Math.cos(angle) * scaleDist,
-          y: Math.sin(angle) * scaleDist,
-        });
-      });
+    const updateEyeCenters = () => {
+      if (eye1Ref.current) {
+        const r1 = eye1Ref.current.getBoundingClientRect();
+        center1 = { x: r1.left + r1.width / 2, y: r1.top + r1.height / 2, width: r1.width };
+      }
+      if (eye2Ref.current) {
+        const r2 = eye2Ref.current.getBoundingClientRect();
+        center2 = { x: r2.left + r2.width / 2, y: r2.top + r2.height / 2, width: r2.width };
+      }
     };
 
+    const maxDist = 22;
+
     const animate = () => {
-      // Smooth spring easing
       current1.x += (target1.x - current1.x) * 0.18;
       current1.y += (target1.y - current1.y) * 0.18;
       current2.x += (target2.x - current2.x) * 0.18;
       current2.y += (target2.y - current2.y) * 0.18;
 
-      setEye1Offset({ x: current1.x, y: current1.y });
-      setEye2Offset({ x: current2.x, y: current2.y });
+      if (pupil1Ref.current) {
+        pupil1Ref.current.style.transform = `translate3d(${current1.x.toFixed(2)}px, ${current1.y.toFixed(2)}px, 0)`;
+      }
+      if (pupil2Ref.current) {
+        pupil2Ref.current.style.transform = `translate3d(${current2.x.toFixed(2)}px, ${current2.y.toFixed(2)}px, 0)`;
+      }
+
+      // Settle check: stop RAF when settled
+      const diff1 = Math.hypot(target1.x - current1.x, target1.y - current1.y);
+      const diff2 = Math.hypot(target2.x - current2.x, target2.y - current2.y);
+
+      if (diff1 < 0.05 && diff2 < 0.05) {
+        isRunning = false;
+        animId = 0;
+        return;
+      }
 
       animId = requestAnimationFrame(animate);
     };
 
+    const requestTick = () => {
+      if (!isRunning && isVisible) {
+        isRunning = true;
+        animId = requestAnimationFrame(animate);
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isVisible) return;
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      // Left Eye
+      const dx1 = mouseX - center1.x;
+      const dy1 = mouseY - center1.y;
+      const angle1 = Math.atan2(dy1, dx1);
+      const dist1 = Math.hypot(dx1, dy1);
+      const scaleDist1 = Math.min(maxDist, dist1 / (center1.width / 32 || 1));
+      target1.x = Math.cos(angle1) * scaleDist1;
+      target1.y = Math.sin(angle1) * scaleDist1;
+
+      // Right Eye
+      const dx2 = mouseX - center2.x;
+      const dy2 = mouseY - center2.y;
+      const angle2 = Math.atan2(dy2, dx2);
+      const dist2 = Math.hypot(dx2, dy2);
+      const scaleDist2 = Math.min(maxDist, dist2 / (center2.width / 32 || 1));
+      target2.x = Math.cos(angle2) * scaleDist2;
+      target2.y = Math.sin(angle2) * scaleDist2;
+
+      requestTick();
+    };
+
+    // IntersectionObserver to pause loop when offscreen
+    const el = sectionRef.current || eye1Ref.current;
+    let observer: IntersectionObserver | null = null;
+    if (el) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible) {
+            updateEyeCenters();
+            requestTick();
+          } else {
+            if (animId) {
+              cancelAnimationFrame(animId);
+              animId = 0;
+            }
+            isRunning = false;
+          }
+        },
+        { rootMargin: "150px 0px 150px 0px" }
+      );
+      observer.observe(el);
+    }
+
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    animId = requestAnimationFrame(animate);
+    window.addEventListener("resize", updateEyeCenters, { passive: true });
+    window.addEventListener("scroll", updateEyeCenters, { passive: true });
+    updateEyeCenters();
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", updateEyeCenters);
+      window.removeEventListener("scroll", updateEyeCenters);
+      if (observer) observer.disconnect();
+      if (animId) cancelAnimationFrame(animId);
     };
   }, []);
 
@@ -347,6 +413,7 @@ function GitHubStorySectionContent() {
 
   return (
     <section
+      ref={sectionRef}
       id="story"
       className="relative z-10 w-full bg-transparent py-20 md:py-28 text-[#F5EEF0]"
     >
@@ -397,7 +464,7 @@ function GitHubStorySectionContent() {
                 fill="none"
               >
                 <circle cx="50" cy="50" r="48" fill="#F7EFEA" stroke="#000000" strokeWidth="2.5" />
-                <g style={{ transform: `translate(${eye1Offset.x}px, ${eye1Offset.y}px)` }}>
+                <g ref={pupil1Ref} style={{ willChange: "transform" }}>
                   <circle cx="50" cy="50" r="21" fill="#000000" />
                   <circle cx="57" cy="43" r="5" fill="#ffffff" />
                 </g>
@@ -411,7 +478,7 @@ function GitHubStorySectionContent() {
                 fill="none"
               >
                 <circle cx="50" cy="50" r="48" fill="#F7EFEA" stroke="#000000" strokeWidth="2.5" />
-                <g style={{ transform: `translate(${eye2Offset.x}px, ${eye2Offset.y}px)` }}>
+                <g ref={pupil2Ref} style={{ willChange: "transform" }}>
                   <circle cx="50" cy="50" r="21" fill="#000000" />
                   <circle cx="57" cy="43" r="5" fill="#ffffff" />
                 </g>

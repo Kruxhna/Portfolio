@@ -90,9 +90,8 @@ function SlotMachinePill({
   primary = false,
 }: SlotMachinePillProps) {
   const buttonRef = useRef<HTMLAnchorElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [btnOffset, setBtnOffset] = useState({ x: 0, y: 0 });
-  const [textOffset, setTextOffset] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const el = buttonRef.current;
@@ -105,16 +104,17 @@ function SlotMachinePill({
     const dy = e.clientY - cy;
     const dist = Math.hypot(dx, dy);
 
-    // Magnetic pull within 80px radius
+    // Magnetic pull within 80px radius (direct DOM transform: zero React re-renders)
     if (dist < 80) {
-      setBtnOffset({
-        x: dx * TEXT_ANIM_CONFIG.magneticStrength,
-        y: dy * TEXT_ANIM_CONFIG.magneticStrength,
-      });
-      setTextOffset({
-        x: dx * (TEXT_ANIM_CONFIG.magneticStrength * 0.5),
-        y: dy * (TEXT_ANIM_CONFIG.magneticStrength * 0.5),
-      });
+      const bx = dx * TEXT_ANIM_CONFIG.magneticStrength;
+      const by = dy * TEXT_ANIM_CONFIG.magneticStrength;
+      const tx = dx * (TEXT_ANIM_CONFIG.magneticStrength * 0.5);
+      const ty = dy * (TEXT_ANIM_CONFIG.magneticStrength * 0.5);
+
+      el.style.transform = `translate3d(${bx.toFixed(2)}px, ${by.toFixed(2)}px, 0)`;
+      if (contentRef.current) {
+        contentRef.current.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0)`;
+      }
     }
   };
 
@@ -122,8 +122,12 @@ function SlotMachinePill({
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setBtnOffset({ x: 0, y: 0 });
-    setTextOffset({ x: 0, y: 0 });
+    if (buttonRef.current) {
+      buttonRef.current.style.transform = "translate3d(0px, 0px, 0)";
+    }
+    if (contentRef.current) {
+      contentRef.current.style.transform = "translate3d(0px, 0px, 0)";
+    }
   };
 
   return (
@@ -138,7 +142,6 @@ function SlotMachinePill({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
-        transform: `translate3d(${btnOffset.x}px, ${btnOffset.y}px, 0)`,
         transition: isHovered
           ? "transform 0.1s ease-out"
           : "transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, border-color 0.3s",
@@ -152,8 +155,8 @@ function SlotMachinePill({
       }`}
     >
       <div
+        ref={contentRef}
         style={{
-          transform: `translate3d(${textOffset.x}px, ${textOffset.y}px, 0)`,
           transition: isHovered
             ? "transform 0.1s ease-out"
             : "transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
@@ -310,6 +313,7 @@ function DirectionalUnderlineLink({
 // ============================================================================
 
 function VelocityCounterMarquee() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
   const scrollVelocityRef = useRef(0);
@@ -318,19 +322,25 @@ function VelocityCounterMarquee() {
   const currentSpeedRef = useRef(TEXT_ANIM_CONFIG.marqueeBaseSpeed);
   const currentSkewRef = useRef(0);
   const currentDirRef = useRef(1);
+  const isVisibleRef = useRef(false);
 
+  // Removed redundant ScrollTrigger.update() per frame
   useLenis(
     useCallback((lenis: any) => {
       scrollVelocityRef.current = lenis.velocity || 0;
-      ScrollTrigger.update();
     }, [])
   );
 
   useEffect(() => {
-    let rafId: number;
+    let rafId = 0;
     let lastTime = performance.now();
 
     const loop = (now: number) => {
+      if (!isVisibleRef.current) {
+        rafId = 0;
+        return;
+      }
+
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
@@ -370,8 +380,29 @@ function VelocityCounterMarquee() {
       rafId = requestAnimationFrame(loop);
     };
 
-    rafId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafId);
+    const el = containerRef.current;
+    let observer: IntersectionObserver | null = null;
+    if (el) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const wasVisible = isVisibleRef.current;
+          isVisibleRef.current = entry.isIntersecting;
+          if (!wasVisible && isVisibleRef.current) {
+            lastTime = performance.now();
+            if (!rafId) {
+              rafId = requestAnimationFrame(loop);
+            }
+          }
+        },
+        { rootMargin: "150px 0px 150px 0px" }
+      );
+      observer.observe(el);
+    }
+
+    return () => {
+      if (observer) observer.disconnect();
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const row1Text =
@@ -380,7 +411,7 @@ function VelocityCounterMarquee() {
     "OPEN FOR COLLABORATION • चलो कुछ नया बनाते हैं • OPEN FOR COLLABORATION • चलो कुछ नया बनाते हैं • OPEN FOR COLLABORATION • चलो कुछ नया बनाते हैं • ";
 
   return (
-    <div className="relative z-20 w-full overflow-hidden select-none py-8 border-y border-[#261015]/80 bg-[#000000]">
+    <div ref={containerRef} className="relative z-20 w-full overflow-hidden select-none py-8 border-y border-[#261015]/80 bg-[#000000]">
       {/* Row 1: Right-to-Left Loop */}
       <div className="relative flex whitespace-nowrap overflow-hidden">
         <div

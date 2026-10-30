@@ -7,18 +7,18 @@ import React, {
 } from "react";
 
 // ============================================================================
-// INTERACTIVE TUNABLE CONFIG
+// INTERACTIVE TUNABLE CONFIG (CAESAR THEME: BLACK / CRIMSON / BLUSH / ALABASTER)
 // ============================================================================
 
 export const SAND_TEXT_CONFIG = {
   text: "KRUXHNA",
   backgroundColor: "#000000",
-  glyphColor: "#FFFFFF",
+  glyphColor: "#F5EEF0",
   particleColors: ["#FFFFFF", "#E899AC", "#C93B5B", "#6D001A"],
   turbulenceFreq: 0.009,
   turbulenceAmp: 2.2, // Silky, subtle mirage heat-haze in px
   turbulenceSpeed: 0.012,
-  hoverErosionRadius: 80,
+  hoverErosionRadius: 85,
   erosionGranularity: 0.65,
   particleCountMax: 6000,
   particleSizeRange: [1.0, 2.6] as [number, number],
@@ -93,6 +93,10 @@ export function SandTextMonument({
     }>
   >([]);
 
+  // Performance tracking refs (avoid idle RAF and 24,000 loop passes)
+  const isVisibleRef = useRef(false);
+  const activeCountRef = useRef(0);
+
   // Preallocated particle pools (Float32Array for zero garbage collection)
   const poolRef = useRef<{
     pX: Float32Array;
@@ -130,7 +134,7 @@ export function SandTextMonument({
     height: number;
   } | null>(null);
 
-  // Rasterize offscreen glyph with mathematical optical centering and perfect fit
+  // Rasterize offscreen glyph with mathematical optical centering and monumental scale
   const rasterizeOffscreenGlyph = useCallback(
     (w: number, h: number) => {
       if (w <= 0 || h <= 0) return;
@@ -148,10 +152,20 @@ export function SandTextMonument({
 
       oCtx.clearRect(0, 0, w, h);
 
-      // Target spanning ~94% of container width
-      const targetWidth = w * 0.94;
-      const testSize = 100;
-      oCtx.font = `900 ${testSize}px "Geist Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+      // Monumental scale: target spanning ~96% of container width
+      const targetWidth = w * 0.96;
+      const testSize = 120;
+
+      // Detect computed body font to match Geist Sans exactly, with Devanagari fallbacks
+      let fontFamily = '"Geist Sans", "Noto Sans Devanagari", "Mangal", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif';
+      if (typeof window !== "undefined") {
+        const computed = getComputedStyle(document.body).fontFamily;
+        if (computed) {
+          fontFamily = `${computed}, "Noto Sans Devanagari", "Mangal", "Segoe UI", sans-serif`;
+        }
+      }
+
+      oCtx.font = `900 ${testSize}px ${fontFamily}`;
       const testMetrics = oCtx.measureText(text);
 
       let fontSize = testSize;
@@ -160,13 +174,13 @@ export function SandTextMonument({
         const testVisualH =
           (testMetrics.actualBoundingBoxAscent || testSize * 0.72) +
           (testMetrics.actualBoundingBoxDescent || testSize * 0.05);
-        const heightScale = (h * 0.82) / Math.max(testVisualH, 1);
+        const heightScale = (h * 0.90) / Math.max(testVisualH, 1);
         const finalScale = Math.min(widthScale, heightScale);
         fontSize = Math.floor(testSize * finalScale);
       }
 
-      // Configure final font
-      oCtx.font = `900 ${fontSize}px "Geist Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+      // Configure final monumental font
+      oCtx.font = `900 ${fontSize}px ${fontFamily}`;
       oCtx.fillStyle = SAND_TEXT_CONFIG.glyphColor;
       oCtx.textAlign = "center";
       oCtx.textBaseline = "alphabetic";
@@ -221,6 +235,9 @@ export function SandTextMonument({
 
     handleResize();
 
+    const raf = requestAnimationFrame(handleResize);
+    const timeout = setTimeout(handleResize, 150);
+
     if (typeof document !== "undefined" && document.fonts) {
       document.fonts.ready.then(() => {
         handleResize();
@@ -232,7 +249,11 @@ export function SandTextMonument({
       observer.observe(containerRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(timeout);
+      observer.disconnect();
+    };
   }, [rasterizeOffscreenGlyph]);
 
   // Pointer event listeners with smoothed velocity
@@ -269,13 +290,18 @@ export function SandTextMonument({
     mouseRef.current.active = false;
   };
 
-  // Main 120fps Animation Loop
+  // Main 120fps Animation Loop (with offscreen IntersectionObserver gating)
   useEffect(() => {
-    let rafId: number;
+    let rafId = 0;
     let lastTime = performance.now();
     let elapsed = 0;
 
     const loop = (now: number) => {
+      if (!isVisibleRef.current) {
+        rafId = 0;
+        return;
+      }
+
       const dt = Math.min((now - lastTime) / 1000, 0.033);
       lastTime = now;
       elapsed += dt;
@@ -371,7 +397,8 @@ export function SandTextMonument({
                 pool.pDecay[idx] = 0.012 + Math.random() * 0.015;
 
                 const randColor = Math.random();
-                pool.pColor[idx] = randColor < 0.5 ? 0 : randColor < 0.8 ? 1 : 2;
+                pool.pColor[idx] =
+                  randColor < 0.35 ? 0 : randColor < 0.65 ? 1 : randColor < 0.85 ? 2 : 3;
 
                 pool.pActive[idx] = 1;
                 spawnedThisFrame++;
@@ -396,8 +423,8 @@ export function SandTextMonument({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
-      // Fine 2px sub-bands for continuous liquid undulation without tearing
-      const sliceH = 2;
+      // Optimized 4px sub-bands: cuts drawImage calls in half while preserving silky mirage
+      const sliceH = 4;
       const numSlices = Math.ceil(h / sliceH);
 
       for (let i = 0; i < numSlices; i++) {
@@ -454,7 +481,7 @@ export function SandTextMonument({
 
         ctx.restore();
 
-        // Hot terracotta edge rim glow along eroded bites
+        // CAESAR Crimson & Rose edge rim glow along eroded bites
         ctx.save();
         ctx.globalCompositeOperation = "source-atop";
         for (let b = 0; b < bitesRef.current.length; b++) {
@@ -465,93 +492,128 @@ export function SandTextMonument({
             bite.radius * 0.5,
             bite.x,
             bite.y,
-            bite.radius + 12
+            bite.radius + 14
           );
-          rimGrad.addColorStop(0, "rgba(173, 106, 76, 0)");
+          rimGrad.addColorStop(0, "rgba(109, 0, 26, 0)");
           rimGrad.addColorStop(
             0.8,
-            `rgba(173, 106, 76, ${bite.alpha * 0.38})`
+            `rgba(158, 11, 46, ${bite.alpha * 0.45})`
           );
-          rimGrad.addColorStop(1, "rgba(206, 164, 145, 0)");
+          rimGrad.addColorStop(1, "rgba(201, 59, 91, 0)");
 
           ctx.fillStyle = rimGrad;
           ctx.beginPath();
-          ctx.arc(bite.x, bite.y, bite.radius + 12, 0, Math.PI * 2);
+          ctx.arc(bite.x, bite.y, bite.radius + 14, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.restore();
       }
 
       // ----------------------------------------------------------------------
-      // 3. PASS 2: BATCHED SAND-PARTICLE SCATTER PHYSICS & DRAW (3 DRAWS)
+      // 3. PASS 2: BATCHED SAND-PARTICLE SCATTER PHYSICS & DRAW (SKIPPED WHEN IDLE)
       // ----------------------------------------------------------------------
-      const colors = SAND_TEXT_CONFIG.particleColors;
-
-      // Physics integration pass
-      for (let i = 0; i < SAND_TEXT_CONFIG.particleCountMax; i++) {
-        if (!pool.pActive[i]) continue;
-
-        const [curlX, curlY] = curlNoise2D(pool.pX[i], pool.pY[i], elapsed);
-        pool.pVx[i] += curlX * SAND_TEXT_CONFIG.curlNoiseStrength * dt;
-        pool.pVy[i] += curlY * SAND_TEXT_CONFIG.curlNoiseStrength * dt;
-
-        pool.pVx[i] *= 0.93;
-        pool.pVy[i] *= 0.93;
-
-        if (SAND_TEXT_CONFIG.returnToOrigin) {
-          const distToCursor = Math.hypot(
-            pool.pX[i] - mouse.x,
-            pool.pY[i] - mouse.y
-          );
-          if (!mouse.active || distToCursor > SAND_TEXT_CONFIG.hoverErosionRadius * 1.2) {
-            const dx = pool.pOrigX[i] - pool.pX[i];
-            const dy = pool.pOrigY[i] - pool.pY[i];
-            const spring = 0.045;
-
-            pool.pVx[i] += dx * spring;
-            pool.pVy[i] += dy * spring;
-
-            if (Math.hypot(dx, dy) < 2.0 && Math.hypot(pool.pVx[i], pool.pVy[i]) < 0.5) {
-              pool.pActive[i] = 0;
-              continue;
-            }
-          }
-        }
-
-        pool.pX[i] += pool.pVx[i];
-        pool.pY[i] += pool.pVy[i];
-
-        pool.pLife[i] -= pool.pDecay[i];
-        if (pool.pLife[i] <= 0 && !SAND_TEXT_CONFIG.returnToOrigin) {
-          pool.pActive[i] = 0;
-          continue;
-        }
+      // If mouse is active, we know particles were spawned or might be active
+      if (mouse.active) {
+        activeCountRef.current = 1;
       }
 
-      // Batched rendering pass: 1 draw call per color for silky 120fps
-      for (let c = 0; c < 3; c++) {
-        ctx.fillStyle = colors[c];
-        ctx.beginPath();
+      if (activeCountRef.current > 0 || bitesRef.current.length > 0) {
+        const colors = SAND_TEXT_CONFIG.particleColors;
+        let currentActive = 0;
+
+        // Physics integration pass
         for (let i = 0; i < SAND_TEXT_CONFIG.particleCountMax; i++) {
-          if (pool.pActive[i] && pool.pColor[i] === c) {
-            const size = pool.pSize[i] * Math.max(0.4, pool.pLife[i]);
-            ctx.rect(pool.pX[i], pool.pY[i], size, size);
+          if (!pool.pActive[i]) continue;
+          currentActive++;
+
+          const [curlX, curlY] = curlNoise2D(pool.pX[i], pool.pY[i], elapsed);
+          pool.pVx[i] += curlX * SAND_TEXT_CONFIG.curlNoiseStrength * dt;
+          pool.pVy[i] += curlY * SAND_TEXT_CONFIG.curlNoiseStrength * dt;
+
+          pool.pVx[i] *= 0.93;
+          pool.pVy[i] *= 0.93;
+
+          if (SAND_TEXT_CONFIG.returnToOrigin) {
+            const distToCursor = Math.hypot(
+              pool.pX[i] - mouse.x,
+              pool.pY[i] - mouse.y
+            );
+            if (!mouse.active || distToCursor > SAND_TEXT_CONFIG.hoverErosionRadius * 1.2) {
+              const dx = pool.pOrigX[i] - pool.pX[i];
+              const dy = pool.pOrigY[i] - pool.pY[i];
+              const spring = 0.045;
+
+              pool.pVx[i] += dx * spring;
+              pool.pVy[i] += dy * spring;
+
+              if (Math.hypot(dx, dy) < 2.0 && Math.hypot(pool.pVx[i], pool.pVy[i]) < 0.5) {
+                pool.pActive[i] = 0;
+                continue;
+              }
+            }
+          }
+
+          pool.pX[i] += pool.pVx[i];
+          pool.pY[i] += pool.pVy[i];
+
+          pool.pLife[i] -= pool.pDecay[i];
+          if (pool.pLife[i] <= 0 && !SAND_TEXT_CONFIG.returnToOrigin) {
+            pool.pActive[i] = 0;
+            continue;
           }
         }
-        ctx.fill();
+
+        activeCountRef.current = currentActive;
+
+        // Batched rendering pass: only draw if active particles exist
+        if (currentActive > 0) {
+          for (let c = 0; c < colors.length; c++) {
+            ctx.fillStyle = colors[c];
+            ctx.beginPath();
+            for (let i = 0; i < SAND_TEXT_CONFIG.particleCountMax; i++) {
+              if (pool.pActive[i] && pool.pColor[i] === c) {
+                const size = pool.pSize[i] * Math.max(0.4, pool.pLife[i]);
+                ctx.rect(pool.pX[i], pool.pY[i], size, size);
+              }
+            }
+            ctx.fill();
+          }
+        }
       }
 
       rafId = requestAnimationFrame(loop);
     };
 
-    rafId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafId);
+    // IntersectionObserver to only animate when monument is in viewport
+    const containerEl = containerRef.current;
+    let observer: IntersectionObserver | null = null;
+    if (containerEl) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const wasVisible = isVisibleRef.current;
+          isVisibleRef.current = entry.isIntersecting;
+          if (!wasVisible && isVisibleRef.current) {
+            lastTime = performance.now();
+            if (!rafId) {
+              rafId = requestAnimationFrame(loop);
+            }
+          }
+        },
+        { threshold: 0.01, rootMargin: "150px 0px 150px 0px" }
+      );
+      observer.observe(containerEl);
+    }
+
+    return () => {
+      if (observer) observer.disconnect();
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[clamp(160px,18vw,360px)] select-none overflow-hidden flex items-center justify-center ${className}`}
+      className={`relative w-full h-[clamp(240px,24vw,460px)] select-none overflow-hidden flex items-center justify-center ${className}`}
     >
       <canvas
         ref={canvasRef}

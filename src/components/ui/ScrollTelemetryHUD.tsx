@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import type Lenis from "lenis";
 import { useLenis } from "lenis/react";
@@ -15,7 +15,7 @@ const SECTIONS = [
   { id: "dsa", tag: "01", name: "DSA ARCHITECTURE" },
   { id: "work", tag: "02", name: "FEATURED SYSTEMS" },
   { id: "what-i-do", tag: "03", name: "CAPABILITIES" },
-  { id: "activity", tag: "04", name: "GITHUB ARCHIVE" },
+  { id: "story", tag: "04", name: "GITHUB ARCHIVE" },
   { id: "arsenal", tag: "05", name: "TOOLING & STACK" },
   { id: "about", tag: "06", name: "(02) ABOUT" },
   { id: "contact", tag: "07", name: "CONTACT" },
@@ -27,6 +27,30 @@ export function ScrollTelemetryHUD() {
   const [percentage, setPercentage] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const lastSectionIdRef = useRef(SECTIONS[0].id);
+
+  // Cached section offsets to eliminate DOM reads in scroll listener
+  const sectionOffsetsRef = useRef<Array<{ id: string; top: number; section: (typeof SECTIONS)[0] }>>([]);
+
+  const updateOffsets = useCallback(() => {
+    sectionOffsetsRef.current = SECTIONS.map((sec) => {
+      const el = document.getElementById(sec.id);
+      return {
+        id: sec.id,
+        top: el ? el.offsetTop : 0,
+        section: sec,
+      };
+    });
+  }, []);
+
+  useEffect(() => {
+    updateOffsets();
+    const timer = setTimeout(updateOffsets, 500);
+    window.addEventListener("resize", updateOffsets, { passive: true });
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", updateOffsets);
+    };
+  }, [updateOffsets]);
 
   // SVG Radial Ring Metrics
   const radius = 13;
@@ -47,19 +71,16 @@ export function ScrollTelemetryHUD() {
       const nextPct = Math.min(100, Math.max(0, Math.round(progress * 100)));
       setPercentage((prev) => (prev !== nextPct ? nextPct : prev));
 
-      // Detect active section
+      // Detect active section using cached offsets (zero DOM reads)
       const scrollPos = scroll + window.innerHeight * 0.35;
-      for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const el = document.getElementById(SECTIONS[i].id);
-        if (el) {
-          const top = el.offsetTop;
-          if (scrollPos >= top) {
-            if (lastSectionIdRef.current !== SECTIONS[i].id) {
-              lastSectionIdRef.current = SECTIONS[i].id;
-              setActiveSection(SECTIONS[i]);
-            }
-            break;
+      const cached = sectionOffsetsRef.current;
+      for (let i = cached.length - 1; i >= 0; i--) {
+        if (scrollPos >= cached[i].top) {
+          if (lastSectionIdRef.current !== cached[i].id) {
+            lastSectionIdRef.current = cached[i].id;
+            setActiveSection(cached[i].section);
           }
+          break;
         }
       }
     }, [])

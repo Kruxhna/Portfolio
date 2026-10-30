@@ -242,18 +242,10 @@ vec4 applySpectralDispersion(vec2 uv, vec2 distortion, float strength, float enh
   vec2 offset2 = dispersionDir * (0.75 * scale);
   vec2 offset3 = dispersionDir * (1.15 * scale);
 
-  float blurIntensity = clamp(strength * enhance * 0.35, 0.0, 1.0);
-  vec4 sample1, sample2, sample3;
-
-  if (blurRadius > 0.0 && blurIntensity > 0.1) {
-    sample1 = gaussianBlur(clamp(distortedUV + offset1, 0.0, 1.0), blurRadius * 0.5, blurIntensity);
-    sample2 = gaussianBlur(clamp(distortedUV + offset2, 0.0, 1.0), blurRadius * 0.75, blurIntensity);
-    sample3 = gaussianBlur(clamp(distortedUV + offset3, 0.0, 1.0), blurRadius, blurIntensity);
-  } else {
-    sample1 = sampleSource(clamp(distortedUV + offset1, 0.0, 1.0));
-    sample2 = sampleSource(clamp(distortedUV + offset2, 0.0, 1.0));
-    sample3 = sampleSource(clamp(distortedUV + offset3, 0.0, 1.0));
-  }
+  // Direct fast chromatic sampling without 27-tap multi-pass gaussian blur
+  vec4 sample1 = sampleSource(clamp(distortedUV + offset1, 0.0, 1.0));
+  vec4 sample2 = sampleSource(clamp(distortedUV + offset2, 0.0, 1.0));
+  vec4 sample3 = sampleSource(clamp(distortedUV + offset3, 0.0, 1.0));
 
   // Intense Rainbow Prismatic Channel Splitting (Cyan / Magenta / Yellow / Blue)
   vec3 dispersed = vec3(
@@ -517,10 +509,11 @@ export function Tsunami({
   const handleScrollUpdate = useCallback((scroll: number) => {
     if (!scrollControlled || mode !== "scroll") return;
 
-    // Viewport-height rhythmic cycle: sweeps a liquid wave every ~1.3 viewports
-    const cycleLength = window.innerHeight * 1.35;
-    const rawCycle = (scroll / cycleLength) % 1.0;
-    targetScrollProgressRef.current = rawCycle;
+    // Continuous triangle-wave cycle: sweeps smooth undulating waves across sections without snapping
+    const cycleLength = Math.max(window.innerHeight * 1.15, 700);
+    const phase = (scroll / cycleLength) % 2.0;
+    const continuousWave = phase <= 1.0 ? phase : 2.0 - phase;
+    targetScrollProgressRef.current = continuousWave;
 
     // Scroll Velocity Calculation
     const now = performance.now();
@@ -662,7 +655,8 @@ export function Tsunami({
     const handleResize = () => {
       const parent = canvas.parentElement;
       if (!parent) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Cap DPR to 1.0 for atmospheric background to eliminate GPU fragment bottleneck
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.0);
       width = parent.clientWidth;
       height = parent.clientHeight;
 
@@ -678,12 +672,22 @@ export function Tsunami({
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
-    // 120 FPS Render Loop
+    let resizeObserver: ResizeObserver | null = null;
+    const parentEl = canvas.parentElement;
+    if (parentEl) {
+      resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(parentEl);
+    }
+
+    // 120 FPS Render Loop (with document.hidden gating & no per-frame layout reads)
     const render = () => {
+      if (document.hidden) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
       timeRef.current += ambientSpeed;
-      handleResize();
       gl.viewport(0, 0, canvas.width, canvas.height);
 
       gl.useProgram(program);
@@ -765,6 +769,7 @@ export function Tsunami({
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleResize);
+      if (resizeObserver) resizeObserver.disconnect();
       if (texture) gl.deleteTexture(texture);
       gl.deleteBuffer(quadBuffer);
       gl.deleteProgram(program);

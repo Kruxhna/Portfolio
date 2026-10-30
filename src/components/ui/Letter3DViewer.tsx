@@ -124,8 +124,9 @@ export function Letter3DViewer({ accentColor = "#C93B5B" }: Letter3DViewerProps)
           if ((child as THREE.Mesh).isMesh) {
             const mesh = child as THREE.Mesh;
             if (mesh.geometry) {
-              mesh.geometry.deleteAttribute("normal");
-              mesh.geometry.computeVertexNormals();
+              if (!mesh.geometry.attributes.normal) {
+                mesh.geometry.computeVertexNormals();
+              }
             }
             mesh.material = mat;
           }
