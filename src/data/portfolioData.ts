@@ -53,7 +53,7 @@ export const PERSONAL_INFO = {
   title: "AI/ML Engineer & Systems Enthusiast",
   location: "Pune, India (UTC+5:30)",
   availability: "Available for AI/ML Engineering & Research Roles",
-  email: "krushna.aiml@gmail.com",
+  email: "krxh662@gmail.com",
   github: "https://github.com/Kruxhna",
   linkedin: "https://www.linkedin.com/in/krushna-nole/",
   codolio: "https://codolio.com/profile/Kruxhna/problemSolving",
@@ -471,7 +471,7 @@ Location:   Mumbai / Pune, India (UTC+5:30)`,
 
   contact: `=== [DIRECT CHANNELS & PROFILES] ===
   • LinkedIn:   https://www.linkedin.com/in/krushna-nole/
-  • Email:      krushna.aiml@gmail.com
+  • Email:      krxh662@gmail.com
   • GitHub:     https://github.com/Kruxhna
   • Codolio:    https://codolio.com/profile/Kruxhna/problemSolving
   • Location:   Mumbai, India (IST / UTC+5:30)

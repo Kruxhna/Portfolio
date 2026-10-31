@@ -471,7 +471,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
   };
 
   const copyContactEmail = () => {
-    navigator.clipboard.writeText("krushna.aiml@gmail.com");
+    navigator.clipboard.writeText("krxh662@gmail.com");
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
   };
@@ -761,7 +761,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                               <ExternalArrow className="text-[#A68E94] group-hover:text-[#C93B5B] shrink-0 transition-colors" />
                             </a>
                             <a
-                              href="mailto:krushna.aiml@gmail.com"
+                              href="mailto:krxh662@gmail.com"
                               data-cursor="pointer"
                               className="group flex items-center justify-between gap-2.5 rounded-lg border border-[rgba(221,112,116,0.16)] bg-[rgba(0,0,0,0.8)] p-2.5 text-[#F5EEF0] hover:border-[#C93B5B]/50 hover:bg-[rgba(221,112,116,0.08)] transition-all"
                             >
@@ -771,7 +771,7 @@ Source URL:   https://github.com/Kruxhna/${repoMatch}`;
                                 </div>
                                 <div className="min-w-0">
                                   <div className="text-[10px] text-[#A68E94]">Direct Email</div>
-                                  <div className="font-semibold text-[#F5EEF0] truncate">krushna.aiml@gmail.com</div>
+                                  <div className="font-semibold text-[#F5EEF0] truncate">krxh662@gmail.com</div>
                                 </div>
                               </div>
                               <ExternalArrow className="text-[#A68E94] group-hover:text-[#C93B5B] shrink-0 transition-colors" />

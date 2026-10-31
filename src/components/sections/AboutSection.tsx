@@ -41,7 +41,7 @@ const OFF_SCREEN_INTERESTS: string[] = [
 ];
 
 const BIO_STATEMENT =
-  "I'm Krushna, a CS & AI/ML engineering undergrad in Mumbai. Most of what I build starts with a bottleneck that bugs me—a quick script or low-level experiment that snowballs into distributed inference engines, radar simulations, and tools other people actually use.";
+  "I'm Krushna, a CS & AI/ML undergrad. I hunt down compute bottlenecks and build my way out of them—shipping distributed LLM meshes, radar spectrum simulators, and low-latency tools people actually use";
 
 // ============================================================================
 // DEDICATED CHILD COMPONENT FOR SCROLL SCRUB (STRICT RULES OF HOOKS)
