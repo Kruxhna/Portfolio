@@ -57,7 +57,7 @@ export const PERSONAL_INFO = {
   github: "https://github.com/Kruxhna",
   linkedin: "https://www.linkedin.com/in/krushna-nole/",
   codolio: "https://codolio.com/profile/Kruxhna/problemSolving",
-  x: "https://x.com",
+  x: "https://x.com/KrushnaNole",
   bio: "AI/ML Engineer & Systems Enthusiast building intelligent pipelines, deep learning models, and algorithmic solutions.",
   stats: [
     { label: "DSA Problems Solved", value: "300+", subtext: "Codolio & Platforms" },
@@ -66,6 +66,48 @@ export const PERSONAL_INFO = {
     { label: "DFDC Forensics ROC-AUC", value: "94.2%", subtext: "Bi-LSTM Detector" },
   ],
 };
+
+export interface SocialProfile {
+  id: string;
+  name: string;
+  url: string;
+  handle: string;
+  category: "engineering" | "competitive" | "writing" | "design" | "community";
+  isPrimary?: boolean;
+}
+
+export const SOCIAL_PROFILES: SocialProfile[] = [
+  // Primary Engineering & Professional Rigor
+  { id: "linkedin", name: "LinkedIn", url: "https://www.linkedin.com/in/krushna-nole/", handle: "in/krushna-nole", category: "engineering", isPrimary: true },
+  { id: "github", name: "GitHub", url: "https://github.com/Kruxhna", handle: "@Kruxhna", category: "engineering", isPrimary: true },
+  { id: "leetcode", name: "LeetCode", url: "https://leetcode.com/u/kruxhna/", handle: "u/kruxhna", category: "competitive", isPrimary: true },
+  { id: "kaggle", name: "Kaggle", url: "https://www.kaggle.com/krushnanole", handle: "@krushnanole", category: "engineering", isPrimary: true },
+  { id: "stackoverflow", name: "StackOverflow", url: "https://stackoverflow.com/users/32940391/krushna", handle: "users/32940391", category: "engineering", isPrimary: true },
+  { id: "x", name: "X", url: "https://x.com/KrushnaNole", handle: "@KrushnaNole", category: "community", isPrimary: true },
+
+  // Competitive Programming
+  { id: "codechef", name: "CodeChef", url: "https://www.codechef.com/users/kruxhna", handle: "@kruxhna", category: "competitive" },
+  { id: "hackerrank", name: "HackerRank", url: "https://www.hackerrank.com/profile/krushnanole433", handle: "@krushnanole433", category: "competitive" },
+
+  // Technical Writing & Dev Publications
+  { id: "devto", name: "Dev.to", url: "https://dev.to/kruxhna", handle: "@kruxhna", category: "writing" },
+  { id: "medium", name: "Medium", url: "https://medium.com/@nolekrushna85", handle: "@nolekrushna85", category: "writing" },
+  { id: "hashnode", name: "Hashnode", url: "https://hashnode.com/@krxh", handle: "@krxh", category: "writing" },
+
+  // Creative & Visual Engineering
+  { id: "codepen", name: "CodePen", url: "https://codepen.io/Kruxhna", handle: "@Kruxhna", category: "design" },
+  { id: "behance", name: "Behance", url: "https://www.behance.net/krxh", handle: "@krxh", category: "design" },
+  { id: "dribbble", name: "Dribbble", url: "https://dribbble.com/Kruxhna", handle: "@Kruxhna", category: "design" },
+  { id: "youtube", name: "YouTube", url: "https://www.youtube.com/@krxh_fx", handle: "@krxh_fx", category: "design" },
+
+  // Community & Social Networks
+  { id: "discord", name: "Discord", url: "https://discord.com/users/1437348441989709894", handle: "user/1437348", category: "community" },
+  { id: "bluesky", name: "Bluesky", url: "https://bsky.app/profile/krxh.bsky.social", handle: "@krxh.bsky.social", category: "community" },
+  { id: "reddit", name: "Reddit", url: "https://www.reddit.com/user/Kira-162007/", handle: "u/Kira-162007", category: "community" },
+  { id: "mastodon", name: "Mastodon", url: "https://mastodon.social/@krxh", handle: "@krxh", category: "community" },
+  { id: "instagram", name: "Instagram", url: "https://www.instagram.com/ix_krushna", handle: "@ix_krushna", category: "community" },
+  { id: "facebook", name: "Facebook", url: "https://www.facebook.com/profile.php?id=100068812224028", handle: "profile/krushna", category: "community" },
+];
 
 export const DSA_STATS = {
   totalSolved: "350+",

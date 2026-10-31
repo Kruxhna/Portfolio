@@ -11,7 +11,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLenis } from "lenis/react";
 import { ArrowUp, ArrowUpRight, MapPin, Sparkles, FileText, Mail, Send } from "lucide-react";
-import { PERSONAL_INFO } from "@/data/portfolioData";
+import { PERSONAL_INFO, SOCIAL_PROFILES } from "@/data/portfolioData";
 import { useSmoothScroll } from "@/components/layout/SmoothScrollProvider";
 import { SandTextMonument } from "@/components/SandTextMonument";
 
@@ -443,6 +443,41 @@ function VelocityCounterMarquee() {
 // MAIN COMPONENT: MirageFooterExperience (100% Text & UI Animation Architecture)
 // ============================================================================
 
+// ============================================================================
+// COMPONENT 1.5: Footer Live Telemetry Clock
+// ============================================================================
+
+function FooterLiveClock() {
+  const [time, setTime] = useState<string>("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      };
+      setTime(new Intl.DateTimeFormat("en-US", options).format(now));
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="inline-flex items-center gap-2 font-mono text-[11px] text-[#F5EEF0] bg-[#140408] border border-[#261015] px-2.5 py-1 rounded-md mt-2">
+      <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
+      <span>{time ? `${time} IST` : "12:00:00 IST"}</span>
+      <span className="text-[#A68E94]/40">•</span>
+      <span className="text-[#A68E94]/70">UTC+5:30</span>
+    </div>
+  );
+}
+
 export function MirageFooterExperience() {
   const containerRef = useRef<HTMLElement>(null);
   const monumentRef = useRef<HTMLDivElement>(null);
@@ -622,37 +657,86 @@ export function MirageFooterExperience() {
         className="relative z-20 mx-auto w-full max-w-[1720px] px-6 sm:px-10 lg:px-16 pt-20 sm:pt-28 pb-12"
       >
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 lg:gap-14">
-          {/* ── COL 1: LOCATIONS / ACADEMIC ROOTS (md:col-span-3) ── */}
-          <div className="md:col-span-3 flex flex-col gap-6">
-            <span className="font-mono text-xs uppercase tracking-[0.16em] text-[#6D001A] select-none font-semibold">
-              [ 01 // LOCATIONS ]
-            </span>
+          {/* ── COL 1: LOCATIONS, STATUS & TELEMETRY (md:col-span-3) ── */}
+          <div className="md:col-span-3 flex flex-col justify-between">
+            {/* Top Group: Location & Academic Foundation */}
+            <div className="flex flex-col gap-6">
+              <span className="font-mono text-xs uppercase tracking-[0.16em] text-[#6D001A] select-none font-semibold">
+                [ 01 // LOCATIONS & STATUS ]
+              </span>
 
-            {/* Block 1: Mumbai */}
-            <div className="relative pt-4">
-              <div className="hairline-draw absolute top-0 left-0 w-full h-[1px] bg-[#261015]/80" />
-              <h5 className="font-sans text-lg font-medium text-[#F5EEF0]">
-                <SplitMaskedText text="Mumbai / India" />
-              </h5>
-              <p className="font-mono text-xs text-[#A68E94]/75 mt-1 leading-relaxed">
-                <SplitMaskedText text="Navi Mumbai, Uran • UTC+5:30" />
-              </p>
+              {/* Block 1: Mumbai */}
+              <div className="relative pt-4">
+                <div className="hairline-draw absolute top-0 left-0 w-full h-[1px] bg-[#261015]/80" />
+                <h5 className="font-sans text-lg font-medium text-[#F5EEF0]">
+                  <SplitMaskedText text="Mumbai / India" />
+                </h5>
+                <p className="font-mono text-xs text-[#A68E94]/75 mt-1 leading-relaxed">
+                  <SplitMaskedText text="Navi Mumbai, Uran • UTC+5:30" />
+                </p>
+                <p className="font-mono text-[11px] text-[#A68E94]/50 mt-1">
+                  Open to Remote & Global Relocation
+                </p>
+              </div>
+
+              {/* Block 2: Rigor */}
+              <div className="relative pt-4">
+                <div className="hairline-draw absolute top-0 left-0 w-full h-[1px] bg-[#261015]/80" />
+                <h5 className="font-sans text-lg font-medium text-[#F5EEF0]">
+                  <SplitMaskedText text="Systems & ML Rigor" />
+                </h5>
+                <p className="font-mono text-xs text-[#A68E94]/75 mt-1 leading-relaxed">
+                  <SplitMaskedText text="B.E. AIML • Mumbai University" />
+                </p>
+                <p className="font-mono text-[11px] text-[#A68E94]/50 mt-1">
+                  Distributed Systems & ML Specialization
+                </p>
+              </div>
             </div>
 
-            {/* Block 2: Rigor */}
-            <div className="relative pt-4 mt-2">
-              <div className="hairline-draw absolute top-0 left-0 w-full h-[1px] bg-[#261015]/80" />
-              <h5 className="font-sans text-lg font-medium text-[#F5EEF0]">
-                <SplitMaskedText text="Systems & ML Rigor" />
-              </h5>
-              <p className="font-mono text-xs text-[#A68E94]/75 mt-1 leading-relaxed">
-                <SplitMaskedText text="B.E. AIML • Mumbai University" />
-              </p>
+            {/* Bottom Group: Availability & Local Telemetry (Fills lower-left void & aligns with CTAs) */}
+            <div className="flex flex-col gap-6 mt-8 md:mt-0 pt-6 md:pt-0">
+              {/* Block 3: Availability */}
+              <div className="relative pt-4">
+                <div className="hairline-draw absolute top-0 left-0 w-full h-[1px] bg-[#261015]/80" />
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C93B5B] opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#9E0B2E]" />
+                  </span>
+                  <h5 className="font-sans text-base font-medium text-[#F5EEF0]">
+                    <SplitMaskedText text="Available for Roles" />
+                  </h5>
+                </div>
+                <p className="font-mono text-xs text-[#A68E94]/75 mt-1.5 leading-relaxed">
+                  <SplitMaskedText text="AI/ML & Distributed Systems" />
+                </p>
+                <p className="font-mono text-[11px] text-[#A68E94]/50 mt-1">
+                  Full-Time Positions & High-Impact Contracts
+                </p>
+              </div>
+
+              {/* Block 4: Telemetry & Live Clock */}
+              <div className="relative pt-4">
+                <div className="hairline-draw absolute top-0 left-0 w-full h-[1px] bg-[#261015]/80" />
+                <h5 className="font-mono text-xs uppercase tracking-[0.14em] text-[#A68E94]/80">
+                  <SplitMaskedText text="Local Telemetry" />
+                </h5>
+                <FooterLiveClock />
+                <div className="flex flex-wrap gap-1.5 mt-2.5">
+                  <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-[#261015] bg-[#0A0204]/90 text-[#A68E94]/70">
+                    Low Latency
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-[#261015] bg-[#0A0204]/90 text-[#A68E94]/70">
+                    High Concurrency
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* ── COL 2: MAIN CTA & MAGNETIC PILLS (md:col-span-6) ── */}
-          <div className="md:col-span-6 flex flex-col justify-between">
+          {/* ── COL 2: MAIN CTA & MAGNETIC PILLS (md:col-span-5) ── */}
+          <div className="md:col-span-5 flex flex-col justify-between">
             <div>
               <span className="font-mono text-xs uppercase tracking-[0.16em] text-[#6D001A] select-none font-semibold">
                 [ 02 // COLLABORATION ]
@@ -694,28 +778,66 @@ export function MirageFooterExperience() {
             </div>
           </div>
 
-          {/* ── COL 3: SOCIAL ROWS (md:col-span-3) ── */}
-          <div className="md:col-span-3 flex flex-col">
+          {/* ── COL 3: SOCIAL ROWS (md:col-span-4) ── */}
+          <div className="md:col-span-4 flex flex-col">
             <span className="font-mono text-xs uppercase tracking-[0.16em] text-[#6D001A] select-none font-semibold mb-4">
               [ 03 // NETWORK ]
             </span>
 
+            {/* Primary High-Impact Social Rows */}
             <div className="flex flex-col">
+              <SocialRow
+                href="https://www.linkedin.com/in/krushna-nole/"
+                label="LinkedIn"
+                sublabel="// in/krushna-nole"
+              />
               <SocialRow
                 href={PERSONAL_INFO.github}
                 label="GitHub"
                 sublabel="// @Kruxhna"
               />
               <SocialRow
-                href={PERSONAL_INFO.linkedin}
-                label="LinkedIn"
-                sublabel="// in/krushna-nole"
+                href="https://leetcode.com/u/kruxhna/"
+                label="LeetCode"
+                sublabel="// u/kruxhna"
               />
               <SocialRow
-                href={PERSONAL_INFO.codolio}
-                label="LeetCode"
-                sublabel="// Codolio Archive"
+                href="https://www.kaggle.com/krushnanole"
+                label="Kaggle"
+                sublabel="// @krushnanole"
               />
+              <SocialRow
+                href="https://stackoverflow.com/users/32940391/krushna"
+                label="StackOverflow"
+                sublabel="// users/32940391"
+              />
+              <SocialRow
+                href="https://x.com/KrushnaNole"
+                label="X"
+                sublabel="// @KrushnaNole"
+              />
+            </div>
+
+            {/* Extended Tech, Design & Community Handles */}
+            <div className="mt-5 pt-4 border-t border-[#261015]/80">
+              <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[#A68E94]/60 select-none block mb-3">
+                // MORE PLATFORMS & PROFILES
+              </span>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {SOCIAL_PROFILES.filter((s) => !s.isPrimary).map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-cursor="pointer"
+                    className="font-mono text-[11px] px-2.5 py-1 rounded-md border border-[#261015] bg-[#0A0204]/90 text-[#A68E94] hover:text-[#F5EEF0] hover:border-[#6D001A] hover:bg-[#140408] transition-all duration-200 select-none inline-flex items-center gap-1 group"
+                  >
+                    <span>{item.name}</span>
+                    <span className="text-[#6D001A] group-hover:text-[#F5EEF0] transition-colors text-[9px]">↗</span>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
