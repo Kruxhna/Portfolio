@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Playfair_Display, Alex_Brush } from "next/font/google";
 import { CustomCursor } from "@/components/ui/CustomCursor";
-import { PixelMatrixBackground } from "@/components/layout/PixelMatrixBackground";
+import { CosmicScrollBackground } from "@/components/ui/CosmicScrollBackground";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
 import { ScrollTelemetryHUD } from "@/components/ui/ScrollTelemetryHUD";
 import { TsunamiControllerPill } from "@/components/ui/TsunamiControllerPill";
@@ -72,8 +72,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${alexBrush.variable} dark scroll-smooth`}
     >
       <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#6D001A] selection:text-[#FFFFFF]">
-        {/* Reverse-Engineered Tsunami Liquid Wave Background (CAESAR Plain Colors) */}
-        <PixelMatrixBackground />
+        {/* 3D Cosmic Starfield & Volumetric Nebula Fly-Through Background */}
+        <CosmicScrollBackground />
 
         {/* Global Unified Custom Cursor */}
         <CustomCursor />
