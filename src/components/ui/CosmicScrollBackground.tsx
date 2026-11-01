@@ -316,7 +316,8 @@ export function CosmicScrollBackground({
     const height = window.innerHeight;
     const aspect = width / Math.max(height, 1);
 
-    const camera = new THREE.PerspectiveCamera(60, aspect, 1, TUNNEL_DEPTH + 400);
+    const fov = aspect < 1 ? 75 : 60; // Wider FOV on portrait/mobile for better framing
+    const camera = new THREE.PerspectiveCamera(fov, aspect, 1, TUNNEL_DEPTH + 400);
     camera.position.set(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({
@@ -327,7 +328,8 @@ export function CosmicScrollBackground({
       depth: false,
     });
 
-    const maxDpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const isMobile = window.innerWidth < 768;
+    const maxDpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.5);
     renderer.setPixelRatio(maxDpr);
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
@@ -347,7 +349,9 @@ export function CosmicScrollBackground({
     // ========================================================================
     // 2. MULTI-LAYERED STARFIELD TUNNEL (Thousands of crisp points)
     // ========================================================================
-    const totalStars = starCount + dustCount;
+    const starCountActual = isMobile ? Math.floor(starCount * 0.55) : starCount;
+    const dustCountActual = isMobile ? Math.floor(dustCount * 0.55) : dustCount;
+    const totalStars = starCountActual + dustCountActual;
     const starGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(totalStars * 3);
     const colors = new Float32Array(totalStars * 3);
@@ -364,7 +368,7 @@ export function CosmicScrollBackground({
     ];
 
     for (let i = 0; i < totalStars; i++) {
-      const isDust = i >= starCount;
+      const isDust = i >= starCountActual;
 
       const radius = isDust
         ? 50 + Math.random() * 420
@@ -546,7 +550,7 @@ export function CosmicScrollBackground({
 
         // Subtle, gentle FOV warp on scroll (max +4° instead of violent zooming)
         const fovWarp = clampValue(Math.abs(activeVelocity) * 0.08, 0.0, 4.0);
-        camera.fov = 60.0 + fovWarp;
+        camera.fov = fov + fovWarp;
         camera.updateProjectionMatrix();
       }
 
@@ -595,6 +599,7 @@ export function CosmicScrollBackground({
       aria-hidden="true"
       className={`fixed inset-0 z-0 pointer-events-none select-none overflow-hidden ${className}`}
       style={{
+        touchAction: 'pan-y',
         // Deep space void base matching portfolio charcoal theme (#030308 to #0a0a0d)
         background: "radial-gradient(ellipse at 50% 50%, #060208 0%, #030308 65%, #010103 100%)",
       }}

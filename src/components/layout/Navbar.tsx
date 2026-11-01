@@ -121,7 +121,7 @@ export function Navbar({
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 hero-animate hero-fade-up"
-      style={{ animationDelay: "0s", animationDuration: "0.7s" }}
+      style={{ animationDelay: "0s", animationDuration: "0.7s", paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
       <nav
         className={cn(
@@ -241,7 +241,7 @@ export function Navbar({
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg border border-[#6D001A] bg-[#240009]/85 text-[#F5EEF0] hover:border-[#9E0B2E]"
+            className="md:hidden flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-[#6D001A] bg-[#240009]/85 text-[#F5EEF0] hover:border-[#9E0B2E]"
           >
             {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -268,7 +268,7 @@ export function Navbar({
                 href={`#${item.id}`}
                 onClick={(e) => handleNavClick(item.id, e)}
                 className={cn(
-                  "block py-1 transition-colors",
+                  "block py-3 min-h-[44px] flex items-center transition-colors",
                   isActive
                     ? "text-[#9E0B2E] font-medium"
                     : "text-[#A68E94] hover:text-[#F5EEF0]"

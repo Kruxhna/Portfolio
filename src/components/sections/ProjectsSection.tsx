@@ -131,7 +131,7 @@ export function ProjectsSection() {
       <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12">
         {/* 1. GIANT SECTION HEADER (Exact Egorz.com Title "i made") */}
         <div className="mb-8 md:mb-10">
-          <h2 className="text-7xl sm:text-8xl md:text-[9rem] font-black tracking-tighter leading-none text-[#F5EEF0] mb-6 sm:mb-8 select-none lowercase">
+          <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] font-black tracking-tighter leading-none text-[#F5EEF0] mb-6 sm:mb-8 select-none lowercase">
             i made
           </h2>
 

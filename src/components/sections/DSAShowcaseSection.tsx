@@ -154,7 +154,7 @@ export function DSAShowcaseSection() {
               {/* 2. Display Title */}
               <h2
                 id="dsa-title"
-                className="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.94] text-[#F5EEF0] mb-6"
+                className="text-4xl sm:text-6xl xl:text-8xl font-black tracking-tighter leading-[0.94] text-[#F5EEF0] mb-6"
               >
                 {DSA_DATA.title}
               </h2>

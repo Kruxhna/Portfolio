@@ -392,14 +392,13 @@ export function HeroSection() {
 
           {/* ── UPPER ZONE ──────────────────────────────────────────────── */}
           <div
-            className="flex-1 min-h-0 flex flex-row items-start justify-between pointer-events-none"
-            style={{ paddingTop: "clamp(5.5rem, 8vh, 7rem)" }}
+            className="flex-1 min-h-0 flex flex-col lg:flex-row items-start justify-between pointer-events-none"
+            style={{ paddingTop: "clamp(4rem, 8vh, 7rem)" }}
           >
 
             {/* ── LEFT COLUMN ───────────────────────────────────────────── */}
             <div
-              className="flex flex-col items-start pointer-events-none"
-              style={{ maxWidth: "min(40rem, 54vw)" }}
+              className="flex flex-col items-start pointer-events-none w-full lg:max-w-[40rem]"
             >
 
               {/* Eyebrow — delay 0.05s */}
@@ -419,7 +418,7 @@ export function HeroSection() {
               <h2
                 className="hero-animate hero-fade-up text-[#F5EEF0] font-sans font-normal pointer-events-none"
                 style={{
-                  fontSize: "clamp(36px, 3.2vw, 58px)",
+                  fontSize: "clamp(20px, 5vw, 58px)",
                   lineHeight: 1.25,
                   fontWeight: 450,
                   animationDelay: "0.18s",
@@ -456,7 +455,7 @@ export function HeroSection() {
                 data-cursor="magnetic"
                 className="hero-animate hero-fade-up mt-1 inline-flex items-center gap-2 font-mono cursor-pointer group transition-opacity hover:opacity-85 select-none pointer-events-auto"
                 style={{
-                  marginLeft: "clamp(200px, 18vw, 320px)",
+                  marginLeft: "clamp(0px, 18vw, 320px)",
                   fontSize: "clamp(15px, 1.2vw, 19px)",
                   color: "#A68E94",
                   animationDelay: "0.38s",
@@ -482,7 +481,7 @@ export function HeroSection() {
 
             {/* ── RIGHT ZONE: 3D K — delay 0.30s ───────────────────────── */}
             <div
-              className="hero-animate hero-k shrink-0 flex items-start justify-end pointer-events-none"
+              className="hero-animate hero-k shrink-0 hidden lg:flex items-start justify-end pointer-events-none"
               style={{
                 width: "clamp(240px, 35vw, 560px)",
                 marginTop: "-0.5rem",
@@ -513,7 +512,7 @@ export function HeroSection() {
                 isScattered ? "pointer-events-none" : "pointer-events-auto cursor-pointer"
               }`}
               style={{
-                fontSize: "clamp(4.2rem, 12vw, 13.5rem)",
+                fontSize: "clamp(2.5rem, 12vw, 13.5rem)",
                 letterSpacing: "-0.045em",
                 lineHeight: 0.82,
                 textShadow: "none",
