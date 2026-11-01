@@ -182,7 +182,7 @@ body {
     background-color: transparent;
     color: var(--text-primary);
     font-family: var(--font-geist-sans), Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   code, pre, .font-mono {

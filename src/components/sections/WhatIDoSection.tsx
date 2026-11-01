@@ -673,21 +673,26 @@ function CardVisual({ visualType }: { visualType: VisualType }) {
 
 export function WhatIDoSection() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  const leftColWrapperRef = useRef<HTMLDivElement | null>(null);
+  const leftPanelRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const reducedMotion = useReducedMotion();
 
-  // Deterministic Scroll-Spy: updates activeCard number (01, 02, 03, 04) accurately
-  const updateActiveCard = React.useCallback(() => {
+  // Deterministic Scroll-Spy + Guaranteed Desktop Sticky Pinning
+  const updateScrollState = React.useCallback(() => {
     if (typeof window === "undefined") return;
     const vh = window.innerHeight || 800;
-    const targetY = vh * 0.45;
+    const targetY = vh * 0.42;
     let closestIndex = 0;
     let minDistance = Infinity;
 
     cardRefs.current.forEach((el, index) => {
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const cardCenter = rect.top + rect.height * 0.35;
+      // Measure distance from viewport reading zone to card center
+      const cardCenter = rect.top + rect.height * 0.4;
       const distance = Math.abs(cardCenter - targetY);
       if (distance < minDistance) {
         minDistance = distance;
@@ -696,52 +701,59 @@ export function WhatIDoSection() {
     });
 
     setActiveIndex((prev) => (prev !== closestIndex ? closestIndex : prev));
+
+    // Deterministic Desktop Pinning for Left Column (>= 1024px)
+    const gridEl = gridRef.current;
+    const leftWrapperEl = leftColWrapperRef.current;
+    const panelEl = leftPanelRef.current;
+
+    if (gridEl && leftWrapperEl && panelEl) {
+      if (window.innerWidth >= 1024) {
+        const gridRect = gridEl.getBoundingClientRect();
+        const wrapperRect = leftWrapperEl.getBoundingClientRect();
+        const panelHeight = panelEl.offsetHeight || 460;
+        const stickyTop = 104; // 6.5rem below top navbar
+
+        // If native CSS sticky is not holding wrapperRect.top at stickyTop, apply exact translate3d clamp
+        const maxTranslate = Math.max(0, gridRect.height - panelHeight);
+        const desiredTranslate = Math.min(
+          maxTranslate,
+          Math.max(0, stickyTop - wrapperRect.top)
+        );
+
+        panelEl.style.transform = `translate3d(0, ${desiredTranslate.toFixed(1)}px, 0)`;
+      } else {
+        panelEl.style.transform = "none";
+      }
+    }
   }, []);
 
-  useLenis(React.useCallback(() => updateActiveCard(), [updateActiveCard]));
+  useLenis(React.useCallback(() => updateScrollState(), [updateScrollState]));
 
   useEffect(() => {
-    updateActiveCard();
-    window.addEventListener("scroll", updateActiveCard, { passive: true });
-    window.addEventListener("resize", updateActiveCard, { passive: true });
-
-    // Also backup with IntersectionObserver on all 4 cards
-    const observers: IntersectionObserver[] = [];
-    const t = setTimeout(() => {
-      cardRefs.current.forEach((el, index) => {
-        if (!el) return;
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                setActiveIndex(index);
-              }
-            });
-          },
-          {
-            rootMargin: "-15% 0px -15% 0px",
-            threshold: 0.15,
-          }
-        );
-        observer.observe(el);
-        observers.push(observer);
-      });
-    }, 100);
-
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState, { passive: true });
     return () => {
-      clearTimeout(t);
-      window.removeEventListener("scroll", updateActiveCard);
-      window.removeEventListener("resize", updateActiveCard);
-      observers.forEach((obs) => obs.disconnect());
+      window.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
     };
-  }, [updateActiveCard]);
+  }, [updateScrollState]);
+
+  const scrollToCard = (index: number) => {
+    const el = cardRefs.current[index];
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 140;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
 
   const activeCard = CAPABILITIES[activeIndex] ?? CAPABILITIES[0];
 
   return (
     <section
+      ref={sectionRef}
       id="what-i-do"
-      className="relative z-10 w-full bg-transparent text-[#F5EEF0] py-24 md:py-36"
+      className="relative z-10 w-full bg-transparent text-[#F5EEF0] py-20 md:py-32"
     >
       {/* Anchor for backward-compatible #capabilities navigation */}
       <span id="capabilities" className="absolute -top-28 pointer-events-none" />
@@ -751,126 +763,222 @@ export function WhatIDoSection() {
         <div
           className="absolute top-1/4 -left-20 w-[600px] h-[600px] rounded-full pointer-events-none"
           style={{
-            background: "radial-gradient(circle at 20% 30%, rgba(158, 11, 46, 0.08), transparent 60%)",
+            background:
+              "radial-gradient(circle at 20% 30%, rgba(158, 11, 46, 0.08), transparent 60%)",
           }}
         />
       </div>
 
-      {/* 12-Column Split Grid */}
-      <div className="w-full">
-        <div className="lg:grid lg:grid-cols-12 lg:gap-12 xl:gap-16 items-start">
-          {/* ================================================================= */}
-          {/* LEFT COLUMN: STICKY COUNTER, EDITORIAL TITLE, ACTIVE PILL & CTA   */}
-          {/* ================================================================= */}
-          <div className="lg:col-span-5 lg:sticky lg:top-24 lg:self-start flex flex-col justify-between min-h-[440px] max-h-[calc(100vh-7rem)] mb-14 lg:mb-0 z-20">
-            <div>
-              <p className="font-mono text-xs tracking-[0.16em] uppercase text-[#A68E94] mb-4 flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
-                <span>CAPABILITIES | WHAT I DO</span>
+      {/* =================================================================== */}
+      {/* MOBILE / TABLET HEADER + STICKY LIVE COUNTER BAR (< 1024px)         */}
+      {/* Ensures 01, 02, 03, 04 and context stay visible on mobile scroll    */}
+      {/* =================================================================== */}
+      <div className="lg:hidden mb-6">
+        <p className="font-mono text-xs tracking-[0.16em] uppercase text-[#A68E94] mb-2 flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
+          <span>CAPABILITIES | WHAT I DO</span>
+        </p>
+        <h2 className="text-4xl sm:text-5xl tracking-tight leading-[1.05]">
+          <span className="font-bold text-[#F5EEF0]">What </span>
+          <span className="font-serif italic font-normal text-[#C93B5B]">i do</span>
+        </h2>
+      </div>
+
+      <div className="lg:hidden sticky top-[68px] z-30 mb-8">
+        <div className="rounded-2xl bg-[#080204]/95 backdrop-blur-xl border border-[#C93B5B]/45 px-4 py-3 shadow-[0_12px_32px_rgba(0,0,0,0.85)] flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="inline-flex items-center justify-center px-3 py-1 rounded-xl bg-[#6D001A] border border-[#C93B5B]/70 font-mono text-lg font-extrabold text-[#FFFFFF] shrink-0 shadow-sm">
+              {activeCard.number}
+            </span>
+            <div className="min-w-0">
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#E899AC] truncate">
+                ACTIVE CAPABILITY
               </p>
-
-              <div className="overflow-hidden h-[7rem] sm:h-[8.5rem] lg:h-[10rem] flex items-center">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={activeCard.number}
-                    initial={reducedMotion ? false : { y: 32, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={reducedMotion ? undefined : { y: -32, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    className="block font-extrabold text-[6.5rem] sm:text-[8rem] lg:text-[9.5rem] leading-none tracking-tighter select-none text-[#F5EEF0] drop-shadow-[0_8px_32px_rgba(228,107,94,0.18)]"
-                  >
-                    {activeCard.number}
-                  </motion.span>
-                </AnimatePresence>
-              </div>
+              <p className="font-mono text-xs sm:text-sm font-semibold text-[#F5EEF0] truncate">
+                {activeCard.categoryPill}
+              </p>
             </div>
+          </div>
 
-            <div className="pt-8">
-              <h2 className="text-5xl md:text-6xl tracking-tight leading-[1.05]">
-                <span className="font-bold text-[#F5EEF0]">What </span>
-                <span className="font-serif italic font-normal text-[#C93B5B]">i do</span>
-              </h2>
+          {/* Quick Jump Number Pills (01, 02, 03, 04) */}
+          <div className="flex items-center gap-1 shrink-0">
+            {CAPABILITIES.map((item, idx) => {
+              const isItemActive = idx === activeIndex;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => scrollToCard(idx)}
+                  className={`px-2 py-1 rounded-lg font-mono text-xs font-bold transition-all ${
+                    isItemActive
+                      ? "bg-[#C93B5B] text-[#FFFFFF] shadow-sm"
+                      : "bg-[#140408] text-[#A68E94] hover:text-[#F5EEF0] border border-[#261015]"
+                  }`}
+                >
+                  {item.number}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
-              <motion.div
-                layout
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-[#6D001A] text-[#F5EEF0] px-7 py-3.5 rounded-full font-mono text-sm md:text-base font-semibold tracking-tight border border-[#9E0B2E]/60 shadow-[0_4px_24px_-4px_rgba(195,24,30,0.55)] inline-flex items-center gap-2.5 w-fit mt-6 select-none"
-              >
-                <span className="w-2 h-2 rounded-full bg-[#F5EEF0] animate-pulse shrink-0" />
-                <div className="overflow-hidden h-6 flex items-center">
+      {/* =================================================================== */}
+      {/* 12-COLUMN SPLIT GRID (DESKTOP STICKY LEFT + CARDS RIGHT)            */}
+      {/* =================================================================== */}
+      <div className="w-full">
+        <div
+          ref={gridRef}
+          className="lg:grid lg:grid-cols-12 lg:gap-12 xl:gap-16 items-start relative"
+        >
+          {/* LEFT COLUMN: DESKTOP PINNED COUNTER, TITLE, ACTIVE PILL & CTA */}
+          <div
+            ref={leftColWrapperRef}
+            className="hidden lg:block lg:col-span-5 relative z-20"
+          >
+            <div
+              ref={leftPanelRef}
+              className="flex flex-col justify-between min-h-[430px] will-change-transform"
+            >
+              <div>
+                <p className="font-mono text-xs tracking-[0.16em] uppercase text-[#A68E94] mb-4 flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
+                  <span>CAPABILITIES | WHAT I DO</span>
+                </p>
+
+                <div className="overflow-hidden h-[9.5rem] flex items-center">
                   <AnimatePresence mode="wait">
                     <motion.span
-                      key={activeCard.categoryPill}
-                      initial={reducedMotion ? false : { y: 12, opacity: 0 }}
+                      key={activeCard.number}
+                      initial={reducedMotion ? false : { y: 28, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      exit={reducedMotion ? undefined : { y: -12, opacity: 0 }}
-                      transition={{ duration: 0.22 }}
-                      className="whitespace-nowrap"
+                      exit={reducedMotion ? undefined : { y: -28, opacity: 0 }}
+                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                      className="block font-extrabold text-[8.5rem] xl:text-[9.5rem] leading-none tracking-tighter select-none text-[#F5EEF0] drop-shadow-[0_8px_32px_rgba(201,59,91,0.28)]"
                     >
-                      {activeCard.categoryPill}
+                      {activeCard.number}
                     </motion.span>
                   </AnimatePresence>
                 </div>
-              </motion.div>
 
-              <div>
-                <a
-                  href="#work"
-                  data-cursor="pointer"
-                  className="bg-[#000000]/75 backdrop-blur-md border border-[rgba(221,112,116,0.25)] text-[#F5EEF0] px-6 py-2.5 rounded-full font-mono text-xs font-semibold tracking-[0.12em] uppercase hover:bg-[#6D001A] hover:text-[#F5EEF0] hover:border-[#9E0B2E]/60 hover:shadow-[0_4px_20px_-4px_rgba(195,24,30,0.5)] transition-all duration-300 inline-flex items-center gap-2 w-fit mt-8 group cursor-pointer"
+                {/* Desktop Step Indicator Pills (01, 02, 03, 04) */}
+                <div className="flex items-center gap-2 mt-4">
+                  {CAPABILITIES.map((item, idx) => {
+                    const isItemActive = idx === activeIndex;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        data-cursor="pointer"
+                        onClick={() => scrollToCard(idx)}
+                        className={`px-3 py-1 rounded-full font-mono text-xs font-bold transition-all cursor-pointer ${
+                          isItemActive
+                            ? "bg-[#C93B5B] text-[#FFFFFF] shadow-[0_0_16px_rgba(201,59,91,0.5)]"
+                            : "bg-[#0A0204]/90 text-[#A68E94] border border-[rgba(221,112,116,0.22)] hover:border-[#C93B5B]/60 hover:text-[#F5EEF0]"
+                        }`}
+                      >
+                        {item.number}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <h2 className="text-5xl xl:text-6xl tracking-tight leading-[1.05]">
+                  <span className="font-bold text-[#F5EEF0]">What </span>
+                  <span className="font-serif italic font-normal text-[#C93B5B]">
+                    i do
+                  </span>
+                </h2>
+
+                <motion.div
+                  layout
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="bg-[#6D001A] text-[#F5EEF0] px-6 py-3.5 rounded-full font-mono text-sm xl:text-base font-semibold tracking-tight border border-[#C93B5B]/60 shadow-[0_4px_24px_-4px_rgba(195,24,30,0.55)] inline-flex items-center gap-2.5 w-fit mt-6 select-none"
                 >
-                  <span>VIEW ALL WORKS</span>
-                  <ArrowUpRight className="w-4 h-4 text-[#A68E94] group-hover:text-[#F5EEF0] transition-all duration-250 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                  <span className="w-2 h-2 rounded-full bg-[#F5EEF0] animate-pulse shrink-0" />
+                  <span className="font-bold text-[#E899AC] mr-1">
+                    [{activeCard.number}]
+                  </span>
+                  <div className="overflow-hidden h-6 flex items-center">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={activeCard.categoryPill}
+                        initial={reducedMotion ? false : { y: 12, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={reducedMotion ? undefined : { y: -12, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="whitespace-nowrap"
+                      >
+                        {activeCard.categoryPill}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+
+                <div>
+                  <a
+                    href="#work"
+                    data-cursor="pointer"
+                    className="bg-[#000000]/80 backdrop-blur-md border border-[rgba(221,112,116,0.28)] text-[#F5EEF0] px-6 py-2.5 rounded-full font-mono text-xs font-semibold tracking-[0.12em] uppercase hover:bg-[#6D001A] hover:text-[#F5EEF0] hover:border-[#9E0B2E]/60 hover:shadow-[0_4px_20px_-4px_rgba(195,24,30,0.5)] transition-all duration-300 inline-flex items-center gap-2 w-fit mt-8 group cursor-pointer"
+                  >
+                    <span>VIEW ALL WORKS</span>
+                    <ArrowUpRight className="w-4 h-4 text-[#A68E94] group-hover:text-[#F5EEF0] transition-all duration-250 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* ================================================================= */}
-          {/* RIGHT COLUMN: VERTICAL STACK OF 4 CAPABILITY CARDS                */}
-          {/* ================================================================= */}
-          <div className="lg:col-span-7 flex flex-col gap-16 md:gap-24">
+          {/* RIGHT COLUMN: VERTICAL STACK OF 4 CAPABILITY CARDS */}
+          <div className="lg:col-span-7 flex flex-col gap-12 sm:gap-16 md:gap-20">
             {CAPABILITIES.map((card, index) => {
               const isActive = index === activeIndex;
 
               return (
-                <motion.div
+                <div
                   key={card.id}
                   ref={(el) => {
                     cardRefs.current[index] = el;
                   }}
-                  initial={reducedMotion ? false : { opacity: 0, y: 40, scale: 0.98 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                  className={`bg-[#080204]/95 rounded-[28px] p-7 sm:p-10 md:p-12 transition-all duration-500 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.75)] relative group overflow-hidden border ${
+                  className={`bg-[#080204]/95 rounded-[28px] p-6 sm:p-10 md:p-12 transition-all duration-500 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)] relative group overflow-hidden border ${
                     isActive
-                      ? "border-[#C93B5B]/50 shadow-[inset_0_1px_0_0_rgba(236,195,171,0.15)]"
-                      : "border-[rgba(221,112,116,0.16)] hover:border-[#C93B5B]/40"
+                      ? "border-[#C93B5B]/75 shadow-[0_0_35px_-10px_rgba(201,59,91,0.35),inset_0_1px_0_0_rgba(232,153,172,0.22)]"
+                      : "border-[rgba(221,112,116,0.22)] hover:border-[#C93B5B]/45"
                   }`}
                 >
-                  {/* Card Media Header with WebGL Tsunami Scroll Reveal */}
-                  <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-8 bg-[#000000] border border-[rgba(221,112,116,0.16)] relative group-hover:border-[#C93B5B]/35 transition-colors duration-500">
-                    {/* Corner index badge (01, 02, 03, 04) */}
-                    <div className="absolute top-3.5 left-3.5 z-20 px-3 py-1 rounded-full bg-[#000000]/80 backdrop-blur-md border border-[rgba(221,112,116,0.25)] font-mono text-xs font-bold text-[#F5EEF0] flex items-center gap-1.5 shadow-lg pointer-events-none select-none">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#C93B5B] animate-pulse" />
-                      <span>{card.number}</span>
+                  {/* Top Prominent Card Number & Category Context Bar (Visible on Mobile & Desktop) */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-[rgba(221,112,116,0.18)]">
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex items-center justify-center px-3.5 py-1 rounded-full bg-[#6D001A] border border-[#C93B5B]/70 font-mono text-sm sm:text-base font-extrabold text-[#FFFFFF] shadow-sm">
+                        {card.number}
+                      </span>
+                      <span className="font-mono text-xs sm:text-sm font-semibold text-[#F5EEF0] tracking-tight">
+                        {card.categoryPill}
+                      </span>
                     </div>
-                    <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-700 ease-out overflow-hidden">
+
+                    <span className="font-mono text-xs uppercase tracking-[0.16em] text-[#E899AC]/80">
+                      CAPABILITY // {card.number} OF 04
+                    </span>
+                  </div>
+
+                  {/* Card Media Header with WebGL Tsunami Reveal (mask=false ensures immediate visibility) */}
+                  <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-7 bg-[#0A0204] border border-[rgba(221,112,116,0.2)] relative group-hover:border-[#C93B5B]/40 transition-colors duration-500">
+                    <div className="w-full h-full group-hover:scale-[1.02] transition-transform duration-700 ease-out overflow-hidden">
                       {card.image ? (
                         <TsunamiScrollReveal
                           src={card.image}
                           alt={card.title}
                           angle={112}
-                          distortion={0.62}
+                          distortion={0.45}
                           waveWidth={0.25}
-                          disturbance={0.36}
-                          dispersion={0.35}
-                          reflection={0.32}
-                          shadow={0.22}
-                          mask={true}
-                          revealStart={0.04}
-                          revealEnd={0.65}
+                          disturbance={0.28}
+                          dispersion={0.25}
+                          reflection={0.28}
+                          shadow={0.2}
+                          mask={false}
                           className="w-full h-full"
                         />
                       ) : (
@@ -881,29 +989,23 @@ export function WhatIDoSection() {
                     </div>
                   </div>
 
-                  {/* Card Header: Eyebrow + Prominent Editorial Index (01, 02, 03, 04) */}
+                  {/* Card Eyebrow + Large Right Index */}
                   <div className="flex items-center justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-sm md:text-base font-bold text-[#C93B5B]">
-                        /{card.number}
-                      </span>
-                      <span className="text-[#A68E94]/40 font-mono text-xs">//</span>
-                      <p className="font-mono text-xs md:text-sm font-medium tracking-[0.15em] uppercase text-[#C93B5B]">
-                        {card.eyebrow}
-                      </p>
-                    </div>
-                    <span className="font-mono text-lg md:text-xl font-black text-[#F5EEF0]/50 tracking-tighter">
+                    <p className="font-mono text-xs md:text-sm font-semibold tracking-[0.14em] uppercase text-[#C93B5B]">
+                      /{card.number} // {card.eyebrow}
+                    </p>
+                    <span className="font-mono text-xl md:text-2xl font-black text-[#F5EEF0]/65 tracking-tighter shrink-0">
                       ({card.number})
                     </span>
                   </div>
 
                   {/* Card Title */}
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-sans font-medium text-[#F5EEF0] tracking-[-0.035em] leading-[1.12] mb-5">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-sans font-semibold text-[#F5EEF0] tracking-[-0.03em] leading-[1.14] mb-4">
                     {card.title}
                   </h3>
 
                   {/* Card Description */}
-                  <p className="text-base md:text-lg text-[#A68E94]/85 leading-relaxed mb-9 max-w-2xl">
+                  <p className="text-base md:text-lg text-[#F5EEF0]/85 leading-relaxed mb-8 max-w-2xl">
                     {card.description}
                   </p>
 
@@ -913,13 +1015,13 @@ export function WhatIDoSection() {
                       <span
                         key={tag}
                         data-cursor="pointer"
-                        className="px-4 py-1.5 rounded-full border border-[rgba(221,112,116,0.20)] bg-[#000000]/75 font-mono text-[#F5EEF0] text-xs md:text-sm font-medium hover:border-[#C93B5B]/60 hover:bg-[#C93B5B]/10 hover:text-[#F5EEF0] transition-all duration-200 cursor-pointer select-none"
+                        className="px-4 py-1.5 rounded-full border border-[rgba(221,112,116,0.24)] bg-[#000000]/80 font-mono text-[#F5EEF0] text-xs md:text-sm font-medium hover:border-[#C93B5B]/70 hover:bg-[#C93B5B]/15 hover:text-[#FFFFFF] transition-all duration-200 cursor-pointer select-none"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
