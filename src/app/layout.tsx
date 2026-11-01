@@ -126,6 +126,27 @@ export default function RootLayout({
         {/* 3D Cosmic Starfield & Volumetric Nebula Fly-Through Background */}
         <CosmicScrollBackground />
 
+        {/*
+          Cosmic Readability Scrim
+          Fixed overlay between WebGL canvas (z=0) and page content (z=10).
+          Never blocks pointer events. Three layered gradients:
+          - Radial vignette: darkens edges where nebula clusters bloom
+          - Vertical gradient: top & bottom sections read cleanly
+          - Centre dimmer: prevents bright nebula cores washing out text
+        */}
+        <div
+          aria-hidden="true"
+          className="fixed inset-0 pointer-events-none select-none"
+          style={{
+            zIndex: 2,
+            background: [
+              "radial-gradient(ellipse 120% 100% at 50% 50%, transparent 28%, rgba(3,3,8,0.75) 100%)",
+              "linear-gradient(to bottom, rgba(3,3,8,0.50) 0%, rgba(3,3,8,0.20) 30%, rgba(3,3,8,0.20) 70%, rgba(3,3,8,0.55) 100%)",
+              "radial-gradient(ellipse 58% 52% at 50% 44%, rgba(3,3,8,0.32) 0%, transparent 80%)",
+            ].join(", "),
+          }}
+        />
+
         {/* Global Unified Custom Cursor */}
         <CustomCursor />
 

@@ -508,3 +508,28 @@ html.reduced-motion .tsunami-section-content {
   filter: none !important;
   transform: none !important;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COSMIC BACKGROUND TEXT READABILITY UTILITIES
+   Apply .cosmic-text-shadow to headings/paragraphs for crisp contrast
+   over the WebGL nebula starfield background.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.cosmic-text-shadow,
+.cosmic-text-shadow * {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.92), 0 1px 4px rgba(0, 0, 0, 0.85);
+}
+
+/* Hero headings — stronger shadow for maximum contrast */
+.cosmic-heading-shadow {
+  text-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.98),
+    0 2px 8px rgba(0, 0, 0, 0.95),
+    0 0 40px rgba(3, 3, 8, 0.8);
+}
+
+/* Mono / small label text */
+.cosmic-label-shadow {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95);
+}

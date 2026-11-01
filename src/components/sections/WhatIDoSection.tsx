@@ -57,7 +57,7 @@ export const CAPABILITIES: CapabilityItem[] = [
     eyebrow: "APPLIED MACHINE LEARNING & AGENTIC SYSTEMS",
     title: "Autonomous Agents & Deep Learning Pipelines",
     description:
-      "I build end-to-end deep learning architectures, computer vision models, and multi-agent workflows that solve high-stakes analytical problems. Whether designing adaptive radar scan optimization or automated forensic triage engines, I focus on deterministic, production-grade intelligence.",
+      "I build end-to-end deep learning architectures, computer vision models, and multi-agent workflows that solve high-stakes analytical problems. Whether architecting automated digital forensic triage engines or distributed tensor inference topologies, I focus on deterministic, production-grade intelligence.",
     tags: [
       "PyTorch",
       "AI Agents",

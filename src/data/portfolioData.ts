@@ -191,40 +191,40 @@ export const PROJECTS: Project[] = [
       "Orchestrated an asynchronous cross-node RPC tensor and pipeline parallelism daemon with zero-copy GGUF loaders and shared-memory IPC ring buffers over Tailscale. Compute kernels dynamically balance 4-bit / 8-bit dynamic quantization against network packet latency, delivering real-time tokens across distributed consumer GPUs.",
   },
   {
-    id: "smart-scan-ew",
-    title: "Smart Scan Strategy for Electronic Warfare",
-    tagline: "Adaptive RF Radar Signal Intercept & Priority Dwell Scheduling",
-    category: "Signal Processing & AI",
-    year: "2024",
+    id: "glassbox",
+    title: "Project Glassbox — UFDR Mobile Forensic Triage Engine",
+    tagline: "Python Triage Pipeline for Parsing & Scoring Multi-Gigabyte Mobile Dumps",
+    category: "Digital Forensics & Security",
+    year: "2024 - Present",
     status: "Completed",
     summary:
-      "An adaptive RF spectrum scanning engine maximizing the probability of intercept against agile radar frequency-hopping patterns using heuristic scheduling and FFT spectral clustering.",
+      "A Python digital forensic triage engine to parse, filter, and score evidence leads from multi-gigabyte UFDR mobile dumps with SQLite WAL reconstruction and GPS timeline correlation.",
     metrics: [
-      { label: "Intercept Prob.", value: "98.4% POI" },
-      { label: "Dwell Latency", value: "-42% Latency" },
-      { label: "FFT Binning", value: "2048 Channels" },
-      { label: "Band Coverage", value: "GHz Agile Radar" },
+      { label: "Dump Capacity", value: "50GB+ UFDR" },
+      { label: "Triage Time", value: "< 4.2m Parse" },
+      { label: "Parser Schema", value: "148 SQLite DBs" },
+      { label: "Integrity", value: "100% SHA-256" },
     ],
-    stack: ["Python", "PyTorch", "NumPy", "SciPy", "FastAPI", "Docker"],
+    stack: ["Python", "SQLite", "UFDR", "Forensics", "FastAPI", "Pandas"],
     architecture: [
-      "Synthetic RF pulse train generator simulating complex agile radar frequency-hopping emissions",
-      "Real-time FFT channelization & spectral centroid clustering pipeline for pulse parameter extraction",
-      "Priority-queue dwell time scheduler dynamically concentrating antenna receiver dwell on high-priority emitter bands",
-      "Electronic Support Measures (ESM) diagnostic API for real-time interception trajectory feedback",
+      "Automated extraction pipeline unpacking and indexing nested Cellebrite UFDR mobile filesystem archives",
+      "SQLite write-ahead log (WAL) frame carver recovering deleted chats and uncommitted records",
+      "Spatiotemporal coordinate correlation engine clustering GPS, Wi-Fi BSSID, and cellular cell tower timestamps",
+      "Deterministic evidence triage scoring engine prioritizing high-severity anomalies with cryptographic chain-of-custody hashes",
     ],
     highlights: [
-      "Developed an adaptive RF spectrum scanning algorithm designed to maximize probability of intercept against agile radar frequency-hopping patterns.",
-      "Combined heuristic search with priority-queue scheduling to decrease receiver dwell-time latency across high-density emitter bands.",
-      "Built synthetic RF pulse stream generators and FFT-based clustering pipelines for simulated electronic support measures (ESM) testing.",
+      "Engineered automated forensic parsing pipelines ingesting 50GB+ UFDR archives across 140+ mobile SQLite databases.",
+      "Implemented low-level SQLite WAL frame carving to recover deleted communication logs and uncommitted database rows.",
+      "Built timeline correlation algorithms linking location clusters with application usage patterns and device keystore access.",
     ],
-    githubUrl: "https://github.com/Kruxhna/smart-scan-ew",
+    githubUrl: "https://github.com/Kruxhna/glassbox",
     demoUrl: "#lab",
     featured: true,
-    visualType: "spectrogram",
+    visualType: "forensic-stream",
     problem:
-      "Agile radar emitters constantly hop unpredictably across wideband gigahertz spectrums. Traditional linear raster sweeps miss over 38% of high-priority pulse trains due to fixed dwell timing and receiver blind spots.",
+      "Digital forensics investigators drown in 50GB+ Cellebrite UFDR mobile extractions; manual artifact extraction across thousands of SQLite databases, chat timelines, and deleted WAL files takes days and risks evidence contamination.",
     fix:
-      "Engineered a real-time FFT spectral centroid clustering pipeline coupled with a priority-queue dwell time scheduler. The algorithm computes emission recurrence probabilities on-the-fly and concentrates antenna receiver dwell precisely when agile hopping pulses emerge, achieving a 98.4% probability of intercept.",
+      "Engineered an automated Python forensic triage pipeline that ingests UFDR archives, parses fragmented SQLite/PList schemas, correlates spatiotemporal timeline artifacts, and scores suspicious evidence leads using deterministic regex & heuristic anomaly detection.",
   },
   {
     id: "ml-pipeline-benchmarks",
@@ -412,7 +412,7 @@ export const ABOUT_JOURNEY = {
       status: "Active Focus",
       bullets: [
         "Built AeroMESH, a distributed LLM inference mesh running cross-node pipeline parallelism on consumer hardware using llama.cpp, custom RPC daemons, and zero-copy shared memory buffers.",
-        "Designed adaptive spectrum scanning algorithms for electronic warfare (Smart India Hackathon 2026, Problem Statement SIH26055) combining heuristic search with priority-queue scheduling.",
+        "Engineered automated digital forensic triage pipelines (Project Glassbox) parsing multi-gigabyte UFDR mobile archives with SQLite WAL carving and GPS timeline clustering.",
         "Deepened specialization in machine learning pipelines, scikit-learn transformers, and competitive preparation across the GATE DA and CS syllabi.",
         "Active open-source development and systems experiments on GitHub (github.com/Kruxhna).",
       ],
@@ -470,10 +470,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     location: "Remote / Campus",
     type: "Research",
     description:
-      "Architecting distributed inference systems (AeroMESH), adaptive RF signal processing algorithms for electronic warfare (SIH 2026), and production ML pipelines.",
+      "Architecting distributed inference systems (AeroMESH), automated mobile forensic triage pipelines (Project Glassbox), and production ML pipelines.",
     achievements: [
       "Engineered cross-node pipeline parallelism across consumer GPUs using llama.cpp and RPC daemons.",
-      "Designed adaptive spectrum scanning algorithms for SIH26055 electronic warfare problem statement.",
+      "Engineered automated mobile forensic triage algorithms for multi-gigabyte UFDR filesystem extractions.",
       "Published open-source repositories and diagnostic tools on GitHub.",
     ],
   },
@@ -522,8 +522,8 @@ Location:   Mumbai / Pune, India (UTC+5:30)`,
   projects: `=== [FLAGSHIP ENGINEERING PROJECTS] ===
   1. AeroMESH: Distributed LLM Inference Mesh (llama.cpp, CUDA, RPC Daemons)
      -> Cross-node pipeline parallelism on consumer hardware
-  2. Smart Scan Strategy for EW: Adaptive Radar Intercept Engine (SIH26055)
-     -> Heuristic priority-queue scheduling + FFT spectral clustering
+  2. Project Glassbox: UFDR Mobile Forensic Triage Engine
+     -> SQLite WAL carving + spatiotemporal GPS timeline correlation
   3. Spatial-Temporal Deepfake Detector: EfficientNet-B0 + Bi-LSTM
      -> MTCNN face alignment + temporal micro-flicker classification (94.2% ROC-AUC)
   4. Aptitude / GATE Learning Engine: Gamified Adaptive Theory Engine

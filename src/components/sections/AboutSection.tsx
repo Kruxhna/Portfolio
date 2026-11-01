@@ -80,7 +80,11 @@ function ScrollWord({
 
   return (
     <motion.span
-      style={{ opacity, y }}
+      style={{
+        opacity,
+        y,
+        textShadow: "0 2px 12px rgba(0,0,0,0.95), 0 0px 4px rgba(0,0,0,0.9)",
+      }}
       className="inline-block mr-[0.25em] text-neutral-100 will-change-[opacity,transform]"
     >
       {word}
@@ -135,6 +139,10 @@ export function AboutSection() {
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
         {/* Left: Bio Statement with Word-by-Word Scroll Scrub */}
         <div className="lg:col-span-7 xl:col-span-8">
+          {/* Soft dark backdrop keeps bio readable over bright nebula areas */}
+          <div className="absolute inset-x-0 top-0 bottom-0 -z-[1] pointer-events-none lg:w-[70%]"
+            style={{ background: "radial-gradient(ellipse 90% 110% at 20% 50%, rgba(3,3,8,0.45) 0%, transparent 80%)" }}
+          />
           <p className="font-sans font-medium text-[clamp(1.75rem,3.8vw,3.4rem)] tracking-[-0.035em] leading-[1.14] text-neutral-100">
             {words.map((word, i) => (
               <ScrollWord

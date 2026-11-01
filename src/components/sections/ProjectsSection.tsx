@@ -3,16 +3,15 @@
 import React, { useState } from "react";
 import {
   AeroMeshTwoTierSandbox,
-  SmartScanTwoTierSandbox,
+  GlassboxTwoTierSandbox,
   GateLearnStackedDeckSandbox,
 } from "@/components/ui/ProjectMicroSandboxes";
-import { ExternalLinkPill, ExternalArrow } from "@/components/ui/ExternalLinkPill";
-
+import { ExternalLinkPill } from "@/components/ui/ExternalLinkPill";
 
 type CategoryFilter =
   | "all"
   | "distributed llm"
-  | "signal processing"
+  | "forensics"
   | "full-stack";
 
 interface ProjectEditorialItem {
@@ -26,8 +25,7 @@ interface ProjectEditorialItem {
   fix: string;
   stats: { value: string; label: string }[];
   stack: string[];
-  primaryPill: { label: string; href: string };
-  secondaryPills: { label: string; href: string }[];
+  githubUrl: string;
 }
 
 export function ProjectsSection() {
@@ -36,7 +34,7 @@ export function ProjectsSection() {
   const filterTabs: { id: CategoryFilter; label: string }[] = [
     { id: "all", label: "[ all ]" },
     { id: "distributed llm", label: "[ distributed llm ]" },
-    { id: "signal processing", label: "[ signal processing ]" },
+    { id: "forensics", label: "[ forensics & security ]" },
     { id: "full-stack", label: "[ full-stack ]" },
   ];
 
@@ -59,49 +57,27 @@ export function ProjectsSection() {
         { value: "v0.4.0", label: "latest release" },
       ],
       stack: ["C++", "CUDA", "llama.cpp", "GGUF", "RPC Sockets", "Tailscale"],
-      primaryPill: {
-        label: "aeromesh.kruxhna.dev",
-        href: "https://github.com/Kruxhna/AeroMESH",
-      },
-      secondaryPills: [
-        {
-          label: "download rpc-server.exe",
-          href: "https://github.com/Kruxhna/AeroMESH/releases",
-        },
-        {
-          label: "source",
-          href: "https://github.com/Kruxhna/AeroMESH",
-        },
-      ],
+      githubUrl: "https://github.com/Kruxhna/AeroMESH",
     },
     {
-      id: "smart-scan-ew",
+      id: "glassbox",
       num: "02",
-      categoryTag: "SIGNAL PROCESSING & AI · 2026",
-      categoryFilter: "signal processing",
-      title: "Smart Scan EW",
-      subtitle: "Adaptive RF radar spectrum intercept and priority dwell scheduling.",
+      categoryTag: "DIGITAL FORENSICS & SECURITY · 2026",
+      categoryFilter: "forensics",
+      title: "Project Glassbox",
+      subtitle: "Python forensic triage engine to parse, filter, and score evidence leads from multi-gigabyte UFDR mobile dumps.",
       problem:
-        "Sequential radar receivers spend too long sweeping quiet frequency bands and miss agile frequency-hopping emitters in dense electronic warfare environments.",
+        "Digital forensics investigators drown in 50GB+ Cellebrite UFDR mobile extractions; manual artifact extraction across thousands of SQLite databases, chat timelines, and deleted WAL files takes days and risks evidence contamination.",
       fix:
-        "Combines heuristic search with priority-queue dwell scheduling to lock receiver time onto high-density emitter bands, backed by synthetic RF pulse generators and 2048-bin FFT clustering.",
+        "Engineered an automated Python forensic triage pipeline that ingests UFDR archives, parses fragmented SQLite/PList schemas, correlates spatiotemporal timeline artifacts, and scores suspicious evidence leads using deterministic regex & heuristic anomaly detection.",
       stats: [
-        { value: "98.4%", label: "intercept prob." },
-        { value: "-42%", label: "dwell latency" },
-        { value: "2048", label: "fft channels" },
-        { value: "SIH26", label: "drdo problem id" },
+        { value: "50GB+", label: "dump capacity" },
+        { value: "<4.2m", label: "triage latency" },
+        { value: "UFDR", label: "parser schema" },
+        { value: "100%", label: "chain of custody" },
       ],
-      stack: ["Python", "PyTorch", "NumPy", "SciPy", "FastAPI", "Docker"],
-      primaryPill: {
-        label: "nirikshan.kruxhna.dev",
-        href: "https://github.com/Kruxhna/smart-scan-ew",
-      },
-      secondaryPills: [
-        {
-          label: "source",
-          href: "https://github.com/Kruxhna/smart-scan-ew",
-        },
-      ],
+      stack: ["Python", "SQLite", "UFDR", "Forensics", "FastAPI", "Pandas"],
+      githubUrl: "https://github.com/Kruxhna/glassbox",
     },
     {
       id: "gate-learn",
@@ -121,16 +97,7 @@ export function ProjectsSection() {
         { value: "100%", label: "offline capable" },
       ],
       stack: ["React Native", "TypeScript", "Tailwind CSS", "FastAPI", "SQLite", "Figma"],
-      primaryPill: {
-        label: "gate.kruxhna.dev",
-        href: "https://github.com/Kruxhna/gate-learn-mobile",
-      },
-      secondaryPills: [
-        {
-          label: "source",
-          href: "https://github.com/Kruxhna/gate-learn-mobile",
-        },
-      ],
+      githubUrl: "https://github.com/Kruxhna/gate-learn-mobile",
     },
   ];
 
@@ -143,8 +110,8 @@ export function ProjectsSection() {
     switch (id) {
       case "aeromesh":
         return <AeroMeshTwoTierSandbox />;
-      case "smart-scan-ew":
-        return <SmartScanTwoTierSandbox />;
+      case "glassbox":
+        return <GlassboxTwoTierSandbox />;
       case "gate-learn":
         return <GateLearnStackedDeckSandbox />;
       default:
@@ -263,32 +230,17 @@ export function ProjectsSection() {
                       ))}
                     </div>
 
-                    {/* Capsule Pill Action Row */}
+                    {/* Capsule Pill Action Row: Only GitHub Link */}
                     <div className="flex flex-wrap items-center gap-3">
-                      {/* Primary Solid Capsule Pill */}
                       <ExternalLinkPill
-                        href={project.primaryPill.href}
+                        href={project.githubUrl}
                         variant="primary"
                         size="sm"
                         data-cursor="view"
                         data-cursor-label="*open ↗*"
                       >
-                        {project.primaryPill.label}
+                        GitHub
                       </ExternalLinkPill>
-
-                      {/* Secondary Ghost Pills */}
-                      {project.secondaryPills.map((pill, pIdx) => (
-                        <ExternalLinkPill
-                          key={pIdx}
-                          href={pill.href}
-                          variant="secondary"
-                          size="sm"
-                          data-cursor="view"
-                          data-cursor-label="*open ↗*"
-                        >
-                          {pill.label}
-                        </ExternalLinkPill>
-                      ))}
                     </div>
                   </div>
                 </div>
@@ -301,66 +253,9 @@ export function ProjectsSection() {
             </article>
           ))}
         </div>
-
-        {/* 3. "ALSO MADE" COMPACT ARCHIVE SECTION (Video 00:10–00:12) */}
-        <div className="mt-16 pt-10 border-t border-[#A68E94]/20">
-          <div className="text-xs font-mono uppercase tracking-widest text-[#A68E94] mb-6">
-            ALSO MADE
-          </div>
-
-          <div className="divide-y divide-[#A68E94]/20 border-b border-[#A68E94]/20">
-            {/* Archive Row 1 */}
-            <a
-              href="https://github.com/Kruxhna"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="view"
-              data-cursor-label="*open ↗*"
-              className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#6D001A]/[0.05] transition-colors px-2 rounded-lg cursor-pointer block"
-            >
-              <div className="md:col-span-4 flex items-center gap-2">
-                <span className="text-xl sm:text-2xl font-bold text-[#F5EEF0] group-hover:text-[#C93B5B] transition-colors">
-                  Project Glassbox
-                </span>
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#C93B5B] inline-flex items-center">
-                  <ExternalArrow />
-                </span>
-              </div>
-              <div className="md:col-span-6 text-sm text-[#A68E94] leading-relaxed font-sans">
-                Python forensic triage engine to parse, filter, and score evidence leads from multi-gigabyte UFDR mobile dumps.
-              </div>
-              <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#A68E94]">
-                FORENSIC ENGINE
-              </div>
-            </a>
-
-            {/* Archive Row 2 */}
-            <a
-              href="https://github.com/Kruxhna"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="view"
-              data-cursor-label="*open ↗*"
-              className="group py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline hover:bg-[#6D001A]/[0.05] transition-colors px-2 rounded-lg cursor-pointer block"
-            >
-              <div className="md:col-span-4 flex items-center gap-2">
-                <span className="text-xl sm:text-2xl font-bold text-[#F5EEF0] group-hover:text-[#C93B5B] transition-colors">
-                  Multi-Agent Research Suite
-                </span>
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[#C93B5B] inline-flex items-center">
-                  <ExternalArrow />
-                </span>
-              </div>
-              <div className="md:col-span-6 text-sm text-[#A68E94] leading-relaxed font-sans">
-                Autonomous tool-calling agent workflows and evaluation harness built for the Google &amp; Kaggle 5-Day AI Agents Intensive.
-              </div>
-              <div className="md:col-span-2 md:text-right font-mono text-xs uppercase tracking-wider text-[#A68E94]">
-                AGENTIC AI
-              </div>
-            </a>
-          </div>
-        </div>
       </div>
     </section>
   );
 }
+
+export default ProjectsSection;

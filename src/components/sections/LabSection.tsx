@@ -113,16 +113,16 @@ export const REPO_METADATA_OVERRIDES: Record<
       'perf(cache): optimize offline question bank serialization',
     ],
   },
-  'smart-scan-ew': {
-    description: 'Adaptive RF spectrum scanning engine maximizing POI against agile radar frequency-hopping patterns.',
+  'glassbox': {
+    description: 'Python digital forensic triage engine to parse, filter, and score evidence leads from multi-gigabyte UFDR mobile dumps.',
     language: 'Python',
     architecture: [
-      'SDR Stream Ingest -> FFT Spectral Clustering -> Priority Queue Scheduler',
-      'Zero-copy circular ring buffer with real-time waterfall visualization',
+      'UFDR Zip Extraction -> SQLite WAL Frame Carving -> GPS Spatiotemporal Correlation',
+      'Deterministic regex anomaly detection with SHA-256 cryptographic chain of custody',
     ],
     recentCommits: [
-      'feat(dsp): parallel FFT clustering for multi-band radar intercepts',
-      'perf(buffer): zero-copy shm ring buffer for high-throughput SDR',
+      'feat(wal): parse unindexed SQLite write-ahead log frames for deleted chats',
+      'feat(triage): heuristic risk scoring pipeline for suspicious mobile artifacts',
     ],
   },
 };
@@ -182,12 +182,12 @@ const FALLBACK_GITHUB_DATA: GithubProfileData = {
       url: "https://github.com/Kruxhna/Aptitude",
     },
     {
-      name: "smart-scan-ew",
-      description: "Adaptive RF spectrum scanning engine maximizing POI against agile radar frequency-hopping patterns.",
+      name: "glassbox",
+      description: "Python digital forensic triage engine to parse, filter, and score evidence leads from multi-gigabyte UFDR mobile dumps.",
       language: "Python",
       stars: 1,
       forks: 0,
-      url: "https://github.com/Kruxhna/smart-scan-ew",
+      url: "https://github.com/Kruxhna/glassbox",
     },
   ],
 };

@@ -11,6 +11,10 @@ import {
   AlertTriangle,
   Play,
   Sliders,
+  ShieldAlert,
+  Database,
+  Search,
+  FileText,
 } from "lucide-react";
 
 // ============================================================================
@@ -221,6 +225,214 @@ export function AeroMeshTwoTierSandbox() {
         {/* Egorz-Style Italic Cheeky Caption */}
         <p className="text-xs font-mono italic text-[#C93B5B] mt-3">
           same controls as the mesh daemon. go on, slide to FP16 and watch VRAM spill over
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// 2. Glassbox Two-Tier Sandbox (UFDR Forensic Triage Stream + SQLite WAL Carving)
+// ============================================================================
+export function GlassboxTwoTierSandbox() {
+  const [activeFilter, setActiveFilter] = useState<"all" | "wal" | "gps" | "high">("all");
+  const [selectedLead, setSelectedLead] = useState<number>(0);
+  const [isScanning, setIsScanning] = useState<boolean>(false);
+
+  const leads = [
+    {
+      id: "wal-01",
+      category: "wal",
+      type: "SQLite WAL Carve",
+      source: "com.whatsapp / msgstore.db-wal",
+      title: "Deleted Chat Frames Recovered",
+      details: "18 chat messages carved from unindexed SQLite WAL frames. Timestamps aligned with target timeline window.",
+      risk: "CRITICAL",
+      riskScore: 94,
+      hash: "e3b0c442...98fc1c14",
+      records: "18 rows",
+    },
+    {
+      id: "gps-02",
+      category: "gps",
+      type: "GPS Correlation",
+      source: "CoreLocation / Local.sqlite",
+      title: "Spatiotemporal Coordinate Cluster",
+      details: "Cluster: 18.9220°N, 72.8346°E (42 point fixes). Accuracy radius delta: ±4.8m with altitude profile.",
+      risk: "HIGH",
+      riskScore: 86,
+      hash: "8f4e2b10...a9c73d5e",
+      records: "42 fixes",
+    },
+    {
+      id: "audit-03",
+      category: "high",
+      type: "Privilege Daemon",
+      source: "/var/mobile/Library / tcc.db",
+      title: "Background Microphone / Keystore Grab",
+      details: "Unsigned dylib injected into SpringBoard memory space with persistent background microphone entitlement.",
+      risk: "CRITICAL",
+      riskScore: 98,
+      hash: "a1b2c3d4...e5f67890",
+      records: "1 anomaly",
+    },
+    {
+      id: "call-04",
+      category: "all",
+      type: "VoIP Records",
+      source: "CallHistory.storedata",
+      title: "Ephemeral Call Metadata Slice",
+      details: "Carved 8 encrypted VoIP sessions matching target forensic interval with MD5 integrity validation.",
+      risk: "MEDIUM",
+      riskScore: 72,
+      hash: "c3d4e5f6...a1b27890",
+      records: "8 records",
+    },
+  ];
+
+  const filteredLeads = leads.filter((item) => {
+    if (activeFilter === "all") return true;
+    if (activeFilter === "wal") return item.category === "wal";
+    if (activeFilter === "gps") return item.category === "gps";
+    if (activeFilter === "high") return item.risk === "CRITICAL" || item.risk === "HIGH";
+    return true;
+  });
+
+  const triggerRescan = () => {
+    setIsScanning(true);
+    setTimeout(() => {
+      setIsScanning(false);
+    }, 600);
+  };
+
+  const activeItem = leads[selectedLead] || leads[0];
+
+  return (
+    <div className="w-full">
+      {/* Tier 1: Dark Application Window */}
+      <div className="rounded-xl border border-[#A68E94]/20 bg-[#000000]/90 backdrop-blur-md overflow-hidden shadow-2xl select-none font-mono">
+        {/* Titlebar */}
+        <div className="flex items-center justify-between border-b border-[#A68E94]/20 px-4 py-3 bg-[#0A0204]/90 text-xs">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#6D001A]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#C93B5B]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#A68E94]/50" />
+            </div>
+            <span className="text-[#F5EEF0] text-[11px] font-semibold tracking-wide">
+              glassbox-triage.py — UFDR Evidence Stream
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 text-[10px] text-[#A68E94]">
+            <span className={`h-1.5 w-1.5 rounded-full ${isScanning ? "bg-amber-400 animate-ping" : "bg-[#C93B5B] animate-pulse"}`} />
+            <span>{isScanning ? "RE-INDEXING WAL FRAMES..." : "148 SQLITE DBS · 52.4 GB DUMP"}</span>
+          </div>
+        </div>
+
+        {/* Visual Lead Extraction Stream */}
+        <div className="p-5 sm:p-6 bg-[#000000]/60 space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {filteredLeads.map((item) => {
+              const originalIndex = leads.findIndex((l) => l.id === item.id);
+              const isSelected = originalIndex === selectedLead;
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => setSelectedLead(originalIndex)}
+                  data-cursor="magnetic"
+                  className={`relative rounded-xl border p-3.5 transition-all cursor-pointer ${
+                    isSelected
+                      ? "border-[#C93B5B] bg-[#140408] shadow-md shadow-[#6D001A]/20"
+                      : "border-[#A68E94]/20 bg-[#0A0204]/80 hover:border-[#A68E94]/40"
+                  }`}
+                >
+                  <div className="flex items-center justify-between text-[10px] mb-1.5">
+                    <span className="text-[#A68E94] truncate max-w-[160px]">{item.source}</span>
+                    <span
+                      className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${
+                        item.risk === "CRITICAL"
+                          ? "bg-[#6D001A] text-[#F5EEF0] border border-[#C93B5B]/40"
+                          : item.risk === "HIGH"
+                          ? "bg-amber-950/80 text-amber-300 border border-amber-600/40"
+                          : "bg-neutral-900 text-neutral-400 border border-neutral-700/40"
+                      }`}
+                    >
+                      {item.risk} ({item.riskScore})
+                    </span>
+                  </div>
+
+                  <h4 className={`text-xs font-semibold mb-1 truncate ${isSelected ? "text-[#F5EEF0]" : "text-[#F5EEF0]/90"}`}>
+                    {item.title}
+                  </h4>
+
+                  <p className="text-[11px] text-[#A68E94] line-clamp-2 leading-relaxed mb-2 font-sans">
+                    {item.details}
+                  </p>
+
+                  <div className="flex items-center justify-between text-[9px] text-[#A68E94]/80 pt-1 border-t border-[#A68E94]/10">
+                    <span className="text-[#C93B5B] font-medium">{item.type}</span>
+                    <span>{item.records}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Active Evidence Inspection Banner */}
+          <div className="mt-3 flex flex-wrap items-center justify-between rounded-lg border border-[#A68E94]/15 bg-[#000000] px-4 py-2.5 text-[11px]">
+            <div className="flex items-center gap-2">
+              <span className="text-[#A68E94]">ACTIVE TARGET:</span>
+              <span className="text-[#F5EEF0] font-bold">{activeItem.source}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#A68E94]">HASH:</span>
+              <span className="text-[#C93B5B] font-mono">{activeItem.hash}</span>
+            </div>
+            <div className="hidden sm:block">
+              <span className="text-[#A68E94]">TRIAGE SPEED:</span>
+              <span className="text-[#F5EEF0] font-bold">&lt;4.2m / 50GB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tier 2: Interactive Triage Control Strip */}
+      <div className="mt-5 pt-3 border-t border-[#A68E94]/15 space-y-3 font-mono">
+        <div className="flex flex-wrap items-center gap-2">
+          {[
+            { id: "all", label: "All Artifacts (148 DBs)" },
+            { id: "wal", label: "SQLite WAL Carving 🔍" },
+            { id: "gps", label: "GPS Correlator 📍" },
+            { id: "high", label: "High Risk Only (90+) ⚠" },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveFilter(tab.id as any)}
+              data-cursor="magnetic"
+              className={`rounded-full px-4 py-1.5 text-[11px] transition-all cursor-pointer ${
+                activeFilter === tab.id
+                  ? "bg-[#6D001A] border border-[#9E0B2E]/60 text-[#F5EEF0] font-bold shadow-xs shadow-[#6D001A]/30"
+                  : "bg-[#240009]/85 border border-[#6D001A] text-[#F5EEF0] hover:bg-[#3B000E] hover:text-[#F5EEF0] hover:border-[#9E0B2E]"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+
+          <button
+            onClick={triggerRescan}
+            data-cursor="magnetic"
+            className="rounded-full px-3 py-1.5 text-[11px] bg-[#0A0204] border border-[#A68E94]/30 text-[#A68E94] hover:text-[#F5EEF0] hover:border-[#C93B5B] transition-colors ml-auto flex items-center gap-1.5 cursor-pointer"
+          >
+            <RotateCcw className={`h-3 w-3 ${isScanning ? "animate-spin" : ""}`} />
+            <span>Re-Parse</span>
+          </button>
+        </div>
+
+        {/* Egorz-Style Italic Cheeky Caption */}
+        <p className="text-xs font-mono italic text-[#C93B5B] mt-3">
+          ingesting 50GB+ UFDR mobile archives in under 4 minutes. click evidence leads above to inspect carved artifacts
         </p>
       </div>
     </div>

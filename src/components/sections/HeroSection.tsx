@@ -409,6 +409,7 @@ export function HeroSection() {
                   fontSize: 11,
                   letterSpacing: "0.14em",
                   animationDelay: "0.05s",
+                  textShadow: "0 1px 8px rgba(0,0,0,0.95)",
                 }}
               >
                 STUDENT DEVELOPER · INDIA
@@ -422,6 +423,7 @@ export function HeroSection() {
                   lineHeight: 1.25,
                   fontWeight: 450,
                   animationDelay: "0.18s",
+                  textShadow: "0 3px 18px rgba(0,0,0,0.96), 0 1px 5px rgba(0,0,0,0.9)",
                 }}
               >
                 I{" "}
