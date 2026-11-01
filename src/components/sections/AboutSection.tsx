@@ -8,6 +8,7 @@ import {
   useReducedMotion,
   MotionValue,
 } from "framer-motion";
+import { PixelBlockImageReveal } from "@/components/ui/PixelBlockImageReveal";
 
 // ============================================================================
 // DATA DEFINITIONS
@@ -129,21 +130,51 @@ export function AboutSection() {
       </div>
 
       {/* =================================================================== */}
-      {/* 2. HERO BIO STATEMENT (GEIST SANS + WORD-BY-WORD SCROLL SCRUB)      */}
+      {/* 2. HERO BIO STATEMENT & PORTRAIT (SIDE-BY-SIDE SPLIT)               */}
       {/* =================================================================== */}
-      <div className="w-full">
-        <p className="font-sans font-medium text-[clamp(1.85rem,4.2vw,3.6rem)] tracking-[-0.035em] leading-[1.14] text-neutral-100 max-w-[96%]">
-          {words.map((word, i) => (
-            <ScrollWord
-              key={`${word}-${i}`}
-              word={word}
-              index={i}
-              total={words.length}
-              progress={scrollYProgress}
-              shouldReduceMotion={shouldReduceMotion}
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+        {/* Left: Bio Statement with Word-by-Word Scroll Scrub */}
+        <div className="lg:col-span-7 xl:col-span-8">
+          <p className="font-sans font-medium text-[clamp(1.75rem,3.8vw,3.4rem)] tracking-[-0.035em] leading-[1.14] text-neutral-100">
+            {words.map((word, i) => (
+              <ScrollWord
+                key={`${word}-${i}`}
+                word={word}
+                index={i}
+                total={words.length}
+                progress={scrollYProgress}
+                shouldReduceMotion={shouldReduceMotion}
+              />
+            ))}
+          </p>
+        </div>
+
+        {/* Right: Krushna Portrait with Brutalist Pixel-Block Grid Reveal */}
+        <div className="lg:col-span-5 xl:col-span-4 flex justify-center lg:justify-end items-end relative mt-8 lg:mt-0">
+          <div className="relative w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[440px]">
+            {/* Subtle atmospheric ambient glow behind portrait */}
+            <div
+              className="absolute inset-0 -inset-x-8 rounded-full pointer-events-none opacity-40 blur-3xl -z-10"
+              style={{
+                background: "radial-gradient(circle at 60% 50%, rgba(158, 11, 46, 0.35), transparent 70%)",
+              }}
             />
-          ))}
-        </p>
+
+            <PixelBlockImageReveal
+              src="/Images/krushna.png"
+              alt="Krushna - AI/ML Engineer & Systems Specialist"
+              width={1088}
+              height={1445}
+              columns={8}
+              rows={10}
+              coverColor="#000000"
+              duration={0.38}
+              once={false}
+              className="w-full drop-shadow-[0_16px_36px_rgba(0,0,0,0.85)]"
+              imageClassName="w-full h-auto object-contain select-none pointer-events-none filter contrast-[1.04]"
+            />
+          </div>
+        </div>
       </div>
 
       {/* =================================================================== */}
