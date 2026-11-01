@@ -13,7 +13,7 @@ export interface Project {
   githubUrl: string;
   demoUrl?: string;
   featured: boolean;
-  visualType: "network-mesh" | "spectrogram" | "dag-pipeline" | "mobile-ui";
+  visualType: "network-mesh" | "spectrogram" | "dag-pipeline" | "mobile-ui" | "forensic-stream";
   problem?: string;
   fix?: string;
 }
