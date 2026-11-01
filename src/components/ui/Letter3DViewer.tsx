@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -7,6 +9,8 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 
 interface Letter3DViewerProps {
   accentColor?: string;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 // Frame-rate-independent exponential damp
@@ -14,7 +18,7 @@ function damp(current: number, target: number, speed: number, dt: number): numbe
   return current + (target - current) * (1 - Math.exp(-speed * dt));
 }
 
-export function Letter3DViewer({ accentColor = "#C93B5B" }: Letter3DViewerProps) {
+export function Letter3DViewer({ accentColor = "#C93B5B", className, style }: Letter3DViewerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef  = useRef<HTMLDivElement>(null);
 
@@ -70,7 +74,8 @@ export function Letter3DViewer({ accentColor = "#C93B5B" }: Letter3DViewerProps)
       powerPreference: "high-performance",
     });
     renderer.setSize(W, H);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isMobile = window.innerWidth < 768;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
     canvas.appendChild(renderer.domElement);
@@ -182,7 +187,17 @@ export function Letter3DViewer({ accentColor = "#C93B5B" }: Letter3DViewerProps)
       targetRotY = initialRot.y;
     };
 
+    const onTouchMove = (e: TouchEvent) => {
+      if (isReducedMotion || e.touches.length === 0) return;
+      const touch = e.touches[0];
+      const nx = (touch.clientX / window.innerWidth) * 2 - 1;
+      const ny = (touch.clientY / window.innerHeight) * 2 - 1;
+      targetRotX = THREE.MathUtils.clamp(-ny * 0.22, -0.25, 0.25);
+      targetRotY = initialRot.y + THREE.MathUtils.clamp(nx * 0.35, -0.4, 0.4);
+    };
+
     window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
     document.documentElement.addEventListener("pointerleave", onPointerLeave, { passive: true });
     window.addEventListener("blur", onPointerLeave);
 
@@ -255,6 +270,7 @@ export function Letter3DViewer({ accentColor = "#C93B5B" }: Letter3DViewerProps)
     // ── 11. Cleanup ───────────────────────────────────────────────────────────
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("touchmove", onTouchMove);
       document.documentElement.removeEventListener("pointerleave", onPointerLeave);
       window.removeEventListener("blur", onPointerLeave);
       motionObserver.disconnect();
@@ -274,10 +290,13 @@ export function Letter3DViewer({ accentColor = "#C93B5B" }: Letter3DViewerProps)
   return (
     <div
       ref={wrapperRef}
-      className="relative w-full select-none pointer-events-none"
+      className={cn(
+        "relative w-full select-none pointer-events-none h-[220px] sm:h-[280px] lg:h-[clamp(280px,58vh,620px)]",
+        className
+      )}
       style={{
-        height: "clamp(280px, 58vh, 620px)",
         overflow: "visible",
+        ...style,
       }}
     >
       {/* Loading spinner */}

@@ -481,9 +481,9 @@ export function HeroSection() {
 
             {/* ── RIGHT ZONE: 3D K — delay 0.30s ───────────────────────── */}
             <div
-              className="hero-animate hero-k shrink-0 hidden lg:flex items-start justify-end pointer-events-none"
+              className="hero-animate hero-k shrink-0 flex items-center justify-center lg:items-start lg:justify-end pointer-events-none self-center lg:self-auto my-3 lg:my-0 w-full max-w-[280px] sm:max-w-[340px] lg:max-w-none"
               style={{
-                width: "clamp(240px, 35vw, 560px)",
+                width: "min(100%, clamp(240px, 35vw, 560px))",
                 marginTop: "-0.5rem",
                 animationDelay: "0.30s",
               }}
