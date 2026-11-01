@@ -469,9 +469,9 @@ function FooterLiveClock() {
   }, []);
 
   return (
-    <div className="inline-flex items-center gap-2 font-mono text-[11px] text-[#F5EEF0] bg-[#140408] border border-[#261015] px-2.5 py-1 rounded-md mt-2">
+    <div suppressHydrationWarning className="inline-flex items-center gap-2 font-mono text-[11px] text-[#F5EEF0] bg-[#140408] border border-[#261015] px-2.5 py-1 rounded-md mt-2">
       <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />
-      <span>{time ? `${time} IST` : "12:00:00 IST"}</span>
+      <span suppressHydrationWarning>{time ? `${time} IST` : "12:00:00 IST"}</span>
       <span className="text-[#A68E94]/40">•</span>
       <span className="text-[#A68E94]/70">UTC+5:30</span>
     </div>

@@ -1,3 +1,4 @@
+import Script from "next/script";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Playfair_Display, Alex_Brush } from "next/font/google";
@@ -68,10 +69,60 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       style={{ backgroundColor: "#000000" }}
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${alexBrush.variable} dark scroll-smooth`}
     >
-      <body className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#6D001A] selection:text-[#FFFFFF]">
+      <body suppressHydrationWarning className="min-h-screen bg-transparent text-[var(--text-primary)] font-sans antialiased selection:bg-[#6D001A] selection:text-[#FFFFFF]">
+        <Script
+          id="anti-fdprocessedid"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const origSetAttribute = Element.prototype.setAttribute;
+                  Element.prototype.setAttribute = function(name, value) {
+                    if (name === 'fdprocessedid') return;
+                    return origSetAttribute.call(this, name, value);
+                  };
+                  const removeBad = function(el) {
+                    if (el && el.removeAttribute && el.hasAttribute && el.hasAttribute('fdprocessedid')) {
+                      el.removeAttribute('fdprocessedid');
+                    }
+                  };
+                  const observer = new MutationObserver(function(mutations) {
+                    for (let i = 0; i < mutations.length; i++) {
+                      const m = mutations[i];
+                      if (m.type === 'attributes' && m.attributeName === 'fdprocessedid') {
+                        removeBad(m.target);
+                      } else if (m.type === 'childList') {
+                        for (let j = 0; j < m.addedNodes.length; j++) {
+                          const n = m.addedNodes[j];
+                          if (n.nodeType === 1) {
+                            removeBad(n);
+                            if (n.querySelectorAll) {
+                              const b = n.querySelectorAll('[fdprocessedid]');
+                              for (let k = 0; k < b.length; k++) removeBad(b[k]);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  });
+                  if (document.documentElement) {
+                    observer.observe(document.documentElement, {
+                      subtree: true,
+                      attributes: true,
+                      attributeFilter: ['fdprocessedid'],
+                      childList: true,
+                    });
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
         {/* 3D Cosmic Starfield & Volumetric Nebula Fly-Through Background */}
         <CosmicScrollBackground />
 

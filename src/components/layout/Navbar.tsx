@@ -204,7 +204,7 @@ export function Navbar({
         {/* Right: Live Time, Motion, Theme & Command Palette */}
         <div className="flex items-center gap-3 lg:gap-4 font-mono text-[11px] text-[#A68E94]">
           {/* Live Indian Standard Time */}
-          <span className="hidden sm:inline" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "0.04em" }}>
+          <span suppressHydrationWarning className="hidden sm:inline" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "0.04em" }}>
             IN {timeString || "22:15:00"}
           </span>
 
