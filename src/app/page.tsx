@@ -12,12 +12,16 @@ import { GitHubStorySection } from "@/components/sections/GitHubStorySection";
 import { TechStackGrid } from "@/components/sections/TechStackGrid";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { ScrollSectionTransition } from "@/components/ui/ScrollSectionTransition";
+import { KPreloader } from "@/components/ui/KPreloader";
 
 export default function Home() {
   const [commandMenuOpen, setCommandMenuOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-transparent text-[var(--text-primary)] antialiased">
+      {/* Editorial "K" Page-Refresh Preloader & Shutter Reveal */}
+      <KPreloader />
+
       {/* Floating Pill Navigation */}
       <Navbar onOpenCommandMenu={() => setCommandMenuOpen(true)} />
 
