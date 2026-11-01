@@ -865,17 +865,17 @@ export function TsunamiScrollReveal({
       role="img"
       aria-label={alt}
     >
-      {/* High-fidelity fallback if WebGL is unavailable or reduced-motion is requested */}
-      {(!webglSupported || reducedMotion) && src && !isVideo && (
+      {/* High-fidelity base image — ensures cards 1-4 are always crisp & visible */}
+      {src && !isVideo && (
         <img
           src={src}
           alt={alt || ""}
-          className="w-full h-full object-cover block select-none pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover block select-none pointer-events-none z-0"
         />
       )}
       <canvas
         ref={canvasRef}
-        className={`w-full h-full block select-none pointer-events-none ${
+        className={`relative z-10 w-full h-full block select-none pointer-events-none ${
           !webglSupported || reducedMotion ? "hidden" : ""
         }`}
       />

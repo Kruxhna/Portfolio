@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { ArrowUpRight } from "lucide-react";
 import { TsunamiScrollReveal } from "@/components/ui/TsunamiScrollReveal";
 
@@ -675,34 +676,65 @@ export function WhatIDoSection() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const reducedMotion = useReducedMotion();
 
-  // Scroll-Spy detection using IntersectionObserver
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+  // Deterministic Scroll-Spy: updates activeCard number (01, 02, 03, 04) accurately
+  const updateActiveCard = React.useCallback(() => {
+    if (typeof window === "undefined") return;
+    const vh = window.innerHeight || 800;
+    const targetY = vh * 0.45;
+    let closestIndex = 0;
+    let minDistance = Infinity;
 
     cardRefs.current.forEach((el, index) => {
       if (!el) return;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveIndex(index);
-            }
-          });
-        },
-        {
-          rootMargin: "-35% 0px -35% 0px",
-          threshold: 0.1,
-        }
-      );
-
-      observer.observe(el);
-      observers.push(observer);
+      const rect = el.getBoundingClientRect();
+      const cardCenter = rect.top + rect.height * 0.35;
+      const distance = Math.abs(cardCenter - targetY);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = index;
+      }
     });
 
+    setActiveIndex((prev) => (prev !== closestIndex ? closestIndex : prev));
+  }, []);
+
+  useLenis(React.useCallback(() => updateActiveCard(), [updateActiveCard]));
+
+  useEffect(() => {
+    updateActiveCard();
+    window.addEventListener("scroll", updateActiveCard, { passive: true });
+    window.addEventListener("resize", updateActiveCard, { passive: true });
+
+    // Also backup with IntersectionObserver on all 4 cards
+    const observers: IntersectionObserver[] = [];
+    const t = setTimeout(() => {
+      cardRefs.current.forEach((el, index) => {
+        if (!el) return;
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                setActiveIndex(index);
+              }
+            });
+          },
+          {
+            rootMargin: "-15% 0px -15% 0px",
+            threshold: 0.15,
+          }
+        );
+        observer.observe(el);
+        observers.push(observer);
+      });
+    }, 100);
+
     return () => {
+      clearTimeout(t);
+      window.removeEventListener("scroll", updateActiveCard);
+      window.removeEventListener("resize", updateActiveCard);
       observers.forEach((obs) => obs.disconnect());
     };
-  }, []);
+  }, [updateActiveCard]);
 
   const activeCard = CAPABILITIES[activeIndex] ?? CAPABILITIES[0];
 
@@ -819,6 +851,11 @@ export function WhatIDoSection() {
                 >
                   {/* Card Media Header with WebGL Tsunami Scroll Reveal */}
                   <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-8 bg-[#000000] border border-[rgba(221,112,116,0.16)] relative group-hover:border-[#C93B5B]/35 transition-colors duration-500">
+                    {/* Corner index badge (01, 02, 03, 04) */}
+                    <div className="absolute top-3.5 left-3.5 z-20 px-3 py-1 rounded-full bg-[#000000]/80 backdrop-blur-md border border-[rgba(221,112,116,0.25)] font-mono text-xs font-bold text-[#F5EEF0] flex items-center gap-1.5 shadow-lg pointer-events-none select-none">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#C93B5B] animate-pulse" />
+                      <span>{card.number}</span>
+                    </div>
                     <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-700 ease-out overflow-hidden">
                       {card.image ? (
                         <TsunamiScrollReveal
@@ -844,10 +881,21 @@ export function WhatIDoSection() {
                     </div>
                   </div>
 
-                  {/* Card Eyebrow */}
-                  <p className="font-mono text-xs md:text-sm font-medium tracking-[0.15em] uppercase text-[#C93B5B] mb-3">
-                    {card.eyebrow}
-                  </p>
+                  {/* Card Header: Eyebrow + Prominent Editorial Index (01, 02, 03, 04) */}
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-sm md:text-base font-bold text-[#C93B5B]">
+                        /{card.number}
+                      </span>
+                      <span className="text-[#A68E94]/40 font-mono text-xs">//</span>
+                      <p className="font-mono text-xs md:text-sm font-medium tracking-[0.15em] uppercase text-[#C93B5B]">
+                        {card.eyebrow}
+                      </p>
+                    </div>
+                    <span className="font-mono text-lg md:text-xl font-black text-[#F5EEF0]/50 tracking-tighter">
+                      ({card.number})
+                    </span>
+                  </div>
 
                   {/* Card Title */}
                   <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-sans font-medium text-[#F5EEF0] tracking-[-0.035em] leading-[1.12] mb-5">
