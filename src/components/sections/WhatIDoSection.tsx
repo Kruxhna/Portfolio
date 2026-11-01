@@ -762,7 +762,7 @@ export function WhatIDoSection() {
           {/* ================================================================= */}
           {/* LEFT COLUMN: STICKY COUNTER, EDITORIAL TITLE, ACTIVE PILL & CTA   */}
           {/* ================================================================= */}
-          <div className="lg:col-span-5 lg:sticky lg:top-28 lg:h-[calc(100vh-14rem)] flex flex-col justify-between mb-14 lg:mb-0">
+          <div className="lg:col-span-5 lg:sticky lg:top-24 lg:self-start flex flex-col justify-between min-h-[440px] max-h-[calc(100vh-7rem)] mb-14 lg:mb-0 z-20">
             <div>
               <p className="font-mono text-xs tracking-[0.16em] uppercase text-[#A68E94] mb-4 flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#9E0B2E] animate-pulse" />

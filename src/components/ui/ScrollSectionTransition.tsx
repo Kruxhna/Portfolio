@@ -150,17 +150,25 @@ export function ScrollSectionTransition({
 
       // 3. One-Time Smooth Section Entrance (Locks to transform: none once entered for 100% stable reading & sticky support)
       if (!state.hasSettledEntrance) {
-        const entranceLift = (1 - smoothstep(0.0, 0.85, state.smoothedProgress)) * 24;
-        const entranceOpacity = smoothstep(0.0, 0.5, state.smoothedProgress);
-
-        if (entranceLift < 0.25 && entranceOpacity > 0.99) {
+        if (overflowVisible) {
+          // Sections with sticky children (like What I Do) MUST have transform: none so position: sticky works
           content.style.transform = "none";
           content.style.opacity = "1";
           content.style.willChange = "auto";
           state.hasSettledEntrance = true;
         } else {
-          content.style.opacity = Math.max(0.2, entranceOpacity).toFixed(3);
-          content.style.transform = `translate3d(0, ${entranceLift.toFixed(2)}px, 0)`;
+          const entranceLift = (1 - smoothstep(0.0, 0.85, state.smoothedProgress)) * 24;
+          const entranceOpacity = smoothstep(0.0, 0.5, state.smoothedProgress);
+
+          if (entranceLift < 0.25 && entranceOpacity > 0.99) {
+            content.style.transform = "none";
+            content.style.opacity = "1";
+            content.style.willChange = "auto";
+            state.hasSettledEntrance = true;
+          } else {
+            content.style.opacity = Math.max(0.2, entranceOpacity).toFixed(3);
+            content.style.transform = `translate3d(0, ${entranceLift.toFixed(2)}px, 0)`;
+          }
         }
       }
     };

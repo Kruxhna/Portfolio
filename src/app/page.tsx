@@ -26,7 +26,7 @@ export default function Home() {
       <Navbar onOpenCommandMenu={() => setCommandMenuOpen(true)} />
 
       {/* Main Content Sections Wrapped in Tsunami Liquid-Wave Scroll Transitions */}
-      <main className="relative z-10 w-full overflow-x-clip">
+      <main className="relative z-10 w-full">
         {/* 00 // Full-Bleed Hero Section (overflowVisible preserves scattered letters) */}
         <ScrollSectionTransition
           showDivider={false}
@@ -66,6 +66,7 @@ export default function Home() {
             showDivider={false}
             distortionScale={18}
             waveAngle={110}
+            overflowVisible={true}
           >
             <WhatIDoSection />
           </ScrollSectionTransition>
